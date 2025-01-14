@@ -1,5 +1,5 @@
 # NBE3-4-1-Team02
-## [ERD Cloud](https://www.erdcloud.com/d/ZDwr37b6BbRBcXwr8)
+## [ERD Cloud](https://www.erdcloud.com/d/ZDwr37b6BbRBcXwr8](https://www.erdcloud.com/d/9Hj4Dzm6vxTZ2Wv4u)
 ### 협업 전략
 ## 커밋 메시지 및 PR 네이밍 규칙
 각 키워드 다음에 - {내용} 하시면 됩니다
