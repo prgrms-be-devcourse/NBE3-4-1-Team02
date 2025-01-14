@@ -1,8 +1,16 @@
 # NBE3-4-1-Team02
 ## [ERD Cloud](https://www.erdcloud.com/d/ZDwr37b6BbRBcXwr8)
 ### 협업 전략
-
-## 
+## 커밋 메시지 및 PR 네이밍 규칙
+각 키워드 다음에 - {내용} 하시면 됩니다
+#### ex) feat- 상품 추가 기능 구현
+* feat: 새로운 기능 추가
+* fix: 버그 수정
+* docs: 문서 변경 (예: README.md 수정)
+* style: 코드 포맷팅, 세미콜론 누락 등 스타일 변경
+* refactor: 코드 리팩토링 (기능 변경 없음)
+* test: 테스트 코드 추가, 수정
+* chore: 빌드 스크립트 수정, 패키지 매니저 설정 등의 기타 변경사항
 
 ## 1. 작업 시작 전 git pull --rebase origin main 
 ### (다른 사람의 pr 이 merge 된 내역 반영된 내용 가져오기. 안 하면 버전 차이 때문에 브랜치가 꼬입니다.)
