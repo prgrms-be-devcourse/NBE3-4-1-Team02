@@ -15,5 +15,8 @@
 ### 3. 3-2의 경우에는 4번에서, main 브랜치 대신 상위 브랜치에 pr을 날린 후 merge 합니다.
 #### ex)feature-product-create -> feature-product 에 pr 후 merge
 
-## 4. main 브랜치에 pr 날리기 (터미널 명령어로 커밋 시, cd .. 로 NBE3-4-1-Team02/backend 말고 NBE3-4-1-Team02 경로로 하시는 걸 추천 합니다 (안하면 어떻게 되는 진 모르겠습니다.))
+## 4. main 브랜치에 pr 날리기
+### (터미널 명령어로 커밋 시, cd .. 로 NBE3-4-1-Team02/backend 말고 NBE3-4-1-Team02 경로로 하시는 걸 추천 합니다 (안하면 어떻게 되는 진 모르겠습니다.))
 ## 5. 코드 리뷰 후 merge 해주기
+
+
