@@ -16,11 +16,11 @@
 ### (다른 사람의 pr 이 merge 된 내역 반영된 내용 가져오기. 안 하면 버전 차이 때문에 브랜치가 꼬입니다.)
 ## 2. 프로젝트를 별도로 열기 (NBE3-4-1-Team02/backend 경로를 통해)
 ## 3. 새 브랜치 판 후 작업
-### 1. 기본적으로 prefix 로 feature- 를 붙입니다.
+### a. 기본적으로 prefix 로 feature- 를 붙입니다.
 #### ex)feature-product 
-### 2. 기능이 세부적으로 나뉠 경우에도 -로 구분합니다. (필수는 아닙니다. (그대로 feature-product 에서 작업해도 됩니다))
+### b. 기능이 세부적으로 나뉠 경우에도 -로 구분합니다. (필수는 아닙니다. (그대로 feature-product 에서 작업해도 됩니다))
 #### ex)feature-product-create
-### 3. 3-2의 경우에는 4번에서, main 브랜치 대신 상위 브랜치에 pr을 날린 후 merge 합니다.
+### c. 3-b의 경우에는 4번에서, main 브랜치 대신 상위 브랜치에 pr을 날린 후 merge 합니다.
 #### ex)feature-product-create -> feature-product 에 pr 후 merge
 
 ## 4. main 브랜치에 pr 날리기
