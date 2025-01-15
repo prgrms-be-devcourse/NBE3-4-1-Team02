@@ -1,5 +1,6 @@
 package com.example.nbe341team02.product.entity;
 
+import com.example.nbe341team02.product.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
