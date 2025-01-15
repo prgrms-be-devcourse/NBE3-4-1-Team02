@@ -1,5 +1,6 @@
-package com.example.nbe341team02.product;
+package com.example.nbe341team02.product.entity;
 
+import com.example.nbe341team02.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,17 +13,26 @@ public class ProductRepositoryTest {
     private ProductRepository productRepository;
 
     @Test
-    void 상품저장_성공(){
-        //given
-        Product product = new Product("에티오피아",10000,"원두",100);
-        //when
-        Product savedProduct = this.productRepository.save(product);
-        //then
-        assertThat(savedProduct).isNotNull();
-        assertThat(savedProduct.getId()).isNotNull();
-        assertThat(savedProduct.getName()).isEqualTo("에티오피아");
-        assertThat(savedProduct.getPrice()).isEqualTo(10000);
-        assertThat(savedProduct.getDescription()).isEqualTo("원두");
-        assertThat(savedProduct.getStock()).isEqualTo(100);
+    void 상품생성_성공() {
+        // given
+        String productName = "아메리카노";
+        int productPrice = 4500;
+        int productStock = 100;
+        boolean productStatus = true;
+
+        // when
+        Product product = Product.builder()
+                .productName(productName)      // product_name이 아닌 productName
+                .productPrice(productPrice)    // product_price가 아닌 productPrice
+                .productStock(productStock)    // product_stock이 아닌 productStock
+                .productStatus(productStatus)  // product_status가 아닌 productStatus
+                .build();
+
+        // then
+        assertThat(product.getProductName()).isEqualTo(productName);     // getProduct_name이 아님
+        assertThat(product.getProductPrice()).isEqualTo(productPrice);   // getProduct_price가 아님
+        assertThat(product.getProductStock()).isEqualTo(productStock);   // getProduct_stock이 아님
+        assertThat(product.isProductStatus()).isTrue();                  // isProduct_status가 아님
     }
+
 }

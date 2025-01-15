@@ -1,41 +1,37 @@
 package com.example.nbe341team02.product.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Table(name = "product")
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productId;
 
-    @Column(nullable = false)
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @Column(nullable = false)
+    @Column(name = "product_price", nullable = false)
     private int productPrice;
 
-    @Column(nullable = false)
+    @Column(name = "product_stock", nullable = false)
     private int productStock;
 
-    @Column(nullable = false)
+    @Column(name = "product_status", nullable = false)
     private boolean productStatus;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @PrePersist
@@ -48,4 +44,9 @@ public class Product {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void updateStock(int stock) {
+        this.productStock = stock;
+    }
+
 }
