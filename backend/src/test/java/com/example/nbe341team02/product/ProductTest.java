@@ -1,4 +1,4 @@
-package com.example.nbe341team02.product.entity;
+package com.example.nbe341team02.product;
 
 import com.example.nbe341team02.product.Product;
 import org.junit.jupiter.api.Test;
