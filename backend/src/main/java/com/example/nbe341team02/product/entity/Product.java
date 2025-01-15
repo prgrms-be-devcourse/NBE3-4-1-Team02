@@ -1,4 +1,4 @@
-package com.example.nbe341team02.entity;
+package com.example.nbe341team02.product.entity;
 
 
 import jakarta.persistence.*;
@@ -18,35 +18,34 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long product_id;
+    private Long productId;
 
     @Column(nullable = false)
-    private String product_name;
+    private String productName;
 
     @Column(nullable = false)
-    private int product_price;
+    private int productPrice;
 
     @Column(nullable = false)
-    private int product_stock;
+    private int productStock;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean product_status;
+    private boolean productStatus;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updated_at = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }
