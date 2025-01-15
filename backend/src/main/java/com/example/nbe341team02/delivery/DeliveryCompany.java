@@ -8,7 +8,7 @@ public class DeliveryCompany {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(10)")
     private String companyName;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(100)")
