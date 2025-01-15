@@ -4,34 +4,20 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
 @ActiveProfiles("dev")
-@EnableScheduling
-class DeliveryServiceTest {
-    @TestConfiguration
-    static class SchedulerTestConfig {
-        @Bean
-        public Clock clock() {
-            return Clock.fixed(Instant.parse("2024-01-15T14:00:00Z"), ZoneId.systemDefault());
-        }
-    }
-
+public class DeliveryServiceTest {
     @InjectMocks
     private DeliveryService deliveryService;
 
@@ -40,6 +26,9 @@ class DeliveryServiceTest {
 
     @MockitoBean
     private DeliveryRepository deliveryRepository;
+
+    @MockitoBean
+    private DeliveryCompanyRepository deliveryCompanyRepository;
 
     private static final List<Order> orders = new ArrayList<>();
 
@@ -51,13 +40,15 @@ class DeliveryServiceTest {
 
     @BeforeEach
     void setUpMocks() {
-        when(orderRepository.findOrdersToBeDelivered())
+        when(orderRepository.findByOrderTimeBetween(any(), any()))
                 .thenReturn(orders);
     }
 
     @Test
-    @DisplayName("배송 스케쥴러 테스트")
-    private void testDeliveryScheduler(){
-        verify(deliveryRepository, times(1)).save(any(Order.class));
+    @DisplayName("배송 서비스 테스트")
+    void testDeliveryScheduler(){
+        deliveryService.startDelivery(LocalDateTime.now().minusDays(1), LocalDateTime.now());
+        verify(deliveryRepository, times(1))
+                .save(any());
     }
 }
