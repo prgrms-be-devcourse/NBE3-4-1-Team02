@@ -30,6 +30,9 @@ public class DeliveryServiceTest {
     @MockitoBean
     private DeliveryCompanyRepository deliveryCompanyRepository;
 
+    @MockitoBean
+    private DeliveryTimePolicyRepository deliveryTimePolicyRepository;
+
     private static final List<Order> orders = new ArrayList<>();
 
     @BeforeAll
