@@ -64,5 +64,28 @@ public class OrderServiceTest {
         verify(orderProductRepository, never()).saveAll(anyList());
     }
 
+    @Test
+    @DisplayName("예외 테스트: 존재하지 않는 상품 ")
+    void testCreateOrder_ProductNotFound() {
+        // Given
+        OrderCreateRequest request = new OrderCreateRequest(
+          "test@example.com",
+          "Test Address",
+          List.of(new OrderProductRequest(999L, 2))
+        );
+
+        when(productService.reduceStock(999L, 2))
+          .thenThrow(new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        // When & Then
+        CustomException exception = assertThrows(CustomException.class, () -> {
+            orderService.createOrder(request);
+        });
+
+        assertEquals(ErrorCode.PRODUCT_NOT_FOUND, exception.getErrorCode());
+        verify(orderRepository, never()).save(any(Order.class));
+        verify(orderProductRepository, never()).saveAll(anyList());
+    }
+
 }
 
