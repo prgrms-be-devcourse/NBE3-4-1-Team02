@@ -41,6 +41,6 @@ class DeliverySchedulerTest {
     @DisplayName("배송 스케쥴러 테스트")
     void testDeliveryScheduler(){
         verify(deliveryService, times(1))
-                .startDelivery(any(), any());
+                .startDelivery();
     }
 }

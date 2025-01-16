@@ -3,6 +3,7 @@ package com.example.nbe341team02.delivery;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,6 +17,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 public class DeliveryTimePolicy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

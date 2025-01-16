@@ -1,12 +1,13 @@
 package com.example.nbe341team02.delivery;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.concurrent.ScheduledFuture;
 
 @Component
@@ -16,32 +17,26 @@ public class DeliveryScheduler {
 
     private final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     private ScheduledFuture<?> scheduledTask;
-
-    private static final int DEFAULT_DELIVERY_HOUR = 14;
+    private final Runnable deliveryTask = deliveryService::startDelivery;
 
     @PostConstruct
     public void init() {
         scheduler.initialize();
-        setDeliveryTime(DEFAULT_DELIVERY_HOUR);
+        start();
     }
 
-    public void setDeliveryTime(int hour, int minute) {
-        if (scheduledTask != null) {
-            scheduledTask.cancel(false);
-        }
-
-        Runnable deliveryTask = () -> {
-            LocalDate today = LocalDate.now();
-            deliveryService.startDelivery(
-                    today.minusDays(1).atTime(hour, minute),
-                    today.atTime(hour, minute));
-        };
-
-        String cronExpression = String.format("0 %d %d * * ?", minute, hour);
+    public void start(){
+        LocalTime deliveryTime = deliveryService.getLatestDeliveryTime();
+        String cronExpression = String.format("0 %d %d * * ?", deliveryTime.getMinute(), deliveryTime.getHour());
         scheduledTask = scheduler.schedule(deliveryTask, new CronTrigger(cronExpression));
     }
 
-    public void setDeliveryTime(int hour) {
-        setDeliveryTime(hour, 0);
+    @Transactional
+    public void setDeliveryTime(DeliveryTimePolicyRegisterDto registerDto) {
+        if (scheduledTask != null) {
+            scheduledTask.cancel(false);
+        }
+        deliveryService.registerNewDeliveryTimePolicy(registerDto);
+        start();
     }
 }
