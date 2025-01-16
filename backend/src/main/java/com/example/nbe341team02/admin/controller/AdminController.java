@@ -41,4 +41,13 @@ public class AdminController {
     public String loadDashboard() {
         return "dashboard";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/admin/login";
+    }
 }
