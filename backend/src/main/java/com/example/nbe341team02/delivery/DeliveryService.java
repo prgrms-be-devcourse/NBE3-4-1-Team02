@@ -15,7 +15,7 @@ public class DeliveryService {
     private final OrderRepository orderRepository;
     private final DeliveryRepository deliveryRepository;
     private final DeliveryCompanyRepository deliveryCompanyRepository;
-    private final DeliveryTimePolicyRepository dailyTimePolicyRepository;
+    private final DeliveryTimePolicyRepository deliveryTimePolicyRepository;
 
     public void startDelivery(LocalDateTime start, LocalDateTime end){
         List<Set<Order>> getOrdersToBeDelivered = getOrdersToBeDelivered(start, end);
