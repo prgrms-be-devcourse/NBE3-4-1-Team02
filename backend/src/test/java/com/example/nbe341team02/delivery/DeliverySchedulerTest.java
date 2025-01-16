@@ -1,11 +1,9 @@
 package com.example.nbe341team02.delivery;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -14,8 +12,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 
 
 import static org.mockito.Mockito.*;
@@ -37,10 +35,25 @@ class DeliverySchedulerTest {
     @MockitoBean
     private DeliveryService deliveryService;
 
+    @BeforeEach
+    void setUp() {
+        when(deliveryService.getLatestDeliveryTime())
+                .thenReturn(LocalTime.of(14, 0));
+    }
+
     @Test
     @DisplayName("배송 스케쥴러 테스트")
     void testDeliveryScheduler(){
         verify(deliveryService, times(1))
                 .startDelivery();
+    }
+
+    @Test
+    @DisplayName("배송 스케쥴러 변경 테스트")
+    void testChangeDeliveryTime(){
+        DeliveryTimePolicyRegisterDto registerDto = new DeliveryTimePolicyRegisterDto(12, 0);
+        deliveryScheduler.setDeliveryTime(registerDto);
+        verify(deliveryService, times(1))
+                .registerNewDeliveryTimePolicy(registerDto);
     }
 }
