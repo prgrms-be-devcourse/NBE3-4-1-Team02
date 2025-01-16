@@ -16,10 +16,7 @@ public class AdminService {
 
     public boolean authenticate(String username, String password) {
         Admin admin = adminRepository.findByUsername(username);
-        System.out.println("Found admin: " + admin);
-        System.out.println("Input username: " + username);
-        System.out.println("Input password: " + password);
         
-        return admin != null && admin.getPassword().equals(password);
+        return admin != null && admin.getAdminPassword().equals(password);
     }
 }

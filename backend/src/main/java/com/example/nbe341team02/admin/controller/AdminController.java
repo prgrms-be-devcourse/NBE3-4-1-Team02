@@ -28,7 +28,6 @@ public class AdminController {
     public String login(@RequestParam(name = "username") String username,
                         @RequestParam(name = "password") String password,
                         HttpServletRequest request) {
-        System.out.println("Login attempt - username: " + username);
         if (adminService.authenticate(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
