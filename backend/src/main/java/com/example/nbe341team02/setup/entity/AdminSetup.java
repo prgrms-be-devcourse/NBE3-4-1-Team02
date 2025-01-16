@@ -1,4 +1,4 @@
-package com.example.nbe341team02.setup;
+package com.example.nbe341team02.setup.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
