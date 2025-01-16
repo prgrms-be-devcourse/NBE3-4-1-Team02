@@ -1,4 +1,4 @@
-package com.example.nbe341team02.config;
+package com.example.nbe341team02.global.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
