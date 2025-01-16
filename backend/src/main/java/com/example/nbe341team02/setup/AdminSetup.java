@@ -1,18 +1,13 @@
 package com.example.nbe341team02.setup;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "admin")
+@Entity(name = "admin")
 public class AdminSetup {
 
     @Id
@@ -24,4 +19,10 @@ public class AdminSetup {
 
     @Column(nullable = false)
     private String admin_password;
+
+    @Builder
+    private AdminSetup(String admin_username, String admin_password) {
+        this.admin_username = admin_username;
+        this.admin_password = admin_password;
+    }
 }
