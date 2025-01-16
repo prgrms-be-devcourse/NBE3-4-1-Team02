@@ -1,23 +1,21 @@
 package com.example.nbe341team02.admin.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 public class Admin {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminId;
+    private Long id;
 
     @Column(name = "admin_username", nullable = false, length = 20, unique = true)
     private String adminUsername;
 
     @Column(name = "admin_password", nullable = false)
     private String adminPassword;
+
+    @Column(name = "admin_role", nullable = false)
+    private String adminRole;
 }
