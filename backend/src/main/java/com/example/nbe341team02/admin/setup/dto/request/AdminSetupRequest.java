@@ -1,4 +1,4 @@
-package com.example.nbe341team02.setup.dto.request;
+package com.example.nbe341team02.admin.setup.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -20,4 +20,3 @@ public class AdminSetupRequest {
             message = "비밀번호는 최소 8자, 영문자와 숫자를 포함해야 합니다")
     private String admin_password;
 }
-
