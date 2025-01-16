@@ -5,6 +5,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
+
     database: h2
     properties:
       hibernate:
@@ -24,3 +26,4 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
