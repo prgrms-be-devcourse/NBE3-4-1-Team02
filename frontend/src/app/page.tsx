@@ -1,101 +1,251 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+declare global {
+  interface Window {
+    daum: any;
+  }
+}
+
+// 타입 정의
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  status: boolean;
+};
+
+type CartItem = {
+  productId: number;
+  name: string;
+  quantity: number;
+  price: number;
+};
+
+export default function CreateOrder() {
+  const router = useRouter();
+
+  // 상태 정의
+  const [products, setProducts] = useState<Product[]>([]); // 상품 목록
+  const [cart, setCart] = useState<CartItem[]>([]); // 장바구니
+  const [email, setEmail] = useState(""); // 이메일
+  const [address, setAddress] = useState(""); // 주소
+  const [postalCode, setPostalCode] = useState(""); // 우편번호
+  const [totalPrice, setTotalPrice] = useState(0); // 총 금액
+
+  // 상품 목록 가져오기
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/products");
+        if (!response.ok) {
+          throw new Error("상품 데이터를 가져오는 데 실패했습니다.");
+        }
+        const data: Product[] = await response.json();
+        setProducts(data);
+      } catch (err) {
+        console.error(err);
+        alert("상품 데이터를 가져오는 중 오류가 발생했습니다.");
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Daum 우편번호 검색 API
+  const handleAddressSearch = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data: any) {
+        setAddress(data.address); // 주소 입력
+        setPostalCode(data.zonecode); // 우편번호 입력
+      },
+    }).open();
+  };
+
+  // 장바구니에 상품 추가
+  const addToCart = (product: Product) => {
+    const existingProduct = cart.find((item) => item.productId === product.id);
+    if (existingProduct) {
+      setCart(
+          cart.map((item) =>
+              item.productId === product.id
+                  ? { ...item, quantity: item.quantity + 1 }
+                  : item
+          )
+      );
+    } else {
+      setCart([
+        ...cart,
+        { productId: product.id, name: product.name, quantity: 1, price: product.price },
+      ]);
+    }
+    setTotalPrice(totalPrice + product.price);
+  };
+
+  // 장바구니에서 상품 삭제
+  const removeFromCart = (productId: number) => {
+    const product = cart.find((item) => item.productId === productId);
+    if (product) {
+      setCart(cart.filter((item) => item.productId !== productId));
+      setTotalPrice(totalPrice - product.price * product.quantity);
+    }
+  };
+
+  // 주문 생성
+  const handleOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !address || cart.length === 0) {
+      alert("이메일, 주소, 상품을 입력해주세요!");
+      return;
+    }
+
+    const requestData = {
+      email,
+      address,
+      postalCode,
+      orderProducts: cart.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert("주문이 성공적으로 생성되었습니다!");
+
+        // orderProducts를 문자열로 변환하여 URL-safe 포맷으로 인코딩
+        const orderProducts = encodeURIComponent(JSON.stringify(data.orderProducts));
+
+        router.push(
+            `/order-complete?email=${data.email}&status=${data.status}&orderProducts=${orderProducts}`
+        );
+      } else {
+        const error = await response.json();
+        alert(`주문 실패: ${error.message}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("주문 요청 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      <div className="min-h-screen bg-gray-200">
+        <div className="max-w-7xl mx-auto p-8">
+          <h1 className="text-3xl font-bold text-center mb-8">Grids & Circle</h1>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left: 상품 목록 */}
+            <div className="lg:col-span-2">
+              <h2 className="text-lg font-semibold mb-4">상품 목록</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {products.map((product) => (
+                    <div
+                        key={product.id}
+                        className="flex items-center justify-between p-4 bg-white border rounded-md shadow-sm"
+                    >
+                      <h3 className="font-bold text-gray-700">{product.name}</h3>
+                      <p className="text-gray-700">{product.price}원</p>
+                      <button
+                          onClick={() => addToCart(product)}
+                          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                      >
+                        추가
+                      </button>
+                    </div>
+                ))}
+              </div>
+            </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {/* Right: Summary and 주문 정보 */}
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Summary</h2>
+              {cart.length > 0 ? (
+                  <div className="space-y-4 mb-4">
+                    {cart.map((item) => (
+                        <div
+                            key={item.productId}
+                            className="flex justify-between items-center p-4 bg-white border rounded-md shadow-sm"
+                        >
+                          <h3 className="font-semibold text-gray-700">{item.name}</h3>
+                          <p className="text-gray-600">{item.quantity}개</p>
+                          <button
+                              onClick={() => removeFromCart(item.productId)}
+                              className="text-red-500 hover:underline"
+                          >
+                            삭제
+                          </button>
+                        </div>
+                    ))}
+                  </div>
+              ) : (
+                  <p className="mb-4 text-gray-600">장바구니가 비어 있습니다.</p>
+              )}
+
+              {/* 주문 정보 */}
+              <form onSubmit={handleOrderSubmit} className="space-y-4">
+                <div>
+                  <label className="block font-semibold">이메일</label>
+                  <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full p-2 border rounded-md"
+                      required
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold">주소</label>
+                  <div className="flex">
+                    <input
+                        type="text"
+                        value={address}
+                        className="flex-1 p-2 border rounded-md"
+                        readOnly
+                    />
+                    <button
+                        type="button"
+                        onClick={handleAddressSearch}
+                        className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    >
+                      주소 검색
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label className="block font-semibold">우편번호</label>
+                  <input
+                      type="text"
+                      value={postalCode}
+                      className="w-full p-2 border rounded-md"
+                      readOnly
+                  />
+                </div>
+                <p className="text-lg font-bold text-gray-700 mt-4">
+                  당일 오후 2시 이후의 주문은 다음날 배송을 시작합니다.
+                </p>
+                <p className="font-bold text-right text-lg mt-2">총 금액: {totalPrice}원</p>
+                <button
+                    type="submit"
+                    className="w-full px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                >
+                  결제하기
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
   );
 }
