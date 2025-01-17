@@ -1,8 +1,15 @@
 package com.example.nbe341team02.domain.delivery.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DeliveryCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,5 +22,6 @@ public class DeliveryCompany {
     private String trackingURLTemplate;
 
     @Column(nullable = false)
+    @ColumnDefault("true")
     private boolean active = true;
 }
