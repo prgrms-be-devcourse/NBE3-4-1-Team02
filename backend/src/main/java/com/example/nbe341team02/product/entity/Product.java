@@ -18,19 +18,19 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long id;
 
     @Column(nullable = false)
-    private String productName;
+    private String name;
 
     @Column(nullable = false)
-    private int productPrice;
+    private int price;
 
     @Column(nullable = false)
-    private int productStock;
+    private int stock;
 
     @Column(nullable = false)
-    private boolean productStatus;
+    private boolean status;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
