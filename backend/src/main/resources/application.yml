@@ -6,10 +6,11 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password:
+    initialize: true
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: h2
   h2:
     console:
