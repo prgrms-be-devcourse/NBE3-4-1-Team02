@@ -29,11 +29,11 @@ public class ProductService {
         List<ProductDTO> productDTOList = new ArrayList<>();
         for( Product product : products){
             ProductDTO productDTO = new ProductDTO(
-                    product.getProductId(),
-                    product.getProductName(),
-                    product.getProductPrice(),
-                    product.getProductStock(),
-                    product.isProductStatus()
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getStock(),
+                    product.isStatus()
             );
             productDTOList.add(productDTO);
         }
@@ -45,21 +45,21 @@ public class ProductService {
         // ProductDTO를 Product 엔티티로 변환
         Product product = new Product(
                 null,
-                productDTO.getProductName(),
-                productDTO.getProductPrice(),
-                productDTO.getProductStock(),
-                productDTO.isProductStatus(),
-                LocalDateTime.now(), // createdAt
-                LocalDateTime.now()  // updatedAt
+                productDTO.getName(),
+                productDTO.getPrice(),
+                productDTO.getStock(),
+                productDTO.isStatus(),
+                LocalDateTime.now(),
+                LocalDateTime.now()
         );
         Product savedProduct = productRepository.save(product);
         // 저장된 상품을 DTO로 변환하여 반환
         return new ProductDTO(
-                savedProduct.getProductId(),
-                savedProduct.getProductName(),
-                savedProduct.getProductPrice(),
-                savedProduct.getProductStock(),
-                savedProduct.isProductStatus()
+                savedProduct.getId(),
+                savedProduct.getName(),
+                savedProduct.getPrice(),
+                savedProduct.getStock(),
+                savedProduct.isStatus()
         );
     }
 
@@ -71,10 +71,10 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
-        product.setProductName(productDTO.getProductName());
-        product.setProductPrice(productDTO.getProductPrice());
-        product.setProductStock(productDTO.getProductStock());
-        product.setProductStatus(productDTO.isProductStatus());
+        product.setName(productDTO.getName());
+        product.setPrice(productDTO.getPrice());
+        product.setStock(productDTO.getStock());
+        product.setStatus(productDTO.isStatus());
 
         Product updatedProduct = productRepository.save(product);
 
@@ -94,21 +94,21 @@ public class ProductService {
     // DTO로 변환 메소드
     private ProductDTO convertToDTO(Product product) {
         return new ProductDTO(
-                product.getProductId(),
-                product.getProductName(),
-                product.getProductPrice(),
-                product.getProductStock(),
-                product.isProductStatus()
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getStock(),
+                product.isStatus()
         );
     }
 
     // Entity로 변환 메소드
     private Product convertToEntity(ProductDTO productDTO) {
         return Product.builder()
-                .productName(productDTO.getProductName())
-                .productPrice(productDTO.getProductPrice())
-                .productStock(productDTO.getProductStock())
-                .productStatus(productDTO.isProductStatus())
+                .name(productDTO.getName())
+                .price(productDTO.getPrice())
+                .stock(productDTO.getStock())
+                .status(productDTO.isStatus())
                 .build();
     }
 
