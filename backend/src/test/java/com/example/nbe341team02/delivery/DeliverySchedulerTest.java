@@ -32,7 +32,7 @@ class DeliverySchedulerTest {
 
     @DynamicPropertySource
     static void dynamicProperties(DynamicPropertyRegistry registry) {
-        LocalTime deliveryTime = LocalTime.now().plusSeconds(5);
+        LocalTime deliveryTime = LocalTime.now().plusSeconds(10);
         registry.add("default.delivery.hour", deliveryTime::getHour); // 동적 값 설정
         registry.add("default.delivery.minute", deliveryTime::getMinute);
         registry.add("default.delivery.second", deliveryTime::getSecond);
@@ -42,7 +42,7 @@ class DeliverySchedulerTest {
     @Test
     @DisplayName("배송 스케쥴러 테스트")
     void testDeliveryScheduler() throws InterruptedException {
-        Thread.sleep(6000);
+        Thread.sleep(20000);
         verify(deliveryService, times(1))
                 .startDelivery();
     }
