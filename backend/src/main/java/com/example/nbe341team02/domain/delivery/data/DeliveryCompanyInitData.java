@@ -15,7 +15,7 @@ public class DeliveryCompanyInitData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         deliveryCompanyRepository.save(DeliveryCompany.builder()
                 .companyName("한진택배")
-                .trackingURLTemplate("https://www.google.com/?q={}")
+                .trackingURLTemplate("https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillSch.do?mCode=MN038")
                 .build());
     }
 }
