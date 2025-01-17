@@ -8,6 +8,7 @@ import com.example.nbe341team02.domain.delivery.repository.DeliveryCompanyReposi
 import com.example.nbe341team02.domain.delivery.repository.DeliveryRepository;
 import com.example.nbe341team02.domain.delivery.repository.DeliveryTimePolicyRepository;
 import com.example.nbe341team02.domain.orders.entity.Order;
+import com.example.nbe341team02.domain.orders.enums.OrderStatus;
 import com.example.nbe341team02.domain.orders.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class DeliveryService {
     }
 
     private Set<Set<Order>> getOrdersToBeDelivered(LocalDateTime start, LocalDateTime end){
-        List<Order> ordersToBeDelivered = orderRepository.findByDeliveryIsNullAndCreatedAtIsBetween(start, end);
+        List<Order> ordersToBeDelivered = orderRepository.findByDeliveryIsNullAndCreatedAtIsBetweenAndStatus(start, end, OrderStatus.COMPLETED);
         Map<String, Set<Order>> groupedOrders = ordersToBeDelivered.stream()
                 .collect(Collectors.groupingBy(order -> order.getEmail() + order.getAddress(), Collectors.toSet()));
         return new HashSet<>(groupedOrders.values());
