@@ -27,6 +27,10 @@ public class OrderCreateRequest {
     @Size(max = 255)
     private final String address;
 
+    @NotBlank(message = "우편번호는 필수 입력값입니다.")
+    @Size(max = 20)
+    private final String postalCode;
+
     @NotEmpty(message = "주문 상품은 최소 1개 이상 선택해야 합니다.")
     @Valid
     private final List<OrderProductRequest> orderProducts;
@@ -35,6 +39,7 @@ public class OrderCreateRequest {
         return Order.builder()
           .email(email)
           .address(address)
+          .postalCode(postalCode)
           .status(OrderStatus.COMPLETED)
           .build();
     }
