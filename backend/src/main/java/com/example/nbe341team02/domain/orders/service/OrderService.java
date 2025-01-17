@@ -4,6 +4,7 @@ import com.example.nbe341team02.domain.orderProduct.entity.OrderProduct;
 import com.example.nbe341team02.domain.orderProduct.repository.OrderProductRepository;
 import com.example.nbe341team02.domain.orders.dto.request.OrderCreateRequest;
 import com.example.nbe341team02.domain.orders.dto.request.OrderProductRequest;
+import com.example.nbe341team02.domain.orders.dto.response.OrderResponse;
 import com.example.nbe341team02.domain.orders.entity.Order;
 import com.example.nbe341team02.domain.orders.repository.OrderRepository;
 import com.example.nbe341team02.domain.product.entity.Product;
@@ -25,7 +26,7 @@ public class OrderService {
     private final ProductService productService;
 
     @Transactional
-    public Long createOrder(OrderCreateRequest request) {
+    public OrderResponse createOrder(OrderCreateRequest request) {
         Order order = request.toEntity();
 
         List<OrderProduct> orderProducts = request.getOrderProducts().stream()
@@ -38,6 +39,7 @@ public class OrderService {
         orderRepository.save(order);
         orderProductRepository.saveAll(orderProducts);
 
-        return order.getId();
+        return OrderResponse.of(order,orderProducts);
     }
 }
+
