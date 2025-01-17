@@ -31,7 +31,6 @@ public class DeliveryService {
     private static final LocalDateTime DEFAULT_START = LocalDateTime.of(2000, 1, 1, 0, 0);
 
     public void startDelivery(LocalDateTime start, LocalDateTime end){
-        log.info("start delivery");
         Set<Set<Order>> getOrdersToBeDelivered = getOrdersToBeDelivered(start, end);
         Set<DeliveryCompany> activeDeliveryCompanies = deliveryCompanyRepository.findByActive(true);
         for (Set<Order> orders : getOrdersToBeDelivered) {
@@ -75,6 +74,7 @@ public class DeliveryService {
                 .build());
     }
 
+    //Rest Template 나 Feign Client 를 통해 택배사로부터 송장번호를 받아온다는 전제를 둔 매서드. (실제 택배사로부터 송장번호 받아오는 건 일단 구현하지 않았습니다.)
     public void setDeliveryTrackingNumber(Long deliveryId, String trackingNumber){
         Delivery delivery = deliveryRepository.findById(deliveryId).orElseThrow();
         delivery.setDeliveryTrackingNumber(trackingNumber);
