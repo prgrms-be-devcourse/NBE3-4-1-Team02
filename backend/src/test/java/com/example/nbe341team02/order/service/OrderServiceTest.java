@@ -48,6 +48,7 @@ public class OrderServiceTest {
         OrderCreateRequest request = new OrderCreateRequest(
           "test@example.com",
           "Test Address",
+          "03344",
           List.of(new OrderProductRequest(1L, 10)) // 초과 수량 요청
         );
 
@@ -71,6 +72,7 @@ public class OrderServiceTest {
         OrderCreateRequest request = new OrderCreateRequest(
           "test@example.com",
           "Test Address",
+          "03344",
           List.of(new OrderProductRequest(999L, 2))
         );
 
@@ -95,13 +97,14 @@ public class OrderServiceTest {
         OrderCreateRequest request = new OrderCreateRequest(
           "test@example.com",
           "Test Address",
+          "03344",
           List.of(new OrderProductRequest(1L, 2))
         );
 
         when(productService.reduceStock(1L, 2)).thenReturn(product);
 
         // When
-        Long orderId = orderService.createOrder(request);
+        orderService.createOrder(request);
 
         // Then
         verify(orderRepository).save(any(Order.class));
@@ -110,4 +113,3 @@ public class OrderServiceTest {
     }
 
 }
-
