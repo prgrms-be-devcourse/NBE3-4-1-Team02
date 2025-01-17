@@ -1,4 +1,10 @@
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
   application:
     name: NBE3-4-1-Team02
   datasource:

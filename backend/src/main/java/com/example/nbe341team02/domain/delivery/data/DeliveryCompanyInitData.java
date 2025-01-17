@@ -1,18 +1,18 @@
-package com.example.nbe341team02.global.initData.delivery;
+package com.example.nbe341team02.domain.delivery.data;
 
 import com.example.nbe341team02.domain.delivery.entity.DeliveryCompany;
 import com.example.nbe341team02.domain.delivery.repository.DeliveryCompanyRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DeliveryCompanyInitData {
+public class DeliveryCompanyInitData implements CommandLineRunner {
     private final DeliveryCompanyRepository deliveryCompanyRepository;
 
-    @PostConstruct
-    public void init() {
+    @Override
+    public void run(String... args) throws Exception {
         deliveryCompanyRepository.save(DeliveryCompany.builder()
                 .companyName("한진택배")
                 .trackingURLTemplate("https://www.google.com/?q={}")
