@@ -1,6 +1,7 @@
 package com.example.nbe341team02.domain.orders.controller;
 
 import com.example.nbe341team02.domain.orders.dto.request.OrderCreateRequest;
+import com.example.nbe341team02.domain.orders.dto.response.OrderResponse;
 import com.example.nbe341team02.domain.orders.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Long> createOrder(@Valid @RequestBody OrderCreateRequest request){
-        return ResponseEntity.ok(orderService.createOrder(request));
+    public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderCreateRequest request) {
+        OrderResponse response = orderService.createOrder(request);
+        return ResponseEntity.ok(response);
     }
 
 }
