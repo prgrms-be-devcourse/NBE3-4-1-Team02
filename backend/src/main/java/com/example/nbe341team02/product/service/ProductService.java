@@ -5,7 +5,6 @@ import com.example.nbe341team02.product.dto.ProductDTO;
 import com.example.nbe341team02.product.entity.Product;
 import com.example.nbe341team02.product.exception.ProductNotFoundException;
 import com.example.nbe341team02.product.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,10 +48,13 @@ public class ProductService {
                 productDTO.getPrice(),
                 productDTO.getStock(),
                 productDTO.isStatus(),
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                LocalDateTime.now(), // createdAt
+                LocalDateTime.now()  // updatedAt
         );
+
+
         Product savedProduct = productRepository.save(product);
+
         // 저장된 상품을 DTO로 변환하여 반환
         return new ProductDTO(
                 savedProduct.getId(),
@@ -61,55 +63,6 @@ public class ProductService {
                 savedProduct.getStock(),
                 savedProduct.isStatus()
         );
-    }
-
-    //--김규진--
-    //상품 수정 기능
-    @Transactional
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
-        //예외 - 상품이 없음
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
-
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-        product.setStock(productDTO.getStock());
-        product.setStatus(productDTO.isStatus());
-
-        Product updatedProduct = productRepository.save(product);
-
-        return convertToDTO(updatedProduct);
-
-    }
-    // 상품 삭제
-    @Transactional
-    public void deleteProduct(Long id) {
-        //예외 - 상품이 없음
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
-
-        productRepository.delete(product);
-    }
-
-    // DTO로 변환 메소드
-    private ProductDTO convertToDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getStock(),
-                product.isStatus()
-        );
-    }
-
-    // Entity로 변환 메소드
-    private Product convertToEntity(ProductDTO productDTO) {
-        return Product.builder()
-                .name(productDTO.getName())
-                .price(productDTO.getPrice())
-                .stock(productDTO.getStock())
-                .status(productDTO.isStatus())
-                .build();
     }
 
 }
