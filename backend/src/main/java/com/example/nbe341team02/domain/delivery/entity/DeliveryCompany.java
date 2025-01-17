@@ -1,4 +1,4 @@
-package com.example.nbe341team02.domain.delivery;
+package com.example.nbe341team02.domain.delivery.entity;
 
 import jakarta.persistence.*;
 
@@ -8,7 +8,7 @@ public class DeliveryCompany {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(10)")
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(20)")
     private String companyName;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(100)")

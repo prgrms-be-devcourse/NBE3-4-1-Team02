@@ -1,5 +1,12 @@
-package com.example.nbe341team02.domain.delivery;
+package com.example.nbe341team02.domain.delivery.service;
 
+import com.example.nbe341team02.domain.delivery.dto.DeliveryTimePolicyRegisterDto;
+import com.example.nbe341team02.domain.delivery.entity.Delivery;
+import com.example.nbe341team02.domain.delivery.entity.DeliveryCompany;
+import com.example.nbe341team02.domain.delivery.entity.DeliveryTimePolicy;
+import com.example.nbe341team02.domain.delivery.repository.DeliveryCompanyRepository;
+import com.example.nbe341team02.domain.delivery.repository.DeliveryRepository;
+import com.example.nbe341team02.domain.delivery.repository.DeliveryTimePolicyRepository;
 import com.example.nbe341team02.domain.orders.entity.Order;
 import com.example.nbe341team02.domain.orders.repository.OrderRepository;
 import jakarta.transaction.Transactional;
@@ -20,7 +27,7 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DeliveryCompanyRepository deliveryCompanyRepository;
     private final DeliveryTimePolicyRepository deliveryTimePolicyRepository;
-    private static final LocalDateTime DEFAULT_START = LocalDateTime.of(1900, 1, 1, 0, 0);
+    private static final LocalDateTime DEFAULT_START = LocalDateTime.of(2000, 1, 1, 0, 0);
 
     public void startDelivery(LocalDateTime start, LocalDateTime end){
         Set<Set<Order>> getOrdersToBeDelivered = getOrdersToBeDelivered(start, end);

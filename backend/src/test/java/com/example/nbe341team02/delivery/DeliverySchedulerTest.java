@@ -1,8 +1,8 @@
 package com.example.nbe341team02.delivery;
 
-import com.example.nbe341team02.domain.delivery.DeliveryScheduler;
-import com.example.nbe341team02.domain.delivery.DeliveryService;
-import com.example.nbe341team02.domain.delivery.DeliveryTimePolicyRegisterDto;
+import com.example.nbe341team02.domain.delivery.scheduler.DeliveryScheduler;
+import com.example.nbe341team02.domain.delivery.service.DeliveryService;
+import com.example.nbe341team02.domain.delivery.dto.DeliveryTimePolicyRegisterDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

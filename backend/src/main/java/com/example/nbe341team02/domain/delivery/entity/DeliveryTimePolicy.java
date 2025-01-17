@@ -1,40 +1,32 @@
-package com.example.nbe341team02.domain.delivery;
+package com.example.nbe341team02.domain.delivery.entity;
 
-import com.example.nbe341team02.domain.orders.entity.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalTime;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Delivery {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+public class DeliveryTimePolicy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "delivery")
-    private Set<Order> orders = new HashSet<>();
+    @Column(nullable = false, updatable = false)
+    private LocalTime deliveryTime;
 
-    @ManyToOne
-    private DeliveryCompany deliveryCompany;
-
-    @Setter
-    @Column
-    private String deliveryTrackingNumber;
-
-    @CreationTimestamp
+    @CreatedDate
     @Column(nullable = false, updatable = false)
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
