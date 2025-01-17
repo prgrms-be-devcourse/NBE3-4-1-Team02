@@ -3,6 +3,7 @@ package com.example.nbe341team02.product.service;
 
 import com.example.nbe341team02.product.dto.ProductDTO;
 import com.example.nbe341team02.product.entity.Product;
+import com.example.nbe341team02.product.exception.ProductNotFoundException;
 import com.example.nbe341team02.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,13 @@ public class ProductService {
 
     public List<ProductDTO> findAllProducts() {
         List<Product> products = productRepository.findAll();
-        List<ProductDTO> productDTOList = new ArrayList<>();
 
+
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No products found.");
+        }
+
+        List<ProductDTO> productDTOList = new ArrayList<>();
         for( Product product : products){
             ProductDTO productDTO = new ProductDTO(
                     product.getProductId(),
