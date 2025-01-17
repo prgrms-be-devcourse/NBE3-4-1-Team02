@@ -7,7 +7,6 @@ import com.example.nbe341team02.admin.initializer.repository.AdminInitializerRol
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -28,15 +27,15 @@ public class AdminInitializerRunner implements CommandLineRunner {
                 .findByRoleType(AdminInitializerRole.RoleType.ROLE_ADMIN)
                 .orElseGet(() -> {
                     AdminInitializerRole role = AdminInitializerRole.builder()
-                            .role_type(AdminInitializerRole.RoleType.ROLE_ADMIN)
+                            .roleType(AdminInitializerRole.RoleType.ROLE_ADMIN)
                             .build();
                     return adminInitializerRoleRepository.save(role);
                 });
 
             // Admin 계정 생성
             AdminInitializer admin = AdminInitializer.builder()
-                    .admin_username(defaultUsername)
-                    .admin_role(adminRole)
+                    .adminUsername(defaultUsername)
+                    .adminRole(adminRole)
                     .build();
                     
             adminInitializerRepository.save(admin);

@@ -8,30 +8,36 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity(name = "admin")
+@Table(name = "admin")
+@Entity(name = "admin_initializer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdminInitializer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long admin_id;
+    @Column(name = "admin_id")
+    private Long adminId;
 
-    @Column(length = 20, nullable = false, unique = true)
-    private String admin_username;
+    @Column(name = "admin_username", length = 20, nullable = false, unique = true)
+    private String adminUsername;
+
+    @Column(name = "admin_password", nullable = true) // nullable = true로 변경
+    private String adminPassword;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
-    private AdminInitializerRole admin_role;
+    private AdminInitializerRole adminRole;
 
     @Builder
-    private AdminInitializer(String admin_username, AdminInitializerRole admin_role) {
-        this.admin_username = admin_username;
-        this.admin_role = admin_role;
+    private AdminInitializer(String adminUsername, AdminInitializerRole adminRole) {
+        this.adminUsername = adminUsername;
+        this.adminRole = adminRole;
     }
 }

@@ -18,11 +18,12 @@ import lombok.NoArgsConstructor;
 public class AdminInitializerRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long admin_role;
+    @Column(name = "admin_role")
+    private Long adminRole;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
-    private RoleType role_type;
+    @Column(name = "role_type", nullable = false, unique = true)
+    private RoleType roleType;
 
     public static enum RoleType {
         ROLE_ADMIN,
@@ -30,7 +31,7 @@ public class AdminInitializerRole {
     }
 
     @Builder
-    private AdminInitializerRole(RoleType role_type) {
-        this.role_type = role_type;
+    private AdminInitializerRole(RoleType roleType) {
+        this.roleType = roleType;
     }
 }
