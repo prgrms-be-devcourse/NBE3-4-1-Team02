@@ -25,19 +25,23 @@ public class Order extends BaseTimeEntity {
     @Column(name = "email", nullable = false, length = 255)
     private String email;
 
-    @Column(name = "address", nullable = false, length = 50)
+    @Column(name = "address", nullable = false, length = 255)
     private String address;
+
+    @Column(name = "postal_code", nullable = false, length = 20)
+    private String postalCode;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     private OrderStatus status;
 
     @Builder
-    public Order(Long id, String email, String address, OrderStatus status) {
+    public Order(Long id, String email, String address, String postalCode, OrderStatus status) {
         this.id = id;
         this.email = email;
         this.address = address;
+        this.postalCode = postalCode;
         this.status = status;
     }
-
 }
+
