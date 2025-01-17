@@ -5,13 +5,17 @@ import com.example.nbe341team02.domain.delivery.repository.DeliveryCompanyReposi
 import com.example.nbe341team02.domain.delivery.repository.DeliveryRepository;
 import com.example.nbe341team02.domain.delivery.repository.DeliveryTimePolicyRepository;
 import com.example.nbe341team02.domain.delivery.service.DeliveryService;
+import com.example.nbe341team02.domain.orders.dto.request.OrderCreateRequest;
 import com.example.nbe341team02.domain.orders.entity.Order;
 import com.example.nbe341team02.domain.orders.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -25,21 +29,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("dev")
 public class DeliveryServiceTest {
     @InjectMocks
     private DeliveryService deliveryService;
 
-    @MockitoBean
+    @Mock
     private OrderRepository orderRepository;
 
-    @MockitoBean
+    @Mock
     private DeliveryRepository deliveryRepository;
 
-    @MockitoBean
+    @Mock
     private DeliveryCompanyRepository deliveryCompanyRepository;
 
-    @MockitoBean
+    @Mock
     private DeliveryTimePolicyRepository deliveryTimePolicyRepository;
 
     private static final List<Order> orders = new ArrayList<>();
