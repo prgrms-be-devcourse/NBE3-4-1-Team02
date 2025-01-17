@@ -10,10 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ProductDTO {
-    private Long productId;
-    private String productName;
-    private int productPrice;
-    private int productStock;
-    private boolean productStatus;
-
+    private Long id;
+    private String name;
+    private int price;
+    private int stock;
+    private boolean status;
 }
