@@ -28,11 +28,11 @@ public class ProductService {
         List<ProductDTO> productDTOList = new ArrayList<>();
         for( Product product : products){
             ProductDTO productDTO = new ProductDTO(
-                    product.getProductId(),
-                    product.getProductName(),
-                    product.getProductPrice(),
-                    product.getProductStock(),
-                    product.isProductStatus()
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getStock(),
+                    product.isStatus()
             );
             productDTOList.add(productDTO);
         }
@@ -44,10 +44,10 @@ public class ProductService {
         // ProductDTO를 Product 엔티티로 변환
         Product product = new Product(
                 null,
-                productDTO.getProductName(),
-                productDTO.getProductPrice(),
-                productDTO.getProductStock(),
-                productDTO.isProductStatus(),
+                productDTO.getName(),
+                productDTO.getPrice(),
+                productDTO.getStock(),
+                productDTO.isStatus(),
                 LocalDateTime.now(), // createdAt
                 LocalDateTime.now()  // updatedAt
         );
@@ -57,11 +57,11 @@ public class ProductService {
 
         // 저장된 상품을 DTO로 변환하여 반환
         return new ProductDTO(
-                savedProduct.getProductId(),
-                savedProduct.getProductName(),
-                savedProduct.getProductPrice(),
-                savedProduct.getProductStock(),
-                savedProduct.isProductStatus()
+                savedProduct.getId(),
+                savedProduct.getName(),
+                savedProduct.getPrice(),
+                savedProduct.getStock(),
+                savedProduct.isStatus()
         );
     }
 
