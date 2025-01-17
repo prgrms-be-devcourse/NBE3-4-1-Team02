@@ -41,8 +41,8 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/api/v1/admin/logout")
-                        .logoutSuccessUrl("/api/v1/admin/login?logout=true")
+                        .logoutUrl("/admin/logout")
+                        .logoutSuccessUrl("/admin/login")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
