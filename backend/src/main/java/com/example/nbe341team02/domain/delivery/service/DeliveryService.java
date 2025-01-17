@@ -60,8 +60,9 @@ public class DeliveryService {
     }
 
     public LocalTime getLatestDeliveryTime(){
-        return deliveryTimePolicyRepository.findTopByOrderByCreatedAtDesc()
-                .orElseThrow().getDeliveryTime();
+        DeliveryTimePolicy deliveryTimePolicy =  deliveryTimePolicyRepository.findTopByOrderByCreatedAtDesc()
+                .orElse(null);
+        return deliveryTimePolicy == null ? null : deliveryTimePolicy.getDeliveryTime();
     }
 
     public void registerNewDeliveryTimePolicy(DeliveryTimePolicyRegisterDto registerDto){
