@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="33feea61-7508-45cf-b405-8bc4a7eb69d6" name="변경" comment="# 1. 커밋 제목&#10;&#10;# 2. 본문&#10;&#10;# &lt;참고&gt;&#10;# feat: 새로운 기능 추가&#10;# fix: 버그 수정&#10;# docs: 문서 변경 (예: README.md 수정)&#10;# style: 코드 포맷팅, 세미콜론 누락 등 스타일 변경&#10;# refactor: 코드 리팩토링 (기능 변경 없음)&#10;# test: 테스트 코드 추가, 수정&#10;# chore: 빌드 스크립트 수정, 패키지 매니저 설정 등의 기타 변경사항">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/nbe341team02/admin/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/nbe341team02/admin/service/AdminService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/nbe341team02/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/nbe341team02/config/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
