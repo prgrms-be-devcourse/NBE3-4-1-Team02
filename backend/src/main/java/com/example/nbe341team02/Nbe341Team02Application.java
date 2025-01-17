@@ -1,18 +1,13 @@
 package com.example.nbe341team02;
 
-import com.example.nbe341team02.global.config.EnableJpaAuditingConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
 @SpringBootApplication
 @EnableScheduling
-@Import(EnableJpaAuditingConfig.class)
-//@EnableJpaAuditing
 public class Nbe341Team02Application {
     public static void main(String[] args) {
         SpringApplication.run(Nbe341Team02Application.class, args);
