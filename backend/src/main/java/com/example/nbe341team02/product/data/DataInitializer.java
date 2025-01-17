@@ -37,6 +37,24 @@ public class DataInitializer implements CommandLineRunner {
                     LocalDateTime.now(), // createdAt
                     LocalDateTime.now()  // updatedAt
             ));
+            productRepository.save(new Product(
+                    null,
+                    "3번 상품",
+                    3000,
+                    20,
+                    true,
+                    LocalDateTime.now(), // createdAt
+                    LocalDateTime.now()  // updatedAt
+            ));
+            productRepository.save(new Product(
+                    null,
+                    "4번 상품",
+                    4000,
+                    20,
+                    true,
+                    LocalDateTime.now(), // createdAt
+                    LocalDateTime.now()  // updatedAt
+            ));
         }
     }
 }
