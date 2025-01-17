@@ -5,12 +5,13 @@ import com.example.nbe341team02.admin.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService {
+public class AdminService implements UserDetailsService {
 
     private final AdminRepository adminRepository;
 
@@ -22,7 +23,7 @@ public class AdminService {
         return User.builder()
                 .username(admin.getAdminUsername())
                 .password(admin.getAdminPassword())
-                .roles(admin.getAdminRole())
+                .roles(admin.getAdminRole().replace("ROLE_", ""))
                 .build();
     }
 }

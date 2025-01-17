@@ -8,6 +8,7 @@ import lombok.Data;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "admin_id")
     private Long id;
 
     @Column(name = "admin_username", nullable = false, length = 20, unique = true)
