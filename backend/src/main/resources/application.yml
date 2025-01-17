@@ -14,6 +14,14 @@ spring:
     properties:
       hibernate:
         auto_quote_keyword: true
+        format_sql: true
+        use_sql_comments: true
+        highlight_sql: true
+    defer-datasource-initialization: true
 server:
   servlet:
     context-path: /api/v1
+default:
+  delivery:
+    hour: 14
+    minute : 0

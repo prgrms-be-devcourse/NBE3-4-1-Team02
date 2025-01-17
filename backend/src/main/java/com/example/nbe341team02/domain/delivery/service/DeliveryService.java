@@ -11,6 +11,7 @@ import com.example.nbe341team02.domain.orders.entity.Order;
 import com.example.nbe341team02.domain.orders.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -30,6 +31,7 @@ public class DeliveryService {
     private static final LocalDateTime DEFAULT_START = LocalDateTime.of(2000, 1, 1, 0, 0);
 
     public void startDelivery(LocalDateTime start, LocalDateTime end){
+        log.info("start delivery");
         Set<Set<Order>> getOrdersToBeDelivered = getOrdersToBeDelivered(start, end);
         Set<DeliveryCompany> activeDeliveryCompanies = deliveryCompanyRepository.findByActive(true);
         for (Set<Order> orders : getOrdersToBeDelivered) {
@@ -65,7 +67,8 @@ public class DeliveryService {
 
     public void registerNewDeliveryTimePolicy(DeliveryTimePolicyRegisterDto registerDto){
         int minute = Objects.requireNonNullElse(registerDto.minute(), 0);
-        LocalTime newDeliveryTime = LocalTime.of(registerDto.hour(), minute);
+        int second = Objects.requireNonNullElse(registerDto.second(), 0);
+        LocalTime newDeliveryTime = LocalTime.of(registerDto.hour(), minute, second);
         deliveryTimePolicyRepository.save(DeliveryTimePolicy
                 .builder()
                 .deliveryTime(newDeliveryTime)

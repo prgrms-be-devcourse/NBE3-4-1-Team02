@@ -15,6 +15,3 @@ spring:
       path: /h2-console
       settings:
         web-allow-others: true
-  sql:
-    init:
-      mode: never

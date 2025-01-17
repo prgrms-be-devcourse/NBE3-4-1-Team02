@@ -6,17 +6,18 @@ import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
-import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@DependsOn("deliveryTimePolicyInitData")
 public class DeliveryScheduler {
     private final DeliveryService deliveryService;
 
@@ -32,8 +33,7 @@ public class DeliveryScheduler {
     }
 
     private void start(){
-        LocalTime deliveryTime = Objects.requireNonNullElse(deliveryService.getLatestDeliveryTime(),
-                LocalTime.now().plusSeconds(5)); // 오로지 테스트 통과를 위한 코드입니다. 추후 수정할 예정.
+        LocalTime deliveryTime = deliveryService.getLatestDeliveryTime();
         String cronExpression = String.format("%d %d %d * * ?", deliveryTime.getSecond(), deliveryTime.getMinute(), deliveryTime.getHour());
         scheduledTask = scheduler.schedule(deliveryTask, new CronTrigger(cronExpression));
     }
