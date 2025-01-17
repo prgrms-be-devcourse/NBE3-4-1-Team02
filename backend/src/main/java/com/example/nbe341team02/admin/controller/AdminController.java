@@ -1,17 +1,22 @@
 package com.example.nbe341team02.admin.controller;
 
+import com.example.nbe341team02.admin.dto.LoginRequest;
+import com.example.nbe341team02.admin.dto.TokenResponse;
+import com.example.nbe341team02.admin.entity.Admin;
 import com.example.nbe341team02.admin.service.AdminService;
+import com.example.nbe341team02.config.jwt.JwtTokenProvider;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
 
     private final AdminService adminService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/login")
     public String showLoginPage() {
@@ -21,5 +26,13 @@ public class AdminController {
     @GetMapping("/dashboard")
     public String loadDashboard() {
         return "dashboard";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        Admin admin = adminService.login(loginRequest.getAdmin_username(), loginRequest.getAdmin_password());
+        String token = jwtTokenProvider.createToken(admin.getAdminUsername(), admin.getAdminRole());
+        
+        return ResponseEntity.ok(new TokenResponse(token));
     }
 }
