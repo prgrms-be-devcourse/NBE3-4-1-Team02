@@ -31,7 +31,7 @@ public class DeliveryScheduler {
         start();
     }
 
-    public void start(){
+    private void start(){
         LocalTime deliveryTime = Objects.requireNonNullElse(deliveryService.getLatestDeliveryTime(),
                 LocalTime.now().plusSeconds(5)); // 오로지 테스트 통과를 위한 코드입니다. 추후 수정할 예정.
         String cronExpression = String.format("%d %d %d * * ?", deliveryTime.getSecond(), deliveryTime.getMinute(), deliveryTime.getHour());
