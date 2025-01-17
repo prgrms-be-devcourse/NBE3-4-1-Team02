@@ -1,35 +1,30 @@
 package com.example.nbe341team02.delivery;
 
+import com.example.nbe341team02.domain.delivery.DeliveryScheduler;
+import com.example.nbe341team02.domain.delivery.DeliveryService;
+import com.example.nbe341team02.domain.delivery.DeliveryTimePolicyRegisterDto;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 
 
 import static org.mockito.Mockito.*;
 
+//@ExtendWith(MockitoExtension.class)
+@Slf4j
+@SpringBootTest
 @ActiveProfiles("dev")
 @EnableScheduling
 class DeliverySchedulerTest {
-    @TestConfiguration
-    static class SchedulerTestConfig {
-        @Bean
-        public Clock clock() {
-            return Clock.fixed(Instant.parse("2024-01-15T14:00:00Z"), ZoneId.systemDefault());
-        }
-    }
-
-    @InjectMocks
+    @Autowired
     private DeliveryScheduler deliveryScheduler;
 
     @MockitoBean
@@ -43,7 +38,8 @@ class DeliverySchedulerTest {
 
     @Test
     @DisplayName("배송 스케쥴러 테스트")
-    void testDeliveryScheduler(){
+    void testDeliveryScheduler() throws InterruptedException {
+        Thread.sleep(10000);
         verify(deliveryService, times(1))
                 .startDelivery();
     }

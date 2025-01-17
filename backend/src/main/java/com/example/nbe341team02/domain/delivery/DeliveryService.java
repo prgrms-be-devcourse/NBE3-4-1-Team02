@@ -1,5 +1,7 @@
-package com.example.nbe341team02.delivery;
+package com.example.nbe341team02.domain.delivery;
 
+import com.example.nbe341team02.domain.orders.entity.Order;
+import com.example.nbe341team02.domain.orders.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,16 +24,16 @@ public class DeliveryService {
 
     public void startDelivery(LocalDateTime start, LocalDateTime end){
         Set<Set<Order>> getOrdersToBeDelivered = getOrdersToBeDelivered(start, end);
-        Set<DeliveryCompany> activeDeliveryCompanies = deliveryCompanyRepository.findByActiveIs(true);
+        Set<DeliveryCompany> activeDeliveryCompanies = deliveryCompanyRepository.findByActive(true);
         for (Set<Order> orders : getOrdersToBeDelivered) {
             saveDelivery(orders, activeDeliveryCompanies);
         }
     }
 
     private Set<Set<Order>> getOrdersToBeDelivered(LocalDateTime start, LocalDateTime end){
-        List<Order> ordersToBeDelivered = orderRepository.findByDeliveryIsNullAndOrderTimeisBetween(start, end);
+        List<Order> ordersToBeDelivered = orderRepository.findByDeliveryIsNullAndCreatedAtIsBetween(start, end);
         Map<String, Set<Order>> groupedOrders = ordersToBeDelivered.stream()
-                .collect(Collectors.groupingBy(order -> order.getUsername() + order.getAddress()));
+                .collect(Collectors.groupingBy(order -> order.getEmail() + order.getAddress(), Collectors.toSet()));
         return new HashSet<>(groupedOrders.values());
     }
 

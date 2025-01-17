@@ -1,4 +1,4 @@
-package com.example.nbe341team02.delivery;
+package com.example.nbe341team02.domain.delivery;
 
 
 import jakarta.validation.constraints.Max;

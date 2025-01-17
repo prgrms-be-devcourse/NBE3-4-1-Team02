@@ -1,4 +1,4 @@
-package com.example.nbe341team02.delivery;
+package com.example.nbe341team02.domain.delivery;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +28,6 @@ public class DeliveryTimePolicy {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    @ColumnDefault("CURRENT TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 }

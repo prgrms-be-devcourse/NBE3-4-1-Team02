@@ -1,4 +1,4 @@
-package com.example.nbe341team02.delivery;
+package com.example.nbe341team02.domain.delivery;
 
 import jakarta.persistence.*;
 
@@ -15,5 +15,5 @@ public class DeliveryCompany {
     private String trackingURLTemplate;
 
     @Column(nullable = false)
-    private boolean isActive = true;
+    private boolean active = true;
 }

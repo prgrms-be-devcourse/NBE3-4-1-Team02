@@ -1,18 +1,20 @@
 package com.example.nbe341team02.delivery;
 
+import com.example.nbe341team02.domain.delivery.*;
+import com.example.nbe341team02.domain.orders.entity.Order;
+import com.example.nbe341team02.domain.orders.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,7 +58,7 @@ public class DeliveryServiceTest {
 
     @BeforeEach
     void setUpMocks() {
-        when(orderRepository.findByOrderTimeBetween(any(), any()))
+        when(orderRepository.findByDeliveryIsNullAndCreatedAtIsBetween(any(), any()))
                 .thenReturn(orders);
 
         when(deliveryTimePolicyRepository.findTopByOrderByCreatedAtDesc())

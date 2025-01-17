@@ -1,12 +1,13 @@
-package com.example.nbe341team02.delivery;
+package com.example.nbe341team02.domain.delivery;
 
+import com.example.nbe341team02.domain.orders.entity.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,6 @@ public class Delivery {
     private Long id;
 
     @OneToMany(mappedBy = "delivery")
-    @JoinColumn(updatable = false)
     private Set<Order> orders = new HashSet<>();
 
     @ManyToOne
@@ -34,8 +34,8 @@ public class Delivery {
     @Column
     private String deliveryTrackingNumber;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    @ColumnDefault("CURRENT TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 }
