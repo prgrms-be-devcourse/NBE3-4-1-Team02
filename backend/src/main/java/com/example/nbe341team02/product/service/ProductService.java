@@ -49,15 +49,13 @@ public class ProductService {
                 productDTO.getPrice(),
                 productDTO.getStock(),
                 productDTO.isStatus(),
-<<<<<<< HEAD
-                LocalDateTime.now(),
-                LocalDateTime.now()
-=======
                 LocalDateTime.now(), // createdAt
                 LocalDateTime.now()  // updatedAt
->>>>>>> 04c0603492dec1b912be91c88190f88431666353
         );
+
+
         Product savedProduct = productRepository.save(product);
+
         // 저장된 상품을 DTO로 변환하여 반환
         return new ProductDTO(
                 savedProduct.getId(),
