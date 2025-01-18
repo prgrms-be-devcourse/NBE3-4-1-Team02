@@ -2,6 +2,8 @@ package com.example.nbe341team02.config.jwt;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +34,8 @@ public class JwtTokenProvider {
     // private long tokenValidTime = 30 * 60 * 1000L; // 일단 토큰 유효시간 30분으로 설정
     @Value("${jwt.token-validity-in-milliseconds}")
     private long tokenValidTime; 
+
+    private Set<String> blacklist = new HashSet<>();
 
     @PostConstruct
     protected void init() { // 초기화 후 비밀키를 사용하여 JWT 서명 키를 생성하기
@@ -75,10 +79,21 @@ public class JwtTokenProvider {
     // 토큰의 유효성 + 만료일자 체크
     public boolean validateToken(String jwtToken) {
         try {
+            // 1. 로그아웃된 토큰인지 확인 (블랙리스트에 있으면 유효하지 않음)
+            if (blacklist.contains(jwtToken)) {
+                return false;
+            }
+            // 2. JWT 토큰 검증
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken); // JWT 토큰 파싱 , 검증 수행 후 페이로드 추출
             return true;
         } catch (Exception e) {
+            // 토큰이 유효하지 않은 경우 (만료, 변조 등) false 반환
             return false;
         }
+    }
+
+    public void invalidateToken(String token) {
+        // 토큰을 블랙리스트에 추가하여 로그아웃 처리
+        blacklist.add(token);
     }
 }

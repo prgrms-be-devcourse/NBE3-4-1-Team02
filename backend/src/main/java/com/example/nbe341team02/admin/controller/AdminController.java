@@ -32,7 +32,18 @@ public class AdminController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         Admin admin = adminService.login(loginRequest.getAdmin_username(), loginRequest.getAdmin_password());
         String token = jwtTokenProvider.createToken(admin.getAdminUsername(), admin.getAdminRole());
-        
+
         return ResponseEntity.ok(new TokenResponse(token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token != null) {
+            // 블랙리스트에 토큰 추가
+            jwtTokenProvider.invalidateToken(token);
+            return ResponseEntity.ok("로그아웃 되었습니다.");
+        }
+        return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
     }
 }
