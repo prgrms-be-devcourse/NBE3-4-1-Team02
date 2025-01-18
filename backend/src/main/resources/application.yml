@@ -20,3 +20,7 @@ server:
 jwt:
       secret: "Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0"
       token-validity-in-milliseconds: 1800000
+logging:
+  level:
+    com.example.nbe341team02: DEBUG
+    org.springframework.security: DEBUG

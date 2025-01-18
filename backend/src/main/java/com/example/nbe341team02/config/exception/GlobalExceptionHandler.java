@@ -2,6 +2,8 @@ package com.example.nbe341team02.config.exception;
 
 import java.security.SignatureException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,8 +16,11 @@ import io.jsonwebtoken.MalformedJwtException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(IllegalArgumentException.class) // login 에서 비밀번호가 일치하지 않거나 사용자를 찾지 못할 시 예외
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error("Login error:", e);
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
