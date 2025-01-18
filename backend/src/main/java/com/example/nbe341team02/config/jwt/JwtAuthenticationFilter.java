@@ -28,19 +28,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // HTTP 중복 요청 방지
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        // 헤더에서 토큰 찾기
+        // request 받으면 토큰 추출
         String token = jwtTokenProvider.resolveToken(request);
         
-        // 헤더에 없으면 파라미터에서 찾기
         if (token == null) {
             token = request.getParameter("token");
         }
         
-        log.debug("Received token: {}", token);
+        log.debug("수신된 토큰: {}", token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
-            log.debug("Authentication successful: {}", auth.getName());
+            log.debug("인증 성공 : {}", auth.getName());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

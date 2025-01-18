@@ -50,7 +50,7 @@ public class JwtTokenProvider {
     // 토큰 생성
     public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("role", role); // "ROLE_" 접두사가 포함된 role 저장
+        claims.put("role", role); // 권한 정보 저장
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);

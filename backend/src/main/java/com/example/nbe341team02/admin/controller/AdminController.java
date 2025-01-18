@@ -59,9 +59,9 @@ public class AdminController {
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<TokenResponse> processLogin(@RequestBody @Valid LoginRequest loginRequest) {
-        Admin admin = adminService.login(loginRequest.getAdmin_username(), loginRequest.getAdmin_password());
-        String token = jwtTokenProvider.createToken(admin.getAdminUsername(), admin.getAdminRole());
-        return ResponseEntity.ok(new TokenResponse(token));
+        Admin admin = adminService.login(loginRequest.getAdmin_username(), loginRequest.getAdmin_password()); // 사용자 인증
+        String token = jwtTokenProvider.createToken(admin.getAdminUsername(), admin.getAdminRole()); // 토큰 생성
+        return ResponseEntity.ok(new TokenResponse(token)); // 토큰 반환return ResponseEntity.ok(new TokenResponse(token)); // 토큰 반환
     }
 
     @PostMapping("/logout")

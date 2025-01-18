@@ -26,7 +26,7 @@ public class AdminService implements UserDetailsService {
         Admin admin = adminRepository.findByAdminUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        log.debug("Loading user: {}, role: {}", admin.getAdminUsername(), admin.getAdminRole());
+        log.debug("사용자 로딩 중: {}, 권한: {}", admin.getAdminUsername(), admin.getAdminRole());
         
         return User.builder()
                 .username(admin.getAdminUsername())
@@ -36,19 +36,19 @@ public class AdminService implements UserDetailsService {
     }
 
     public Admin login(String username, String password) {
-        log.info("Login attempt - username: {}", username);
+        log.info("로그인 시도 - username: {}", username);
         Admin admin = adminRepository.findByAdminUsername(username)
                 .orElseThrow(() -> {
-                    log.error("User not found: {}", username);
+                    log.error("사용자를 찾을 수 없습니다.: {}", username);
                     return new IllegalArgumentException("가입되지 않은 사용자입니다.");
                 });
 
         if (!passwordEncoder.matches(password, admin.getAdminPassword())) {
-            log.error("Invalid password for user: {}", username);
+            log.error("사용자의 비밀번호가 잘못되었습니다.: {}", username);
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
         
-        log.info("Login successful for user: {}", username);
+        log.info("사용자 로그인 성공: {}", username);
         return admin;
     }
 
@@ -62,7 +62,7 @@ public class AdminService implements UserDetailsService {
                 admin.setAdminPassword(passwordEncoder.encode("admin123"));
                 admin.setAdminRole("ROLE_ADMIN");
                 adminRepository.save(admin);
-                log.info("Default admin account created");
+                log.info("기본 관리자 계정 생성");
             }
 
             if (adminRepository.findByAdminUsername("user").isEmpty()) {
@@ -71,10 +71,10 @@ public class AdminService implements UserDetailsService {
                 admin.setAdminPassword(passwordEncoder.encode("user123"));
                 admin.setAdminRole("ROLE_USER");
                 adminRepository.save(admin);
-                log.info("Default user account created");
+                log.info("기본 사용자 계정 생성");
             }
         } catch (Exception e) {
-            log.error("Failed to create default admin account", e);
+            log.error("기본 계정 생성 실패", e);
         }
     }
 }

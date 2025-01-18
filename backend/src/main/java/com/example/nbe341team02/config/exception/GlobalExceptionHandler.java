@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class) // login 에서 비밀번호가 일치하지 않거나 사용자를 찾지 못할 시 예외
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        log.error("Login error:", e);
+        log.error("로그인 오류 :", e);
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
