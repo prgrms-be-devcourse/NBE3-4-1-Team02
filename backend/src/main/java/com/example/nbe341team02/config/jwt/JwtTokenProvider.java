@@ -5,13 +5,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import com.example.nbe341team02.admin.service.AdminService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -28,7 +30,7 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}") // application.yml 에서 jwt.secret 값을 가져옴
     private String secretKey;
 
-    private final AdminService adminService;
+    private final UserDetailsService userDetailsService;
     private Key key; // 서명 키 저장
 
     // private long tokenValidTime = 30 * 60 * 1000L; // 일단 토큰 유효시간 30분으로 설정
@@ -57,7 +59,7 @@ public class JwtTokenProvider {
     }
     // 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = adminService.loadUserByUsername(this.getUserPk(token)); // 사용자 식별자 추출
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -76,6 +78,8 @@ public class JwtTokenProvider {
         return null;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+    
     // 토큰의 유효성 + 만료일자 체크
     public boolean validateToken(String jwtToken) {
         try {
@@ -86,13 +90,19 @@ public class JwtTokenProvider {
             // 2. JWT 토큰 검증
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken); // JWT 토큰 파싱 , 검증 수행 후 페이로드 추출
             return true;
-        } catch (io.jsonwebtoken.ExpiredJwtException | io.jsonwebtoken.UnsupportedJwtException |
-                 io.jsonwebtoken.MalformedJwtException | io.jsonwebtoken.security.SignatureException |
-                 IllegalArgumentException e) {
-            // 토큰이 유효하지 않은 경우 (만료, 변조 등) false 반환
-            return false;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            logger.error("만료된 JWT 토큰: {}", jwtToken);
+        } catch (io.jsonwebtoken.UnsupportedJwtException e) {
+            logger.error("지원되지 않는 JWT 토큰: {}", jwtToken);
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
+            logger.error("형식이 잘못된 JWT 토큰: {}", jwtToken);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            logger.error("유효하지 않은 JWT 서명: {}", jwtToken);
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT 토큰이 비어있거나 잘못되었습니다: {}", jwtToken);
         }
-    }
+        return false; // 모든 예외에 대해 false 반환
+        }
 
     public void invalidateToken(String token) {
         // 토큰을 블랙리스트에 추가하여 로그아웃 처리

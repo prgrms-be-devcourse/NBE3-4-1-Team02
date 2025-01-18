@@ -16,9 +16,11 @@ import com.example.nbe341team02.config.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
@@ -37,6 +39,7 @@ public class AdminController {
     }
 
     @PostMapping("/login")
+    @ResponseBody
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         Admin admin = adminService.login(loginRequest.getAdmin_username(), loginRequest.getAdmin_password());
         String token = jwtTokenProvider.createToken(admin.getAdminUsername(), admin.getAdminRole());
