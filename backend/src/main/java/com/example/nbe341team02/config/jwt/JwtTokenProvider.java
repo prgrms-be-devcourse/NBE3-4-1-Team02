@@ -1,8 +1,8 @@
 package com.example.nbe341team02.config.jwt;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
+import java.security.Key;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,10 +11,13 @@ import org.springframework.stereotype.Component;
 
 import com.example.nbe341team02.admin.service.AdminService;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import java.security.Key;
-import java.util.Date;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +29,9 @@ public class JwtTokenProvider {
     private final AdminService adminService;
     private Key key; // 서명 키 저장
 
-    private long tokenValidTime = 30 * 60 * 1000L; // 일단 토큰 유효시간 30분으로 설정
+    // private long tokenValidTime = 30 * 60 * 1000L; // 일단 토큰 유효시간 30분으로 설정
+    @Value("${jwt.token-validity-in-milliseconds}")
+    private long tokenValidTime; 
 
     @PostConstruct
     protected void init() { // 초기화 후 비밀키를 사용하여 JWT 서명 키를 생성하기

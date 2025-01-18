@@ -19,3 +19,4 @@ server:
     context-path: /api/v1
 jwt:
       secret: "Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0"
+      token-validity-in-milliseconds: 1800000
