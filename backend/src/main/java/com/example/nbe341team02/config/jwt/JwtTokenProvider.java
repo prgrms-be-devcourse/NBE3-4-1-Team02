@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}") // application.properties 에서 jwt.secret 값을 가져옴
+    @Value("${jwt.secret}") // application.yml 에서 jwt.secret 값을 가져옴
     private String secretKey;
 
     private final AdminService adminService;
