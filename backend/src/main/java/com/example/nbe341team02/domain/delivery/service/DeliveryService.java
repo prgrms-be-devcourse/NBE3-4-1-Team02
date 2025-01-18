@@ -47,7 +47,7 @@ public class DeliveryService {
     }
 
     private void saveDelivery(Set<Order> ordersToBeDelivered, Set<DeliveryCompany> activeDeliveryCompanies){
-        deliveryRepository.save(Delivery.builder()
+        deliveryRepository.saveAndFlush(Delivery.builder()
                 .deliveryCompany(activeDeliveryCompanies.stream().findAny().orElseThrow())
                 .orders(ordersToBeDelivered)
                 .build());
