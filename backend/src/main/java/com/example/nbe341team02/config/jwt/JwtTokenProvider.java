@@ -25,17 +25,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}") // application.yml 에서 jwt.secret 값 가져와야 하니까 yml 에 비밀 키 추가하기 (까먹지 말고 추가)
+    @Value("${jwt.secret}") // application.properties 에서 jwt.secret 값을 가져옴
     private String secretKey;
 
     private final AdminService adminService;
     private Key key; // 서명 키 저장
 
     // private long tokenValidTime = 30 * 60 * 1000L; // 일단 토큰 유효시간 30분으로 설정
-    @Value("${jwt.token-validity-in-milliseconds}")
+    @Value("${jwt.token-validity-in-milliseconds}") // yml 파일에서 jwt.token-validity-in-milliseconds 값을 가져옴
     private long tokenValidTime; 
 
-    private Set<String> blacklist = new HashSet<>();
+    private final Set<String> blacklist = new HashSet<>();
 
     @PostConstruct
     protected void init() { // 초기화 후 비밀키를 사용하여 JWT 서명 키를 생성하기
@@ -86,7 +86,9 @@ public class JwtTokenProvider {
             // 2. JWT 토큰 검증
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken); // JWT 토큰 파싱 , 검증 수행 후 페이로드 추출
             return true;
-        } catch (Exception e) {
+        } catch (io.jsonwebtoken.ExpiredJwtException | io.jsonwebtoken.UnsupportedJwtException |
+                 io.jsonwebtoken.MalformedJwtException | io.jsonwebtoken.security.SignatureException |
+                 IllegalArgumentException e) {
             // 토큰이 유효하지 않은 경우 (만료, 변조 등) false 반환
             return false;
         }

@@ -1,16 +1,20 @@
 package com.example.nbe341team02.config.jwt;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import lombok.RequiredArgsConstructor;
+
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // HTTP 중복 요청 방지
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request); // HTTP 요청 헤더에서 JWT 토큰 추출 작업
 
         if (token != null && jwtTokenProvider.validateToken(token)) { // 토큰 O , 유효성 검사 O

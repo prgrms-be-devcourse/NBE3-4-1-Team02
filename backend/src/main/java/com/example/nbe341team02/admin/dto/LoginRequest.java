@@ -3,8 +3,6 @@ package com.example.nbe341team02.admin.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class LoginRequest {
