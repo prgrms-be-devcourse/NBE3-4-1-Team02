@@ -1,30 +1,29 @@
 package com.example.nbe341team02.admin.initializer.runner;
 
-import com.example.nbe341team02.admin.initializer.entity.AdminInitializer;
-import com.example.nbe341team02.admin.initializer.entity.AdminInitializerRole;
-import com.example.nbe341team02.admin.initializer.repository.AdminInitializerRepository;
-import com.example.nbe341team02.admin.initializer.repository.AdminInitializerRoleRepository;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.example.nbe341team02.admin.initializer.entity.AdminInitializer;
+import com.example.nbe341team02.admin.initializer.repository.AdminInitializerRepository;
 
 @SpringBootTest
 @Transactional
 class AdminInitializerRunnerTest {
 
     private static final String DEFAULT_USERNAME = "admin";
-    private static final AdminInitializerRole.RoleType DEFAULT_ROLE_TYPE = AdminInitializerRole.RoleType.ROLE_ADMIN;
+    private static final String DEFAULT_PASSWORD = "admin123";
 
     @Autowired
     private AdminInitializerRunner adminInitializerRunner;
     @Autowired
     private AdminInitializerRepository adminInitializerRepository;
     @Autowired
-    private AdminInitializerRoleRepository adminInitializerRoleRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @DisplayName("관리자 계정이 없을 때 새로운 관리자 계정이 생성된다")
@@ -35,7 +34,7 @@ class AdminInitializerRunnerTest {
              .orElseThrow(() -> new IllegalStateException("관리자 계정이 생성되지 않았습니다."));
 
         assertThat(admin.getAdminUsername()).isEqualTo(DEFAULT_USERNAME);
-        assertThat(admin.getAdminRole().getRoleType()).isEqualTo(DEFAULT_ROLE_TYPE);
+        assertThat(passwordEncoder.matches(DEFAULT_PASSWORD, admin.getAdminPassword())).isTrue();
     }
 
     @Test
