@@ -39,17 +39,18 @@ spring:
     hibernate:
       ddl-auto: update
     database: h2
+  profiles:
+    active: dev-geonHui
+
 server:
   servlet:
     context-path: /api/v1
     
 jwt:
-      secret: "Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0"
-      token-validity-in-milliseconds: 1800000
+  secret: "Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0"
+  token-validity-in-milliseconds: 1800000
+
 logging:
   level:
     com.example.nbe341team02: DEBUG
     org.springframework.security: DEBUG
-=======
-  profiles:
-    active: dev-geonHui
