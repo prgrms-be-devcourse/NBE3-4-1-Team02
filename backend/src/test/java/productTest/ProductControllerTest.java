@@ -1,8 +1,7 @@
 package productTest;
 
-import com.example.nbe341team02.product.controller.GlobalExceptionHandler;
-import com.example.nbe341team02.product.controller.ProductController;
-import com.example.nbe341team02.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.controller.ProductController;
+import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import com.example.nbe341team02.product.exception.ProductNotFoundException;
 import com.example.nbe341team02.product.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;

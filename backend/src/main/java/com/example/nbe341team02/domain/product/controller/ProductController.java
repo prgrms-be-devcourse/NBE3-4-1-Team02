@@ -1,10 +1,8 @@
-package com.example.nbe341team02.product.controller;
+package com.example.nbe341team02.domain.product.controller;
 
-import com.example.nbe341team02.product.dto.ProductDTO;
-import com.example.nbe341team02.product.repository.ProductRepository;
-import com.example.nbe341team02.product.service.ProductService;
+import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j; // 여기에 추가
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

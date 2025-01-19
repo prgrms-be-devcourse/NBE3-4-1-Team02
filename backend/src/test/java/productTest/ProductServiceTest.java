@@ -1,6 +1,6 @@
 package productTest;
 
-import com.example.nbe341team02.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import com.example.nbe341team02.product.entity.Product;
 import com.example.nbe341team02.product.exception.ProductNotFoundException;
 import com.example.nbe341team02.product.repository.ProductRepository;
