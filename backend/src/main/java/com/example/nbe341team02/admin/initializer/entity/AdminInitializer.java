@@ -28,7 +28,7 @@ public class AdminInitializer {
     @Column(name = "admin_username", length = 20, nullable = false, unique = true)
     private String adminUsername;
 
-    @Column(name = "admin_password", nullable = true) // nullable = true로 변경
+    @Column(name = "admin_password", nullable = false)
     private String adminPassword;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -36,8 +36,8 @@ public class AdminInitializer {
     private AdminInitializerRole adminRole;
 
     @Builder
-    private AdminInitializer(String adminUsername, AdminInitializerRole adminRole) {
+    private AdminInitializer(String adminUsername, String adminPassword) {
         this.adminUsername = adminUsername;
-        this.adminRole = adminRole;
+        this.adminPassword = adminPassword;
     }
 }
