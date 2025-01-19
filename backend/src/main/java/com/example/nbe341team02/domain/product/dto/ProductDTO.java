@@ -1,6 +1,7 @@
 package com.example.nbe341team02.domain.product.dto;
 
 
+import com.example.nbe341team02.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +15,4 @@ public class ProductDTO {
     private int price;
     private int stock;
     private boolean status;
-
 }
