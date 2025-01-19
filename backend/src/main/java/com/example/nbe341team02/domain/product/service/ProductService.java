@@ -4,14 +4,12 @@ import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import com.example.nbe341team02.global.exception.CustomException;
 import com.example.nbe341team02.global.exception.ErrorCode;
-import com.example.nbe341team02.product.dto.ProductDTO;
-import com.example.nbe341team02.product.exception.ProductNotFoundException;
+import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +32,9 @@ public class ProductService {
         return convertToDTO(savedProduct);
     }
 
-    private Product getProduct(Long productId) {
-        return productRepository.findById(productId)
+    //개별 상품 조회
+    private Product getProduct(Long id) {
+        return productRepository.findById(id)
           .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 
@@ -44,7 +43,7 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
 
         if (products.isEmpty()) {
-            throw new ProductNotFoundException("No products found.");
+            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
         }
 
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -61,8 +60,8 @@ public class ProductService {
     @jakarta.transaction.Transactional
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         //예외 - 상품이 없음
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+        Product product =  productRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
@@ -75,8 +74,8 @@ public class ProductService {
     }
 
     @Transactional
-    public Product reduceStock(Long productId, int quantity) {
-        Product product = getProduct(productId);
+    public Product reduceStock(Long id, int quantity) {
+        Product product = getProduct(id);
         product.reduceStock(quantity);
         return productRepository.save(product);
     }
@@ -85,8 +84,8 @@ public class ProductService {
     @jakarta.transaction.Transactional
     public void deleteProduct(Long id) {
         //예외 - 상품이 없음
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+        Product product =  productRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
         productRepository.delete(product);
     }

@@ -1,7 +1,6 @@
 package com.example.nbe341team02.domain.product.dto;
 
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
