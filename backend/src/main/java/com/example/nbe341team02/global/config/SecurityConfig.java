@@ -1,15 +1,8 @@
 package com.example.nbe341team02.global.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-<<<<<<< HEAD:backend/src/main/java/com/example/nbe341team02/config/SecurityConfig.java
-=======
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
->>>>>>> main:backend/src/main/java/com/example/nbe341team02/global/config/SecurityConfig.java
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -28,15 +21,13 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-<<<<<<< HEAD:backend/src/main/java/com/example/nbe341team02/config/SecurityConfig.java
 }
-=======
 
-    @Bean
-    @ConditionalOnProperty(name = "spring.h2.console.enabled",havingValue = "true")
-    public WebSecurityCustomizer configureH2ConsoleEnable() {
-        return web -> web.ignoring()
-          .requestMatchers(PathRequest.toH2Console());
-    }
-}
->>>>>>> main:backend/src/main/java/com/example/nbe341team02/global/config/SecurityConfig.java
+//    @Bean
+//    @ConditionalOnProperty(name = "spring.h2.console.enabled",havingValue = "true")
+//    public WebSecurityCustomizer configureH2ConsoleEnable() {
+//        return web -> web.ignoring()
+//          .requestMatchers(PathRequest.toH2Console());
+//    }
+//
+
