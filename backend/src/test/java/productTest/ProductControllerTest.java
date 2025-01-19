@@ -2,8 +2,10 @@ package productTest;
 
 import com.example.nbe341team02.domain.product.controller.ProductController;
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
-import com.example.nbe341team02.product.exception.ProductNotFoundException;
-import com.example.nbe341team02.product.service.ProductService;
+import com.example.nbe341team02.domain.product.service.ProductService;
+import com.example.nbe341team02.global.exception.CustomException;
+import com.example.nbe341team02.global.exception.ErrorCode;
+import com.example.nbe341team02.global.exception.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +78,7 @@ class ProductControllerTest {
         Long productId = 999L;
         ProductDTO productDTO = new ProductDTO(productId, "Updated Product", 3000, 15, true);
         when(productService.updateProduct(eq(productId), any(ProductDTO.class)))
-                .thenThrow(new ProductNotFoundException("Product not found with id: " + productId));
+                .thenThrow(new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
         // when & then
         mockMvc.perform(put("/products/{id}", productId)
@@ -100,9 +102,8 @@ class ProductControllerTest {
     void 상품삭제_상품이_존재하지_않을_때() throws Exception {
         // given
         Long productId = 999999L;
-        doThrow(new ProductNotFoundException("Product not found with id: " + productId))
+        doThrow(new CustomException(ErrorCode.PRODUCT_NOT_FOUND))
                 .when(productService).deleteProduct(productId);
-
         // when & then
         mockMvc.perform(delete("/products/{id}", productId))
                 .andExpect(status().isNotFound());
