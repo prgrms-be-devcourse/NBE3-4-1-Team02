@@ -25,6 +25,7 @@ public class AdminInitializerRunner implements CommandLineRunner {
             AdminInitializer admin = AdminInitializer.builder()
                     .adminUsername(defaultUsername)
                     .adminPassword(passwordEncoder.encode(defaultPassword))
+                    .adminRole("ROLE_ADMIN")
                     .build();
                     
             adminInitializerRepository.save(admin);

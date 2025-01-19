@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.nbe341team02.admin.entity.Admin;
 import com.example.nbe341team02.admin.repository.AdminRepository;
 
-import jakarta.annotation.PostConstruct;
+//import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 @Service
@@ -52,7 +52,7 @@ public class AdminService implements UserDetailsService {
         return admin;
     }
 
-    @PostConstruct
+   /* @PostConstruct
     public void init() {
         try {
             // 기본 관리자 계정이 없는 경우에만 생성
@@ -76,5 +76,5 @@ public class AdminService implements UserDetailsService {
         } catch (Exception e) {
             log.error("기본 계정 생성 실패", e);
         }
-    }
+    }*/
 }

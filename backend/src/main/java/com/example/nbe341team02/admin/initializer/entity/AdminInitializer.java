@@ -28,9 +28,13 @@ public class AdminInitializer {
     @Column(name = "admin_password", nullable = false)
     private String adminPassword;
 
+    @Column(name = "admin_role", nullable = false)
+    private String adminRole;
+
     @Builder
-    private AdminInitializer(String adminUsername, String adminPassword) {
+    public AdminInitializer(String adminUsername, String adminPassword, String adminRole) {
         this.adminUsername = adminUsername;
         this.adminPassword = adminPassword;
+        this.adminRole = adminRole;
     }
 }
