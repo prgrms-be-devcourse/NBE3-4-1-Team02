@@ -22,6 +22,7 @@ public class DataInitializer implements CommandLineRunner {
             product1.setPrice(5000);
             product1.setStock(10);
             product1.setStatus(true);
+            product1.setDescription("1번 상품에 대한 상세 설명");
             productRepository.save(product1);
 
             Product product2 = new Product();
@@ -29,6 +30,7 @@ public class DataInitializer implements CommandLineRunner {
             product2.setPrice(4000);
             product2.setStock(20);
             product2.setStatus(true);
+            product2.setDescription("2번 상품에 대한 상세 설명");
             productRepository.save(product2);
 
             Product product3 = new Product();
@@ -36,6 +38,7 @@ public class DataInitializer implements CommandLineRunner {
             product3.setPrice(3000);
             product3.setStock(20);
             product3.setStatus(true);
+            product3.setDescription("3번 상품에 대한 상세 설명");
             productRepository.save(product3);
 
             Product product4 = new Product();
@@ -43,6 +46,7 @@ public class DataInitializer implements CommandLineRunner {
             product4.setPrice(4000);
             product4.setStock(20);
             product4.setStatus(true);
+            product4.setDescription("4번 상품에 대한 상세 설명");
             productRepository.save(product4);
         }
     }
