@@ -75,13 +75,18 @@ public class ProductService {
 
     @Transactional
     public Product reduceStock(Long id, int quantity) {
-        Product product = getProduct(id);
-        product.reduceStock(quantity);
+        Product product = productRepository.findById(id)
+                        .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+        int newStock = product.getStock() - quantity;
+        if (newStock < 0) {
+            throw new CustomException(ErrorCode.INSUFFICIENT_STOCK);  // 재고 부족 처리
+        }
+        product.setStock(newStock); // Product Entity에서 분리했는데 setter 써도되는지..?
         return productRepository.save(product);
     }
 
     // 상품 삭제
-    @jakarta.transaction.Transactional
+    @Transactional
     public void deleteProduct(Long id) {
         //예외 - 상품이 없음
         Product product =  productRepository.findById(id)
@@ -101,7 +106,6 @@ public class ProductService {
                 product.isStatus()
         );
     }
-
     // Entity로 변환 메소드
     private Product convertToEntity(ProductDTO productDTO) {
         return Product.builder()
