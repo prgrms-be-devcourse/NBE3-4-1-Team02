@@ -41,10 +41,10 @@ public class Product extends BaseTimeEntity {
     private boolean status;
 
 
-    public void reduceStock(int quantity) {
-        if (this.stock < quantity) {
-            throw new CustomException(ErrorCode.INSUFFICIENT_STOCK);
-        }
-        this.stock -= quantity;
-    }
+//    public void reduceStock(int quantity) {
+//        if (this.stock < quantity) {
+//            throw new CustomException(ErrorCode.INSUFFICIENT_STOCK);
+//        }
+//        this.stock -= quantity;
+//    }
 }
