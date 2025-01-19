@@ -7,8 +7,11 @@ import com.example.nbe341team02.global.exception.ErrorCode;
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,6 @@ public class ProductService {
         return convertToDTO(savedProduct);
     }
 
-
     //상품 목록 조회
     public List<ProductDTO> findAllProducts() {
         List<Product> products = productRepository.findAll();
@@ -47,6 +49,14 @@ public class ProductService {
             productDTOList.add(productDTO);
         }
         return productDTOList;
+    }
+
+    //상품 상세 조회
+    public ProductDTO findProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        return convertToDTO(product);
     }
 
 
