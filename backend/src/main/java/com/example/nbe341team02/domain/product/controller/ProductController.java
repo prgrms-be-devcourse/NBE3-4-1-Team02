@@ -16,17 +16,25 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    //상품 목록 조회
-    @GetMapping
-    public List<ProductDTO> findAllProducts(){
-        return productService.findAllProducts();
-    }
 
     //상품 추가
     @PostMapping
     public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO){
         ProductDTO createdProduct = productService.addProduct(productDTO);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+    }
+
+    //상품 목록 조회
+    @GetMapping
+    public List<ProductDTO> findAllProducts(){
+        return productService.findAllProducts();
+    }
+
+    //상품 상세 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> findProductById(@PathVariable("id") Long id) {
+        ProductDTO productDTO = productService.findProductById(id);
+        return ResponseEntity.ok(productDTO);
     }
 
     //상품 수정
