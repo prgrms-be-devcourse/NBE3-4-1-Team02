@@ -36,3 +36,22 @@ out/
 ### VS Code ###
 .vscode/
 
+### Gradle Cache ###
+.gradle/
+**/build/
+**/transforms/
+**/caches/
+**/daemon/
+.tmp/
+**/fileContent.lock
+**/fileHashes.lock
+**/registry.bin
+**/registry.bin.lock
+**/*.lock
+**/gradle-api-*.jar
+**/util-*.jar
+**/lib-client.jar
+**/instrumented/
+
+### Application Properties ###
+**/application-dev-*.yml
