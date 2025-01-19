@@ -1,17 +1,17 @@
 package productTest;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
-import com.example.nbe341team02.product.entity.Product;
-import com.example.nbe341team02.product.exception.ProductNotFoundException;
-import com.example.nbe341team02.product.repository.ProductRepository;
-import com.example.nbe341team02.product.service.ProductService;
+import com.example.nbe341team02.domain.product.entity.Product;
+import com.example.nbe341team02.domain.product.repository.ProductRepository;
+import com.example.nbe341team02.domain.product.service.ProductService;
+import com.example.nbe341team02.global.exception.CustomException;
+import com.example.nbe341team02.global.exception.ErrorCode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,8 +33,7 @@ class ProductServiceTest {
         // given
         Long productId = 1L;
         Product existingProduct = new Product(
-                productId, "Basic Product", 1000, 10, true,
-                LocalDateTime.now(), LocalDateTime.now()
+                productId, "Basic Product", 1000, 10, true
         );
         ProductDTO updateDTO = new ProductDTO(
                 productId, "Updated Product", 2000, 20, true
@@ -48,9 +47,9 @@ class ProductServiceTest {
 
         // then
         assertThat(updatedProduct).isNotNull();
-        assertThat(updatedProduct.getProductName()).isEqualTo("Updated Product");
-        assertThat(updatedProduct.getProductPrice()).isEqualTo(2000);
-        assertThat(updatedProduct.getProductStock()).isEqualTo(20);
+        assertThat(updatedProduct.getName()).isEqualTo("Updated Product");
+        assertThat(updatedProduct.getPrice()).isEqualTo(2000);
+        assertThat(updatedProduct.getStock()).isEqualTo(20);
         verify(productRepository).save(any(Product.class));
     }
 
@@ -65,8 +64,8 @@ class ProductServiceTest {
 
         // when & then
         assertThatThrownBy(() -> productService.updateProduct(productId, updateDTO))
-                .isInstanceOf(ProductNotFoundException.class)
-                .hasMessageContaining("Product not found");
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -74,8 +73,7 @@ class ProductServiceTest {
         // given
         Long productId = 1L;
         Product existingProduct = new Product(
-                productId, "Product", 1000, 10, true,
-                LocalDateTime.now(), LocalDateTime.now()
+                productId, "Product", 1000, 10, true
         );
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
         doNothing().when(productRepository).delete(existingProduct);
@@ -95,7 +93,7 @@ class ProductServiceTest {
 
         // when & then
         assertThatThrownBy(() -> productService.deleteProduct(productId))
-                .isInstanceOf(ProductNotFoundException.class)
-                .hasMessageContaining("Product not found");
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
 }
