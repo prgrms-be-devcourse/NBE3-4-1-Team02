@@ -36,19 +36,18 @@ public class ProductService {
     }
 
     //상품 목록 조회
+    private List<ProductDTO> convertToDTOList(List<Product> products) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (Product product : products) {
+            productDTOList.add(convertToDTO(product)); // 각 상품을 DTO로 변환하여 리스트에 추가
+        }
+        return productDTOList;
+    }
     public List<ProductDTO> findAllProducts() {
         List<Product> products = productRepository.findAll();
 
-        if (products.isEmpty()) {
-            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for( Product product : products){
-            ProductDTO productDTO = convertToDTO(product);
-            productDTOList.add(productDTO);
-        }
-        return productDTOList;
+        return products.isEmpty() ? new ArrayList<>() : convertToDTOList(products);
+        //상품 없으면 빈 리스트 반환, 있으면 dto변환 후 반환
     }
 
     //상품 상세 조회
