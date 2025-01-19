@@ -32,8 +32,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())
-                        .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self'; object-src 'none';")))
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
