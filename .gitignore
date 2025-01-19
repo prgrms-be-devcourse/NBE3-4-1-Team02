@@ -23,6 +23,7 @@ bin/
 
 ### IntelliJ IDEA ###
 .idea
+.idea/workspace.xml
 backend/.idea
 *.iws
 *.iml
