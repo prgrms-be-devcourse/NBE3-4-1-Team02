@@ -1,5 +1,6 @@
 package com.example.nbe341team02.domain.product.service;
 
+import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
 import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import com.example.nbe341team02.global.exception.CustomException;
@@ -51,11 +52,11 @@ public class ProductService {
     }
 
     //상품 상세 조회
-    public ProductDTO findProductById(Long id) {
+    public ProductDescriptionDTO findProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        return convertToDTO(product);
+        return convertToDescriptionDTO(product);
     }
 
 
@@ -110,6 +111,19 @@ public class ProductService {
                 product.isStatus()
         );
     }
+
+    //DescriptionDTO로 변환 메소드
+    private ProductDescriptionDTO convertToDescriptionDTO(Product product) {
+        return new ProductDescriptionDTO(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getStock(),
+                product.isStatus(),
+                product.getDescription() // description 추가
+        );
+    }
+
     // Entity로 변환 메소드
     private Product convertToEntity(ProductDTO productDTO) {
         return Product.builder()

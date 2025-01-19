@@ -1,6 +1,7 @@
 package com.example.nbe341team02.domain.product.controller;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -32,9 +33,9 @@ public class ProductController {
 
     //상품 상세 조회
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findProductById(@PathVariable("id") Long id) {
-        ProductDTO productDTO = productService.findProductById(id);
-        return ResponseEntity.ok(productDTO);
+    public ResponseEntity<ProductDescriptionDTO> findProductById(@PathVariable("id") Long id) {
+        ProductDescriptionDTO productDescriptionDTO = productService.findProductById(id);
+        return ResponseEntity.ok(productDescriptionDTO);
     }
 
     //상품 수정
