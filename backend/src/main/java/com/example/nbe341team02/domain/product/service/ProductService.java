@@ -32,11 +32,6 @@ public class ProductService {
         return convertToDTO(savedProduct);
     }
 
-    //개별 상품 조회
-    private Product getProduct(Long id) {
-        return productRepository.findById(id)
-          .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
-    }
 
     //상품 목록 조회
     public List<ProductDTO> findAllProducts() {
