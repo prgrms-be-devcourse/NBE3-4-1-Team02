@@ -116,7 +116,8 @@ public class ProductService {
                 product.getName(),
                 product.getPrice(),
                 product.getStock(),
-                product.isStatus()
+                product.isStatus(),
+                product.getImageUrl()
         );
     }
 
@@ -128,6 +129,7 @@ public class ProductService {
                 product.getPrice(),
                 product.getStock(),
                 product.isStatus(),
+                product.getImageUrl(),
                 product.getDescription()
         );
     }
@@ -139,6 +141,7 @@ public class ProductService {
                 .price(productDTO.getPrice())
                 .stock(productDTO.getStock())
                 .status(productDTO.isStatus())
+                .imageUrl(productDTO.getImageUrl())
                 .build();
     }
 
@@ -149,6 +152,7 @@ public class ProductService {
                 .price(productDescriptionDTO.getPrice())
                 .stock(productDescriptionDTO.getStock())
                 .status(productDescriptionDTO.isStatus())
+                .imageUrl(productDescriptionDTO.getImageUrl())
                 .description(productDescriptionDTO.getDescription())
                 .build();
     }
