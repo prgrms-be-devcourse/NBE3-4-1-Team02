@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-
+ 
     private final JwtTokenProvider jwtTokenProvider;
 
     // HTTP 중복 요청 방지
