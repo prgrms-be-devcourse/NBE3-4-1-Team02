@@ -1,6 +1,7 @@
 package com.example.nbe341team02.domain.product.controller;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -42,10 +43,13 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-//    //상품 상태 변경 판매중 <-> 판매보류
-//    @PatchMapping("/{id}/status")
-//    public ResponseEntity<ProductDTO> updateProductStatus(@PathVariable("id") Long id) {
-//        ProductDTO updatedProduct = productService.updateProductStatus(id);
-//        return ResponseEntity.ok(updatedProduct);
-//    }
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ProductDTO> updateProductStatus(
+            @PathVariable Long id,
+            @RequestBody StatusUpdateRequest request
+    ) {
+        return ResponseEntity.ok(
+                productService.updateProductStatus(id, request.isStatus())
+        );
+    }
 }

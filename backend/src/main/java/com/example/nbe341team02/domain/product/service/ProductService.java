@@ -1,5 +1,6 @@
 package com.example.nbe341team02.domain.product.service;
 
+import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
 import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import com.example.nbe341team02.global.exception.CustomException;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,5 +119,18 @@ public class ProductService {
                 .build();
     }
 
+    @Transactional
+    public ProductDTO updateProductStatus(Long productId, boolean status) {
+        // 상품 조회
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        // 상태 변경
+        product.setStatus(status);
+
+        // 저장 및 DTO 변환하여 반환
+        Product updatedProduct = productRepository.save(product);
+        return convertToDTO(updatedProduct);
+    }
 }
 
