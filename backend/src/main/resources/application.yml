@@ -1,16 +1,25 @@
 spring:
-  application:
-    name: NBE3-4-1-Team02
-  datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySql
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
     database: h2
-server:
-  servlet:
-    context-path: /api/v1
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        highlight_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console      # 본인만의 고유한 콘솔 경로
+      settings:
+        web-allow-others: true
+
+  datasource:
+    url: jdbc:h2:mem:zetto_db;DB_CLOSE_ON_EXIT=TRUE;MODE=MySql    # 본인만의 고유한 DB 이름
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
