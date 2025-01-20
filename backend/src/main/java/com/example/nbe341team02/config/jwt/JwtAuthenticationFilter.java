@@ -28,9 +28,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // HTTP 중복 요청 방지
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        // request 받으면 토큰 추출
         String token = jwtTokenProvider.resolveToken(request);
         
+        // 헤더에서 토큰을 찾지 못한 경우 파라미터에서 찾기
         if (token == null) {
             token = request.getParameter("token");
         }

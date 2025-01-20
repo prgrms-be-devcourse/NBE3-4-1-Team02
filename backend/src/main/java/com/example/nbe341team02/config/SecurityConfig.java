@@ -36,11 +36,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/login", "/admin/login/**").permitAll() // 로그인 페이지는 모두 접근 가능
+                        .requestMatchers("/admin/login", "/admin/login/**", "/error").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // admin/ 으로 시작하는 모든 경로는 ROLE_ADMIN 권한 필요
-                        .anyRequest().authenticated() // 나머지는 인증만 되면 접근 가능
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
