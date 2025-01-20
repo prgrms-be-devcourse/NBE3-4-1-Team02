@@ -1,6 +1,8 @@
 package com.example.nbe341team02.domain.product.controller;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
+import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -15,12 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-
-    //상품 목록 조회
-    @GetMapping
-    public List<ProductDTO> findAllProducts(){
-        return productService.findAllProducts();
-    }
 
     //상품 추가
     @PostMapping
@@ -55,6 +51,7 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+    //상품상태수정
     @PatchMapping("/{id}/status")
     public ResponseEntity<ProductDTO> updateProductStatus(
             @PathVariable Long id,
