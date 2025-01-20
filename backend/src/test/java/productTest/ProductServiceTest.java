@@ -112,6 +112,9 @@ class ProductServiceTest {
         Long productId = 1L;
         Product product = Product.builder()
                 .id(productId)
+                .name("Test Product")
+                .price(10000)
+                .stock(100)
                 .status(true)
                 .build();
 
@@ -123,5 +126,18 @@ class ProductServiceTest {
 
         // then
         assertThat(result.isStatus()).isFalse();
+    }
+
+    @Test
+    void 상품상태_변경_상품없음() {
+        // given
+        Long productId = 999L;
+        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> productService.updateProductStatus(productId, false))
+                .isInstanceOf(CustomException.class)
+                .extracting("errorCode")    // errorCode 필드의 값을 확인
+                .isEqualTo(ErrorCode.PRODUCT_NOT_FOUND);
     }
 }
