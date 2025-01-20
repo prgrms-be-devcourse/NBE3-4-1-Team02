@@ -40,7 +40,7 @@ export default function CreateOrder() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/products");
+        const response = await fetch("http://localhost:8080/api/v1/products");
         if (!response.ok) {
           throw new Error("상품 데이터를 가져오는 데 실패했습니다.");
         }

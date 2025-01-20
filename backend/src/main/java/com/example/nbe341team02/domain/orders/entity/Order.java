@@ -1,14 +1,9 @@
 package com.example.nbe341team02.domain.orders.entity;
 
+import com.example.nbe341team02.domain.delivery.entity.Delivery;
 import com.example.nbe341team02.global.common.BaseTimeEntity;
 import com.example.nbe341team02.domain.orders.enums.OrderStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +16,9 @@ public class Order extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    private Delivery delivery;
 
     @Column(name = "email", nullable = false, length = 255)
     private String email;
