@@ -45,10 +45,10 @@ public class ProductService {
         }
     }
 
-    // 파일 확장자 추출
+    // 저장할 파일 이름 생성
     private String getFileExtension(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        return fileName != null && fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : "";
+        String fileName = file.getOriginalFilename(); //파일의 원래 이름을 가져옴
+        return fileName != null && fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : ""; //확장ㅈㅏ 가져옴
     }
 
     // 상품 추가 기능 (이미지 저장 기능 추가)
