@@ -44,8 +44,7 @@ public class ProductService {
     public List<ProductDTO> findAllProducts() {
         List<Product> products = productRepository.findAll();
 
-        return products.isEmpty() ? new ArrayList<>() : convertToDTOList(products);
-        //상품 없으면 빈 리스트 반환, 있으면 dto변환 후 반환
+        return convertToDTOList(products);
     }
 
     //상품 상세 조회
