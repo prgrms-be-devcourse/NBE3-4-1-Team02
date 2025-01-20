@@ -108,4 +108,22 @@ class ProductControllerTest {
         mockMvc.perform(delete("/products/{id}", productId))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void 상품상태_변경_성공() throws Exception {
+        // given
+        Long productId = 1L;
+        StatusUpdateRequest request = new StatusUpdateRequest(false);
+        ProductDTO updatedProduct = new ProductDTO(productId, "Test Product", 10000, 100, false);
+
+        when(productService.updateProductStatus(eq(productId), eq(false)))
+                .thenReturn(updatedProduct);
+
+        // when & then
+        mockMvc.perform(patch("/products/{id}/status", productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(false));
+    }
 }

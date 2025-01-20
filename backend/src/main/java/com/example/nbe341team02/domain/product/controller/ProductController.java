@@ -42,4 +42,10 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+//    //상품 상태 변경 판매중 <-> 판매보류
+//    @PatchMapping("/{id}/status")
+//    public ResponseEntity<ProductDTO> updateProductStatus(@PathVariable("id") Long id) {
+//        ProductDTO updatedProduct = productService.updateProductStatus(id);
+//        return ResponseEntity.ok(updatedProduct);
+//    }
 }

@@ -105,4 +105,23 @@ class ProductServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
+
+    @Test
+    void 상품상태_변경_성공() {
+        // given
+        Long productId = 1L;
+        Product product = Product.builder()
+                .id(productId)
+                .status(true)
+                .build();
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepository.save(any(Product.class))).thenReturn(product);
+
+        // when
+        ProductDTO result = productService.updateProductStatus(productId, false);
+
+        // then
+        assertThat(result.isStatus()).isFalse();
+    }
 }
