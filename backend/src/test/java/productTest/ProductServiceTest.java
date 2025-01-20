@@ -1,6 +1,7 @@
 package productTest;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
@@ -36,23 +37,24 @@ class ProductServiceTest {
         // given
         Long productId = 1L;
         Product existingProduct = new Product(
-                productId, "Basic Product", 1000, 10, true
+                productId, "Basic Product", 1000, 10, true, "설정"
         );
-        ProductDTO updateDTO = new ProductDTO(
-                productId, "Updated Product", 2000, 20, true
+        ProductDescriptionDTO updateDTO = new ProductDescriptionDTO(
+                productId, "Updated Product", 2000, 20, true, "Updated description"
         );
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(any(Product.class))).thenReturn(existingProduct);
 
         // when
-        ProductDTO updatedProduct = productService.updateProduct(productId, updateDTO);
+        ProductDescriptionDTO updatedProduct = productService.updateProduct(productId, updateDTO);
 
         // then
         assertThat(updatedProduct).isNotNull();
         assertThat(updatedProduct.getName()).isEqualTo("Updated Product");
         assertThat(updatedProduct.getPrice()).isEqualTo(2000);
         assertThat(updatedProduct.getStock()).isEqualTo(20);
+        assertThat(updatedProduct.getDescription()).isEqualTo("Updated description");
         verify(productRepository).save(any(Product.class));
     }
 
@@ -60,8 +62,8 @@ class ProductServiceTest {
     void 상품수정_예외() {
         // given
         Long productId = 999L;
-        ProductDTO updateDTO = new ProductDTO(
-                productId, "Updated Product", 2000, 20, true
+        ProductDescriptionDTO updateDTO = new ProductDescriptionDTO(
+                productId, "Updated Product", 2000, 20, true, "Updated description"
         );
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
@@ -70,7 +72,6 @@ class ProductServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
-
 
     @Test
     void 상품삭제_성공() {

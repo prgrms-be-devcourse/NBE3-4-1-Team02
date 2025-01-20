@@ -20,8 +20,8 @@ public class ProductController {
 
     //상품 추가
     @PostMapping
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO){
-        ProductDTO createdProduct = productService.addProduct(productDTO);
+    public ResponseEntity<ProductDescriptionDTO> addProduct(@RequestBody ProductDescriptionDTO productDescriptionDTO){
+        ProductDescriptionDTO createdProduct = productService.addProduct(productDescriptionDTO);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
@@ -40,9 +40,9 @@ public class ProductController {
 
     //상품 수정
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO,
+    public ResponseEntity<ProductDescriptionDTO> updateProduct(@RequestBody ProductDescriptionDTO productDescriptionDTO,
                                                     @PathVariable("id") Long id){
-        ProductDTO updatedProduct = productService.updateProduct(id,productDTO);
+        ProductDescriptionDTO updatedProduct = productService.updateProduct(id,productDescriptionDTO);
         return ResponseEntity.ok(updatedProduct);
     }
 

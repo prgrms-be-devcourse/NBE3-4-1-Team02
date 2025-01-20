@@ -23,14 +23,14 @@ public class ProductService {
 
 
     //상품 추가 기능
-    public ProductDTO addProduct(ProductDTO productDTO) {
+    public ProductDescriptionDTO addProduct(ProductDescriptionDTO productDescriptionDTO) {
         // ProductDTO를 Product 엔티티로 변환
-        Product product = convertToEntity(productDTO);
+        Product product = convertToEntity(productDescriptionDTO);
 
         Product savedProduct = productRepository.save(product);
 
         // 저장된 상품을 DTO로 변환하여 반환
-        return convertToDTO(savedProduct);
+        return convertToDescriptionDTO(savedProduct);
     }
 
     //상품 목록 조회
@@ -59,19 +59,20 @@ public class ProductService {
     //--김규진--
     //상품 수정 기능
     @jakarta.transaction.Transactional
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
+    public ProductDescriptionDTO updateProduct(Long id, ProductDescriptionDTO productDescriptionDTO) {
         //예외 - 상품이 없음
         Product product =  productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-        product.setStock(productDTO.getStock());
-        product.setStatus(productDTO.isStatus());
+        product.setName(productDescriptionDTO.getName());
+        product.setPrice(productDescriptionDTO.getPrice());
+        product.setStock(productDescriptionDTO.getStock());
+        product.setStatus(productDescriptionDTO.isStatus());
+        product.setDescription(productDescriptionDTO.getDescription());
 
         Product updatedProduct = productRepository.save(product);
 
-        return convertToDTO(updatedProduct);
+        return convertToDescriptionDTO(updatedProduct);
     }
 
     @Transactional
@@ -127,17 +128,28 @@ public class ProductService {
                 product.getPrice(),
                 product.getStock(),
                 product.isStatus(),
-                product.getDescription() // description 추가
+                product.getDescription()
         );
     }
 
-    // Entity로 변환 메소드
+    // ProductDTO 객체를 Product 엔티티 객체로 변환
     private Product convertToEntity(ProductDTO productDTO) {
         return Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .stock(productDTO.getStock())
                 .status(productDTO.isStatus())
+                .build();
+    }
+
+    // ProductDescriptionDTO 객체를 Product 엔티티 객체로 변환
+    private Product convertToEntity(ProductDescriptionDTO productDescriptionDTO) {
+        return Product.builder()
+                .name(productDescriptionDTO.getName())
+                .price(productDescriptionDTO.getPrice())
+                .stock(productDescriptionDTO.getStock())
+                .status(productDescriptionDTO.isStatus())
+                .description(productDescriptionDTO.getDescription())
                 .build();
     }
 
