@@ -11,6 +11,7 @@ import com.example.nbe341team02.domain.orders.entity.QOrder;
 import com.example.nbe341team02.domain.product.entity.QProduct;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,15 +36,6 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
         super(Delivery.class);
     }
 
-    public Page<DeliveryTrackingThumbnailViewDto> getDeliveryTrackingPage (Pageable pageable, String email) {
-        BooleanBuilder builder = emailFilter(email);
-        long totalOrderCount = from(o)
-                .where(builder)
-                .fetchCount();
-        List<DeliveryTrackingThumbnailViewDto> content = getDeliveryTrackingList(pageable, email);
-        return new PageImpl<>(content, pageable, totalOrderCount);
-    }
-
     private BooleanBuilder emailFilter(String email){
         BooleanBuilder builder = new BooleanBuilder();
         if (email != null) {
@@ -52,6 +44,14 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
         return builder;
     }
 
+    public Page<DeliveryTrackingThumbnailViewDto> getDeliveryTrackingPage (Pageable pageable, String email) {
+        BooleanBuilder builder = emailFilter(email);
+        long totalOrderCount = from(o)
+                .where(builder)
+                .fetchCount();
+        List<DeliveryTrackingThumbnailViewDto> content = getDeliveryTrackingList(pageable, email);
+        return new PageImpl<>(content, pageable, totalOrderCount);
+    }
 
     private List<DeliveryTrackingThumbnailViewDto> getDeliveryTrackingList(Pageable pageable, String email) {
         BooleanBuilder builder = emailFilter(email);
@@ -66,18 +66,25 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
                                 .innerJoin(p)
                                 .on(op.product.eq(p))
                                 .select(op.product.name.as("productName"))
-                                .limit(1),
+                                .where(op.id.eq(
+                                        JPAExpressions
+                                                .select(op.id.max())
+                                                .from(op)
+                                                .where(op.order.eq(o))
+                                                .distinct()
+                                )), //limit(1) 이 왠지 모르게 적용 안돼서 이렇게 했습니다.
                         op.count(),
                         dc.companyName,
                         dc.trackingURLTemplate,
                         d.deliveryTrackingNumber
                 ))
                 .groupBy(o.id)
+                .orderBy(o.id.desc())
                 .distinct()
                 .innerJoin(op)
                 .on(op.order.eq(o))
                 .leftJoin(o.delivery, d)
-                .innerJoin(d.deliveryCompany, dc)
+                .leftJoin(d.deliveryCompany, dc)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .where(builder)
@@ -100,15 +107,18 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
                 .innerJoin(op)
                 .on(op.order.eq(o))
                 .leftJoin(o.delivery, d)
-                .innerJoin(d.deliveryCompany, dc)
+                .leftJoin(d.deliveryCompany, dc)
+                .where(o.id.eq(orderId))
                 .fetchOne();
 
         if (detailViewDto == null) {
-            return null;
+            throw new NoSuchElementException("No delivery tracking found for order id " + orderId);
         }
 
+        //이거 별도 쿼리 안 쓰고 하는 법 아신다면 공유 부탁드립니다.
         Set<OrderProduct> orderProducts = getOrderProductSet(orderId);
         detailViewDto.setOrderProducts(orderProducts);
+
         long totalPrice = 0L;
         for (OrderProduct orderProduct : orderProducts) {
             totalPrice += orderProduct.getPrice() * orderProduct.getQuantity();
