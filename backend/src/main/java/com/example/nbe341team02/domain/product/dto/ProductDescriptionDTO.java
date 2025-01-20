@@ -13,5 +13,7 @@ public class ProductDescriptionDTO {
     private int price;
     private int stock;
     private boolean status;
+    private String imageUrl;
+
     private String description;
 }
