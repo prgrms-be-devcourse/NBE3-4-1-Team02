@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33feea61-7508-45cf-b405-8bc4a7eb69d6" name="변경" comment="# 1. 커밋 제목&#10;&#10;# 2. 본문&#10;&#10;# &lt;참고&gt;&#10;# feat: 새로운 기능 추가&#10;# fix: 버그 수정&#10;# docs: 문서 변경 (예: README.md 수정)&#10;# style: 코드 포맷팅, 세미콜론 누락 등 스타일 변경&#10;# refactor: 코드 리팩토링 (기능 변경 없음)&#10;# test: 테스트 코드 추가, 수정&#10;# chore: 빌드 스크립트 수정, 패키지 매니저 설정 등의 기타 변경사항" />
+    <list default="true" id="33feea61-7508-45cf-b405-8bc4a7eb69d6" name="변경" comment="# 1. 커밋 제목&#10;&#10;# 2. 본문&#10;&#10;# &lt;참고&gt;&#10;# feat: 새로운 기능 추가&#10;# fix: 버그 수정&#10;# docs: 문서 변경 (예: README.md 수정)&#10;# style: 코드 포맷팅, 세미콜론 누락 등 스타일 변경&#10;# refactor: 코드 리팩토링 (기능 변경 없음)&#10;# test: 테스트 코드 추가, 수정&#10;# chore: 빌드 스크립트 수정, 패키지 매니저 설정 등의 기타 변경사항">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/nbe341team02/global/common/TypeScriptInitializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/nbe341team02/global/util/Ut.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,7 +52,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.Nbe341Team02Application.executor": "Run",
-    "git-widget-placeholder": "feature-delivery",
+    "git-widget-placeholder": "feature-typescript",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/gang-injun/IdeaProjects/NBE3-4-1-Team02",
     "node.js.detected.package.eslint": "true",
@@ -99,6 +103,8 @@
       <workItem from="1736737691085" duration="2669000" />
       <workItem from="1736814416635" duration="649000" />
       <workItem from="1736826157052" duration="6282000" />
+      <workItem from="1737206566289" duration="599000" />
+      <workItem from="1737294384554" duration="4398000" />
     </task>
     <servers />
   </component>
