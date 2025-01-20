@@ -27,11 +27,6 @@ public class AdminController {
     private final AdminService adminService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("/login")
-    public String showLoginPage() {
-        return "admin-login";
-    }
-
     @GetMapping("/dashboard")
     public String loadDashboard(HttpServletRequest request) {
         String token = jwtTokenProvider.resolveToken(request); // 헤더에서 토큰을 가져오도록 변경
@@ -59,8 +54,7 @@ public class AdminController {
         String token = jwtTokenProvider.resolveToken(request);
         if (token != null) {
             jwtTokenProvider.invalidateToken(token);
-            return ResponseEntity.ok("로그아웃 되었습니다.");
         }
-        return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
+        return ResponseEntity.ok("로그아웃 되었습니다.");
     }
 }
