@@ -38,6 +38,9 @@ public class DeliveryController {
     @GetMapping("/admin/deliveries/{orderId}")
     public ResponseEntity<DeliveryTrackingDetailViewDto> getDeliveryTrackingDetail(
             @PathVariable Long orderId) {
+        if (orderId == null || orderId <= 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(deliveryService.getDeliveryTrackingDetail(orderId), HttpStatus.OK);
     }
 }
