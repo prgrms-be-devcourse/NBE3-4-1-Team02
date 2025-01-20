@@ -43,4 +43,7 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = true)
     private String description;
 
+    @Column(nullable = true)
+    private String imageUrl;
+
 }
