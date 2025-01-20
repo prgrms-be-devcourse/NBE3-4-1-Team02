@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -135,9 +136,10 @@ class ProductServiceTest {
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> productService.updateProductStatus(productId, false))
-                .isInstanceOf(CustomException.class)
-                .extracting("errorCode")    // errorCode 필드의 값을 확인
-                .isEqualTo(ErrorCode.PRODUCT_NOT_FOUND);
+        CustomException exception = assertThrows(CustomException.class,
+                () -> productService.updateProductStatus(productId, false));
+
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.PRODUCT_NOT_FOUND);
+        assertThat(exception.getErrorMessage()).isEqualTo("상품이 존재하지 않습니다");
     }
 }
