@@ -1,33 +1,19 @@
 HELP.md
 
 ### Gradle ###
-.gradle
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
 .gradletasknamecache
 gradle-app.setting
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
 ### VS Code ###
 .vscode/
@@ -38,4 +24,9 @@ out/
 ### Project Specific ###
 /caches/
 /daemon/
-/native/ 
+/native/
+/wrapper/
+/.tmp/
+/buildOutputCleanup/
+/nb-cache/
+/vcs-1/
