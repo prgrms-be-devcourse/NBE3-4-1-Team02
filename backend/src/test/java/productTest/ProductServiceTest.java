@@ -33,7 +33,7 @@ class ProductServiceTest {
         // given
         Long productId = 1L;
         Product existingProduct = new Product(
-                productId, "Basic Product", 1000, 10, true,null
+                productId, "Basic Product", 1000, 10, true
         );
         ProductDTO updateDTO = new ProductDTO(
                 productId, "Updated Product", 2000, 20, true
@@ -68,6 +68,14 @@ class ProductServiceTest {
                 .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
 
+//    @Test
+//    void 상품수정_감소(){
+//        //given
+//        Long id = 1L;
+//        ProductDTO reducedDTO = new ProductDTO(
+//                id,"reduced Product",
+//        )
+//    }
 
     @Test
     void 상품삭제_성공() {
