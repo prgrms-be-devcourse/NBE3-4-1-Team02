@@ -2,6 +2,7 @@ package productTest;
 
 import com.example.nbe341team02.domain.product.controller.ProductController;
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
 import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import com.example.nbe341team02.global.exception.CustomException;
@@ -52,18 +53,19 @@ class ProductControllerTest {
     void 상품수정_1개_성공() throws Exception {
         // given
         Long productId = 1L;
-        ProductDTO productDTO = new ProductDTO(
+        ProductDescriptionDTO productDescriptionDTO = new ProductDescriptionDTO(
                             productId,
                             "Updated Product",
                             3000,
                             15,
-                            true);
-        when(productService.updateProduct(eq(productId), any(ProductDTO.class))).thenReturn(productDTO);
+                            true,
+        "설명");
+        when(productService.updateProduct(eq(productId), any(ProductDescriptionDTO.class))).thenReturn(productDescriptionDTO);
 
         // when & then
         mockMvc.perform(put("/products/{id}", productId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(productDTO)))
+                        .content(objectMapper.writeValueAsString(productDescriptionDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.productId").value(productId))
                 .andExpect(jsonPath("$.productName").value("Updated Product"))
@@ -76,14 +78,14 @@ class ProductControllerTest {
     void 상품수정_상품이_존재하지_않을때() throws Exception {
         // given
         Long productId = 999L;
-        ProductDTO productDTO = new ProductDTO(productId, "Updated Product", 3000, 15, true);
-        when(productService.updateProduct(eq(productId), any(ProductDTO.class)))
+        ProductDescriptionDTO productDescriptionDTO = new ProductDescriptionDTO(productId, "Updated Product", 3000, 15, true,"설명");
+        when(productService.updateProduct(eq(productId), any(ProductDescriptionDTO.class)))
                 .thenThrow(new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
         // when & then
         mockMvc.perform(put("/products/{id}", productId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(productDTO)))
+                        .content(objectMapper.writeValueAsString(productDescriptionDTO)))
                 .andExpect(status().isNotFound());
     }
 
