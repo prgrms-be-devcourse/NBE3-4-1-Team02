@@ -91,7 +91,7 @@ public class OrderServiceTest {
     @DisplayName("정상 테스트: 주문 성공")
     public void testCreateOrder() {
         // Given
-        Product product = new Product(1L, "Product 1", 1000, 3, true);
+        Product product = new Product(1L, "Product 1", 1000, 3, true, null);
         OrderCreateRequest request = new OrderCreateRequest(
           "test@example.com",
           "Test Address",

@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -68,6 +69,14 @@ class ProductServiceTest {
                 .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
 
+//    @Test
+//    void 상품수정_감소(){
+//        //given
+//        Long id = 1L;
+//        ProductDTO reducedDTO = new ProductDTO(
+//                id,"reduced Product",
+//        )
+//    }
 
     @Test
     void 상품삭제_성공() {
@@ -96,5 +105,41 @@ class ProductServiceTest {
         assertThatThrownBy(() -> productService.deleteProduct(productId))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    void 상품상태_변경_성공() {
+        // given
+        Long productId = 1L;
+        Product product = Product.builder()
+                .id(productId)
+                .name("Test Product")
+                .price(10000)
+                .stock(100)
+                .status(true)
+                .build();
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepository.save(any(Product.class))).thenReturn(product);
+
+        // when
+        ProductDTO result = productService.updateProductStatus(productId, false);
+
+        // then
+        assertThat(result.isStatus()).isFalse();
+    }
+
+    @Test
+    void 상품상태_변경_상품없음() {
+        // given
+        Long productId = 999L;
+        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> productService.updateProductStatus(productId, false));
+
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.PRODUCT_NOT_FOUND);
+        assertThat(exception.getErrorMessage()).isEqualTo("상품이 존재하지 않습니다");
     }
 }

@@ -2,6 +2,7 @@ package com.example.nbe341team02.domain.product.controller;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
+import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-
 
     //상품 추가
     @PostMapping
@@ -50,5 +50,15 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ProductDTO> updateProductStatus(
+            @PathVariable Long id,
+            @RequestBody StatusUpdateRequest request
+    ) {
+        return ResponseEntity.ok(
+                productService.updateProductStatus(id, request.isStatus())
+        );
     }
 }

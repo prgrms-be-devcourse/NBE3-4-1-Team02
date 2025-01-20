@@ -2,6 +2,7 @@ package productTest;
 
 import com.example.nbe341team02.domain.product.controller.ProductController;
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import com.example.nbe341team02.global.exception.CustomException;
 import com.example.nbe341team02.global.exception.ErrorCode;
@@ -22,8 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -107,5 +107,23 @@ class ProductControllerTest {
         // when & then
         mockMvc.perform(delete("/products/{id}", productId))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void 상품상태_변경_성공() throws Exception {
+        // given
+        Long productId = 1L;
+        StatusUpdateRequest request = new StatusUpdateRequest(false);
+        ProductDTO updatedProduct = new ProductDTO(productId, "Test Product", 10000, 100, false);
+
+        when(productService.updateProductStatus(eq(productId), eq(false)))
+                .thenReturn(updatedProduct);
+
+        // when & then
+        mockMvc.perform(patch("/products/{id}/status", productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(false));
     }
 }
