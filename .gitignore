@@ -2,61 +2,26 @@
 .DS_Store
 **/.DS_Store
 
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### IntelliJ IDEA ###
-.idea
-backend/.idea
-*.iws
+### IDE ###
+.idea/
+.vscode/
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+*.iws
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+### Node ###
+node_modules/
+.env
+dist/
 
-### VS Code ###
-.vscode/
-
-### Gradle Cache ###
+### Gradle ###
 .gradle/
 **/build/
-**/transforms/
-**/caches/
-**/daemon/
+caches/
+daemon/
+native/
+wrapper/
 .tmp/
-**/fileContent.lock
-**/fileHashes.lock
-**/registry.bin
-**/registry.bin.lock
-**/*.lock
-**/gradle-api-*.jar
-**/util-*.jar
-**/lib-client.jar
-**/instrumented/
 
-### Application Properties ###
+### Project Specific ###
 **/application-dev-*.yml
