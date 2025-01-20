@@ -57,6 +57,7 @@ class DeliverySchedulerTest {
         DeliveryTimePolicyRegisterDto oldRegisterDto = DeliveryTimePolicyRegisterDto.builder()
                 .hour(oldDeliveryTime.getHour())
                 .minute(oldDeliveryTime.getMinute())
+                .second(oldDeliveryTime.getSecond())
                 .build();
         deliveryScheduler.setDeliveryTime(oldRegisterDto);
         Thread.sleep(20000);
@@ -67,10 +68,13 @@ class DeliverySchedulerTest {
         DeliveryTimePolicyRegisterDto registerDto = DeliveryTimePolicyRegisterDto.builder()
                 .hour(newDeliveryTime.getHour())
                 .minute(newDeliveryTime.getMinute())
+                .second(newDeliveryTime.getSecond())
                 .build();
         deliveryScheduler.setDeliveryTime(registerDto);
-        Thread.sleep(15000);
+        Thread.sleep(20000);
         verify(deliveryService, times(1))
                 .registerNewDeliveryTimePolicy(registerDto);
+        verify(deliveryService, times(1))
+                .startDelivery();
     }
 }

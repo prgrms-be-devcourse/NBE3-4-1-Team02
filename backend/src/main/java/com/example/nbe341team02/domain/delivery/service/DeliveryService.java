@@ -55,9 +55,9 @@ public class DeliveryService {
 
     public void startDelivery(){
         LocalDate today = LocalDate.now();
-        LocalTime now = getLatestDeliveryTime();
-        LocalDateTime end = LocalDateTime.of(today, now);
-        startDelivery(DEFAULT_START, end);
+        LocalTime deliveryTimePerDay = getLatestDeliveryTime();
+        LocalDateTime deliveryTime = LocalDateTime.of(today, deliveryTimePerDay);
+        startDelivery(DEFAULT_START, deliveryTime);
     }
 
     public LocalTime getLatestDeliveryTime(){
@@ -67,9 +67,7 @@ public class DeliveryService {
     }
 
     public void registerNewDeliveryTimePolicy(DeliveryTimePolicyRegisterDto registerDto){
-        int minute = Objects.requireNonNullElse(registerDto.minute(), 0);
-        int second = Objects.requireNonNullElse(registerDto.second(), 0);
-        LocalTime newDeliveryTime = LocalTime.of(registerDto.hour(), minute, second);
+        LocalTime newDeliveryTime = LocalTime.of(registerDto.hour(), registerDto.minute(), registerDto.second());
         deliveryTimePolicyRepository.save(DeliveryTimePolicy
                 .builder()
                 .deliveryTime(newDeliveryTime)

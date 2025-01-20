@@ -13,9 +13,9 @@ public record DeliveryTimePolicyRegisterDto (
 
         @Min(0)
         @Max(59)
-        Integer minute,
+        int minute,
 
         @Min(0)
         @Max(59)
-        Integer second
+        int second
 ){}
