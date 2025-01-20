@@ -81,7 +81,7 @@ public class ProductService {
         if (newStock < 0) {
             throw new CustomException(ErrorCode.INSUFFICIENT_STOCK);  // 재고 부족 처리
         }
-        product.setStock(newStock); // Product Entity에서 분리했는데 setter 써도되는지..?
+        product.setStock(newStock); // Product Entity에서 분리했는데 setter 써도되는지/..?
         return productRepository.save(product);
     }
 

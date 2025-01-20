@@ -68,14 +68,14 @@ class ProductServiceTest {
                 .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
 
-    @Test
-    void 상품수정_감소(){
-        //given
-        Long id = 1L;
-        ProductDTO reducedDTO = new ProductDTO(
-                id,"reduced Product",
-        )
-    }
+//    @Test
+//    void 상품수정_감소(){
+//        //given
+//        Long id = 1L;
+//        ProductDTO reducedDTO = new ProductDTO(
+//                id,"reduced Product",
+//        )
+//    }
 
     @Test
     void 상품삭제_성공() {
