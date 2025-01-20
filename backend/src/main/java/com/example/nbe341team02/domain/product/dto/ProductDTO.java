@@ -16,4 +16,5 @@ public class ProductDTO {
     private int stock;
     private boolean status;
 
+
 }

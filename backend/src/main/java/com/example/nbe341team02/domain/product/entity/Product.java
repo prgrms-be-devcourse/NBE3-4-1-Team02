@@ -40,7 +40,7 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean status;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String description;
 
 //    public void reduceStock(int quantity) {
