@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,10 +19,33 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    //상품 추가
+
+    // 상품 추가
     @PostMapping
-    public ResponseEntity<ProductDescriptionDTO> addProduct(@RequestBody ProductDescriptionDTO productDescriptionDTO){
-        ProductDescriptionDTO createdProduct = productService.addProduct(productDescriptionDTO);
+    public ResponseEntity<ProductDescriptionDTO> addProduct(
+            @RequestParam("file") MultipartFile file,  // 이미지 파일을 받기 위한 파라미터 추가
+            @RequestParam("name") String name,
+            @RequestParam("price") int price,
+            @RequestParam("stock") int stock,
+            @RequestParam("status") boolean status,
+            @RequestParam("description") String description) {
+
+        // 이미지 파일 저장 후 URL 반환
+        String imageUrl = productService.saveImage(file);
+
+        // DTO 생성 (id는 null로 설정, imageUrl은 저장된 이미지 URL)
+        ProductDescriptionDTO productDescriptionDTO = new ProductDescriptionDTO(
+                null,
+                name,
+                price,
+                stock,
+                status,
+                imageUrl,
+                description
+        );
+
+        ProductDescriptionDTO createdProduct = productService.addProduct(productDescriptionDTO, file);
+
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 

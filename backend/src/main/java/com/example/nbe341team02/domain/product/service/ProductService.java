@@ -10,7 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +26,56 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    // 이미지 저장 메소드
+    public String saveImage(MultipartFile file) {
+        try {
+            // 상품 개수 조회 (현재 저장된 상품 수 + 1)
+            long productCount = productRepository.count();
+            String fileName = "product" + (productCount + 1) + "." + getFileExtension(file); // 파일의 id가 만약 5이면 product5.png이런식으로 저장되게
 
-    //상품 추가 기능
-    public ProductDescriptionDTO addProduct(ProductDescriptionDTO productDescriptionDTO) {
-        // ProductDTO를 Product 엔티티로 변환
+            Path path = Paths.get("src/main/resources/static", fileName);
+
+            // 파일 저장
+            Files.write(path, file.getBytes());
+
+            return "/static/" + fileName;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("이미지 저장에 실패했습니다.");
+        }
+    }
+
+    // 파일 확장자 추출
+    private String getFileExtension(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        return fileName != null && fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : "";
+    }
+
+    // 상품 추가 기능 (이미지 저장 기능 추가)
+    public ProductDescriptionDTO addProduct(ProductDescriptionDTO productDescriptionDTO, MultipartFile file) {
+        // 이미지 파일 저장 후 URL 반환
+        String imageUrl = saveImage(file);
+
+        // DTO 객체 생성
         Product product = convertToEntity(productDescriptionDTO);
+        product.setImageUrl(imageUrl);  // 이미지 URL 설정
 
+        // 상품 저장
         Product savedProduct = productRepository.save(product);
 
         // 저장된 상품을 DTO로 변환하여 반환
-        return convertToDescriptionDTO(savedProduct);
+        return new ProductDescriptionDTO(
+                savedProduct.getId(),
+                savedProduct.getName(),
+                savedProduct.getPrice(),
+                savedProduct.getStock(),
+                savedProduct.isStatus(),
+                savedProduct.getImageUrl(),
+                savedProduct.getDescription()
+        );
     }
 
-    //상품 목록 조회
+    // 상품 목록 조회
     private List<ProductDTO> convertToDTOList(List<Product> products) {
         List<ProductDTO> productDTOList = new ArrayList<>();
         for (Product product : products) {
@@ -41,9 +83,9 @@ public class ProductService {
         }
         return productDTOList;
     }
+
     public List<ProductDTO> findAllProducts() {
         List<Product> products = productRepository.findAll();
-
         return convertToDTOList(products);
     }
 
