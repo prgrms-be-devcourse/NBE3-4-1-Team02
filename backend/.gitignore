@@ -25,7 +25,6 @@ out/
 /caches/
 /daemon/
 /native/
-/wrapper/
 /.tmp/
 /buildOutputCleanup/
 /nb-cache/
