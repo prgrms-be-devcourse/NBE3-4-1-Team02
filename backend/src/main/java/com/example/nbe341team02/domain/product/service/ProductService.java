@@ -1,5 +1,6 @@
 package com.example.nbe341team02.domain.product.service;
 
+import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
 import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import com.example.nbe341team02.global.exception.CustomException;
@@ -82,7 +83,7 @@ public class ProductService {
         if (newStock < 0) {
             throw new CustomException(ErrorCode.INSUFFICIENT_STOCK);  // 재고 부족 처리
         }
-        product.setStock(newStock); // Product Entity에서 분리했는데 setter 써도되는지/..?
+        product.setStock(newStock); // Product Entity에서 분리했는데 setter 써도되는지..?
         return productRepository.save(product);
     }
 
@@ -96,6 +97,17 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    @Transactional
+    public ProductDTO updateProductStatus(Long productId, boolean status) {
+        // 상품 조회
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        // 상태 변경
+        product.setStatus(status);
+
+        return convertToDTO(product);
+    }
 
     // DTO로 변환 메소드
     private ProductDTO convertToDTO(Product product) {
@@ -130,18 +142,6 @@ public class ProductService {
                 .build();
     }
 
-    @Transactional
-    public ProductDTO updateProductStatus(Long productId, boolean status) {
-        // 상품 조회
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        // 상태 변경
-        product.setStatus(status);
-
-        // 저장 및 DTO 변환하여 반환
-        Product updatedProduct = productRepository.save(product);
-        return convertToDTO(updatedProduct);
-    }
 }
 

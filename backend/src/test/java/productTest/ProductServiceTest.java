@@ -1,13 +1,15 @@
 package productTest;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import com.example.nbe341team02.global.exception.CustomException;
 import com.example.nbe341team02.global.exception.ErrorCode;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -68,6 +70,7 @@ class ProductServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PRODUCT_NOT_FOUND.getMessage());
     }
+
 
     @Test
     void 상품삭제_성공() {
