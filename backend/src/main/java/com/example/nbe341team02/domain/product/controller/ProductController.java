@@ -46,11 +46,13 @@ public class ProductController {
         return ResponseEntity.ok(updatedProduct);
     }
 
+    //상품 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
     //상품상태수정
     @PatchMapping("/{id}/status")
     public ResponseEntity<ProductDTO> updateProductStatus(
