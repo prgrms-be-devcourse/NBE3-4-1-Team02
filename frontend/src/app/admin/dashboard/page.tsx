@@ -30,7 +30,7 @@ export default function Dashboard() {
         router.push("/admin/login");
     } catch (err) {
         console.error("로그아웃 중 오류 발생:", err);
-        // 에러가 발생해도 토큰 제거 및 로그인 페이지로 리다이렉트
+            // 에러가 발생해도 토큰 제거 및 로그인 페이지로 리다이렉트
         localStorage.removeItem("adminToken");
         router.push("/admin/login");
     }
