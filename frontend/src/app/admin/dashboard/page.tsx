@@ -16,22 +16,25 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("adminToken");
-      const response = await fetch("http://localhost:8080/api/v1/admin/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
+        const token = localStorage.getItem("adminToken");
+        await fetch("http://localhost:8080/api/v1/admin/logout", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        
+        // 로컬 스토리지의 토큰 제거
+        localStorage.removeItem("adminToken");
+        // 로그인 페이지로 리다이렉트
+        router.push("/admin/login");
+    } catch (err) {
+        console.error("로그아웃 중 오류 발생:", err);
+        // 에러가 발생해도 토큰 제거 및 로그인 페이지로 리다이렉트
         localStorage.removeItem("adminToken");
         router.push("/admin/login");
-      }
-    } catch (err) {
-      console.error("로그아웃 중 오류 발생:", err);
     }
-  };
+};
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
