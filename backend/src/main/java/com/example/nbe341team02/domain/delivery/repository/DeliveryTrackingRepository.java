@@ -39,7 +39,7 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
     private BooleanBuilder emailFilter(String email){
         BooleanBuilder builder = new BooleanBuilder();
         if (email != null) {
-            builder.and(o.email.eq(email));
+            builder.and(o.email.containsIgnoreCase(email));
         }
         return builder;
     }

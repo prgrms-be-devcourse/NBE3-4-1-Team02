@@ -8,11 +8,12 @@ import com.example.nbe341team02.domain.delivery.service.DeliveryService;
 import com.example.nbe341team02.global.page.PageRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class DeliveryController {
@@ -32,6 +33,7 @@ public class DeliveryController {
             @Valid @ModelAttribute PageRequestDto requestDto,
             @RequestParam(required = false) String email
             ){
+        log.info("getAllDeliveryTrackingPage with email {}", email);
         return new ResponseEntity<>(deliveryService.getDeliveryTrackingPage(requestDto, email), HttpStatus.OK);
     }
 
