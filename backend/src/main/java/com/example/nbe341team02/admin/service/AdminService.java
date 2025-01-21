@@ -54,30 +54,4 @@ public class AdminService implements UserDetailsService {
         
         return admin;
     }
-
-   /* @PostConstruct
-    public void init() {
-        try {
-            // 기본 관리자 계정이 없는 경우에만 생성
-            if (adminRepository.findByAdminUsername("admin").isEmpty()) {
-                Admin admin = new Admin();
-                admin.setAdminUsername("admin");
-                admin.setAdminPassword(passwordEncoder.encode("admin123"));
-                admin.setAdminRole("ROLE_ADMIN");
-                adminRepository.save(admin);
-                log.info("기본 관리자 계정 생성");
-            }
-
-            if (adminRepository.findByAdminUsername("user").isEmpty()) {
-                Admin admin = new Admin();
-                admin.setAdminUsername("user");
-                admin.setAdminPassword(passwordEncoder.encode("user123"));
-                admin.setAdminRole("ROLE_USER");
-                adminRepository.save(admin);
-                log.info("기본 사용자 계정 생성");
-            }
-        } catch (Exception e) {
-            log.error("기본 계정 생성 실패", e);
-        }
-    }*/
 }

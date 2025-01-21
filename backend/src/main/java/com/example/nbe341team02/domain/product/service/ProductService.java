@@ -1,19 +1,5 @@
 package com.example.nbe341team02.domain.product.service;
 
-import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
-import com.example.nbe341team02.domain.product.dto.ProductRequestDTO;
-import com.example.nbe341team02.domain.product.entity.Product;
-import com.example.nbe341team02.domain.product.repository.ProductRepository;
-import com.example.nbe341team02.global.exception.CustomException;
-import com.example.nbe341team02.global.exception.ErrorCode;
-import com.example.nbe341team02.domain.product.dto.ProductDTO;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +7,22 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.nbe341team02.domain.product.dto.ProductDTO;
+import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
+import com.example.nbe341team02.domain.product.dto.ProductRequestDTO;
+import com.example.nbe341team02.domain.product.entity.Product;
+import com.example.nbe341team02.domain.product.repository.ProductRepository;
+import com.example.nbe341team02.global.exception.CustomException;
+import com.example.nbe341team02.global.exception.ErrorCode;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -149,6 +151,9 @@ public class ProductService {
     public Product reduceStock(Long id, int quantity) {
         Product product = productRepository.findById(id)
                         .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+        if (!product.isStatus()) {
+            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);  // 상품이 판매 중이 아닐 경우
+        }
         int newStock = product.getStock() - quantity;
         if (newStock < 0) {
             throw new CustomException(ErrorCode.INSUFFICIENT_STOCK);  // 재고 부족 처리
