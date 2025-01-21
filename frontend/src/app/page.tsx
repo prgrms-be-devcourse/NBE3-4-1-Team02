@@ -113,7 +113,7 @@ export default function CreateOrder() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/orders", {
+      const response = await fetch("http://localhost:8080/api/v1/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

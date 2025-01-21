@@ -3,6 +3,7 @@ package com.example.nbe341team02.delivery;
 import com.example.nbe341team02.domain.delivery.controller.DeliveryController;
 import com.example.nbe341team02.domain.delivery.dto.DeliveryTimePolicyRegisterDto;
 import com.example.nbe341team02.domain.delivery.scheduler.DeliveryScheduler;
+import com.example.nbe341team02.domain.delivery.service.DeliveryService;
 import com.example.nbe341team02.global.config.SecurityConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ public class DeliveryControllerTest {
 
     @MockitoBean
     private DeliveryScheduler deliveryScheduler;
+
+    @MockitoBean
+    private DeliveryService deliveryService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
