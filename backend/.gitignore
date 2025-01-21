@@ -1,31 +1,31 @@
-HELP.md
+### macOS ###
+.DS_Store
+**/.DS_Store
+
+### IDE ###
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+### Node ###
+node_modules/
+.env
+dist/
 
 ### Gradle ###
 .gradle/
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!gradle/wrapper/gradle-wrapper.properties
-.gradletasknamecache
-gradle-app.setting
-
-### IntelliJ IDEA ###
-.idea/
-*.iws
-*.iml
-*.ipr
-out/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
+**/build/
+caches/
+daemon/
+native/
+wrapper/
+.tmp/
+buildOutputCleanup/
+nb-cache/
+vcs-1/
 
 ### Project Specific ###
-/caches/
-/daemon/
-/native/
-/.tmp/
-/buildOutputCleanup/
-/nb-cache/
-/vcs-1/
+**/application-dev-*.yml
+src/main/resources/static/*.png
