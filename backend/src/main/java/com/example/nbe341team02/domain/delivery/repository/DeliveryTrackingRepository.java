@@ -116,11 +116,16 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
                         d.deliveryTrackingNumber
                 ))
                 .groupBy(o.id)
+                .groupBy(dc.companyName)
+                .groupBy(dc.trackingURLTemplate)
+                .groupBy(d.deliveryTrackingNumber)
                 .distinct()
                 .innerJoin(op)
                 .on(op.order.eq(o))
-                .leftJoin(o.delivery, d)
-                .leftJoin(d.deliveryCompany, dc)
+                .leftJoin(d)
+                .on(o.delivery.eq(d))
+                .leftJoin(dc)
+                .on(d.deliveryCompany.eq(dc))
                 .where(o.id.eq(orderId))
                 .fetchOne();
 

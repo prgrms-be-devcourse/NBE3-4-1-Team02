@@ -8,7 +8,7 @@ spring:
   application:
     name: NBE3-4-1-Team02
   datasource:
-    url: jdbc:h2:file:C:/Users/sia54/local;DB_CLOSE_DELAY=-1;MODE=MySql
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
     driverClassName: org.h2.Driver
     username: sa
     password:
@@ -21,6 +21,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+        highlight_sql: true
   profiles:
     active: dev-geonHui
 

@@ -27,7 +27,23 @@ const DeliveryTimePolicyPage = () => {
     const fetchDeliveryTimePolicies = async (page: number) => {
         try {
             // 1부터 시작하므로 page - 1을 보냄
-            const response = await fetch(`http://localhost:8080/api/v1/admin/policies/delivery-time?page=${page}&size=5`);
+            if (!localStorage.getItem('adminToken')) {
+                router.push('/admin/login');
+                return;
+            }
+            const token = localStorage.getItem('adminToken');
+            const response = await fetch(`http://localhost:8080/api/v1/admin/policies/delivery-time?page=${page}&size=5`,
+                {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                });
+            if (response.status == 403){
+                router.push('/admin/login');
+                return;
+            }
             if (!response.ok) {
                 throw new Error("데이터를 가져오는데 실패했습니다.");
             }

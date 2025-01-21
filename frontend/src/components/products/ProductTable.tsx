@@ -1,7 +1,7 @@
 import React from 'react';
 import { Product } from '@/types/product';
 import { Pencil, Trash2 } from 'lucide-react';
-import {API_BASE_URL} from "@/constants/api";
+import {API_BASE_URL, API_ENDPOINTS} from "@/constants/api";
 
 interface ProductTableProps {
     products: Product[];
@@ -15,19 +15,23 @@ export const ProductTable = ({ products, onEdit, onDelete, onStatusToggle }: Pro
     if (!products || !Array.isArray(products)) {
         return <div>상품이 없습니다.</div>;
     }
+    const formImageUrl = (imageUrl: string) => {
+        return `http://localhost:8080${imageUrl.replace('/static', '/api/v1')}`;
+    }
+
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {products.map((product) => (
                 <div key={product.id} className="border rounded-lg p-4 shadow">
                     <img
-                        src={product.imageUrl.replace('/static/', 'http://localhost:8080/api/v1/')}
+                        src={formImageUrl(product.imageUrl)}
                         alt={product.name}
                         className="w-full h-48 object-cover mb-4 rounded"
                     />
-                    <h3 className="text-lg font-semibold">{product.name}</h3>
+                    <h3 className="text-gray-600">{product.name}</h3>
                     <p className="text-gray-600">Price: {product.price}₩</p>
-                    <p className="text-gray-600">Stock: {product.stock}</p>
+                    <p className="text-gray-600">재고: {product.stock}</p>
                     <div className="flex justify-between items-center mt-4">
                         <div className="flex gap-2">
                             <button

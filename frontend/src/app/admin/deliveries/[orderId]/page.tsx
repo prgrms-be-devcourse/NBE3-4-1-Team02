@@ -44,8 +44,20 @@ export default function DeliveryDetailsPage() {
         const fetchDeliveryDetails = async () => {
             if (!orderId) return;
 
+            if (!localStorage.getItem('adminToken')) {
+                router.push('/admin/login');
+                return;
+            }
+
+            const token = localStorage.getItem('adminToken');
+
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/admin/deliveries/${orderId}`);
+                const response = await fetch(`http://localhost:8080/api/v1/admin/deliveries/${orderId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
                 if (!response.ok) {
                     if (response.status === 404){
@@ -156,22 +168,22 @@ export default function DeliveryDetailsPage() {
                                     <h2 className="text-lg font-semibold text-gray-800 mb-4">배송 정보</h2>
                                     <div className="space-y-4">
                                         <div className="flex justify-between">
-                                            <span className="font-semibold text-gray-600">Delivery Company:</span>
+                                            <span className="font-semibold text-gray-600">배송사:</span>
                                             <span className="text-gray-800">{deliveryData.deliveryCompanyName}</span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="font-semibold text-gray-600">Tracking Number:</span>
+                                            <span className="font-semibold text-gray-600">운송장 번호:</span>
                                             <span className="text-gray-800">{deliveryData.deliveryTrackingNumber}</span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="font-semibold text-gray-600">Tracking URL:</span>
+                                            <span className="font-semibold text-gray-600"></span>
                                             <Link
                                                 href={deliveryData.trackingURLTemplate}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-blue-500 hover:underline"
                                             >
-                                                Track Your Order
+                                                조회하러 가기
                                             </Link>
                                         </div>
                                     </div>

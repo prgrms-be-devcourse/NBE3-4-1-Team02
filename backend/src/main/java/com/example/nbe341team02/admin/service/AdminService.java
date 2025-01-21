@@ -30,8 +30,7 @@ public class AdminService implements UserDetailsService {
         Admin admin = adminRepository.findByAdminUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        log.debug("사용자 로딩 중: {}, 권한: {}", admin.getAdminUsername(), admin.getAdminRole());
-        
+
         return User.builder()
                 .username(admin.getAdminUsername())
                 .password(admin.getAdminPassword())

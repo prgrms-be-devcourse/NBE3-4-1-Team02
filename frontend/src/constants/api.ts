@@ -4,7 +4,7 @@ export const API_PREFIX = '/api/v1';
 
 export const API_ENDPOINTS = {
     // prefix를 포함한 전체 경로 설정
-    PRODUCTS: `${API_BASE_URL}${API_PREFIX}/products`,
-    PRODUCT_STATUS: (id: number) => `${API_BASE_URL}${API_PREFIX}/products/${id}/status`,
-    PRODUCT_DETAIL: (id: number) => `${API_BASE_URL}${API_PREFIX}/products/${id}`,
+    PRODUCTS: `${API_BASE_URL}${API_PREFIX}/admin/products`,
+    PRODUCT_STATUS: (id: number) => `${API_BASE_URL}${API_PREFIX}/admin/products/${id}/status`,
+    PRODUCT_DETAIL: (id: number) => `${API_BASE_URL}${API_PREFIX}/admin/products/${id}`,
 };

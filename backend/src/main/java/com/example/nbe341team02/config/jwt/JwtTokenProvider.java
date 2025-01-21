@@ -76,7 +76,6 @@ public class JwtTokenProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
 
-        log.debug("Token claims - username: {}, role: {}", claims.getSubject(), claims.get("role"));
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
