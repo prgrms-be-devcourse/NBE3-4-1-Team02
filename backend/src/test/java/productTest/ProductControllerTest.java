@@ -4,6 +4,7 @@ import com.example.nbe341team02.domain.product.controller.ProductController;
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
 import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
+import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import com.example.nbe341team02.global.exception.CustomException;
 import com.example.nbe341team02.global.exception.ErrorCode;
@@ -48,18 +49,20 @@ class ProductControllerTest {
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
-
+    
     @Test
     void 상품수정_1개_성공() throws Exception {
         // given
         Long productId = 1L;
-        ProductDescriptionDTO productDescriptionDTO = new ProductDescriptionDTO(
-                            productId,
-                            "Updated Product",
-                            3000,
-                            15,
-                            true,
-        "설명");
+        ProductDescriptionDTO productDescriptionDTO = ProductDescriptionDTO.builder()
+            .productId(productId)
+            .productName("Updated Product")
+            .productPrice(3000)
+            .productStock(15)
+            .productStatus(true)
+            .description("설명")
+            .imageUrl("image-url")
+            .build();
         when(productService.updateProduct(eq(productId), any(ProductDescriptionDTO.class))).thenReturn(productDescriptionDTO);
 
         // when & then
@@ -78,7 +81,15 @@ class ProductControllerTest {
     void 상품수정_상품이_존재하지_않을때() throws Exception {
         // given
         Long productId = 999L;
-        ProductDescriptionDTO productDescriptionDTO = new ProductDescriptionDTO(productId, "Updated Product", 3000, 15, true,"설명");
+        ProductDescriptionDTO productDescriptionDTO = ProductDescriptionDTO.builder()
+            .productId(productId)
+            .productName("Updated Product")
+            .productPrice(3000)
+            .productStock(15)
+            .productStatus(true)
+            .description("설명")
+            .imageUrl("image-url")
+            .build();
         when(productService.updateProduct(eq(productId), any(ProductDescriptionDTO.class)))
                 .thenThrow(new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 

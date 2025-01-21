@@ -62,18 +62,21 @@ public class DeliveryServiceTest {
                 .status(OrderStatus.COMPLETED)
                 .address("address1")
                 .postalCode("12345")
+                .createdAt(LocalDateTime.now())
                 .build();
         Order order2 = Order.builder()
                 .email("email1")
                 .status(OrderStatus.COMPLETED)
                 .address("address1")
                 .postalCode("12345")
+                .createdAt(LocalDateTime.now())
                 .build();
         Order order3 = Order.builder()
                 .email("email1")
                 .status(OrderStatus.COMPLETED)
                 .address("address1")
                 .postalCode("12345")
+                .createdAt(LocalDateTime.now())
                 .build();
         orders.add(order1);
         orders.add(order2);
