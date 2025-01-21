@@ -24,7 +24,7 @@ public class DataInitializer {
             Product product1 = new Product();
             product1.setName("1번 상품");
             product1.setPrice(5000);
-            product1.setStock(100);
+            product1.setStock(500);
             product1.setStatus(true);
             product1.setDescription("1번 상품에 대한 상세 설명");
             product1.setImageUrl("/static/product1.png");

@@ -97,4 +97,9 @@ public class DeliveryService {
     public DeliveryTrackingDetailViewDto getDeliveryTrackingDetail(Long orderId){
         return deliveryTrackingRepository.getDeliveryTrackingDetail(orderId);
     }
+
+    public Page<DeliveryTimePolicy> getDeliveryTimePolicyPage(PageRequestDto pageRequest){
+        Pageable pageable = PageableUtils.createPageable(pageRequest, 10);
+        return deliveryTimePolicyRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
 }
