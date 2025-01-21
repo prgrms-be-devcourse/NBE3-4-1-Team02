@@ -2,6 +2,7 @@ package com.example.nbe341team02.domain.product.controller;
 
 import com.example.nbe341team02.domain.product.dto.ProductDTO;
 import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
+import com.example.nbe341team02.domain.product.dto.ProductRequestDTO;
 import com.example.nbe341team02.domain.product.dto.StatusUpdateRequest;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,28 +24,23 @@ public class ProductController {
     // 상품 추가
     @PostMapping
     public ResponseEntity<ProductDescriptionDTO> addProduct(
-            @RequestParam("file") MultipartFile file,  // 이미지 파일을 받기 위한 파라미터 추가
-            @RequestParam("name") String name,
-            @RequestParam("price") int price,
-            @RequestParam("stock") int stock,
-            @RequestParam("status") boolean status,
-            @RequestParam("description") String description) {
+            @ModelAttribute ProductRequestDTO productRequestDTO) {
 
         // 이미지 파일 저장 후 URL 반환
-        String imageUrl = productService.saveImage(file);
+        String imageUrl = productService.saveImage(productRequestDTO.getFile());
 
         // DTO 생성 (id는 null로 설정, imageUrl은 저장된 이미지 URL)
         ProductDescriptionDTO productDescriptionDTO = new ProductDescriptionDTO(
                 null,
-                name,
-                price,
-                stock,
-                status,
+                productRequestDTO.getName(),
+                productRequestDTO.getPrice(),
+                productRequestDTO.getStock(),
+                productRequestDTO.isStatus(),
                 imageUrl,
-                description
+                productRequestDTO.getDescription()
         );
 
-        ProductDescriptionDTO createdProduct = productService.addProduct(productDescriptionDTO, file);
+        ProductDescriptionDTO createdProduct = productService.addProduct(productDescriptionDTO, productRequestDTO.getFile());
 
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
@@ -64,10 +60,12 @@ public class ProductController {
 
     //상품 수정
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDescriptionDTO> updateProduct(@RequestBody ProductDescriptionDTO productDescriptionDTO,
-                                                    @PathVariable("id") Long id){
-        ProductDescriptionDTO updatedProduct = productService.updateProduct(id,productDescriptionDTO);
-        return ResponseEntity.ok(updatedProduct);
+    public ResponseEntity<ProductDescriptionDTO> updateProduct(
+            @PathVariable("id") Long id,
+            @ModelAttribute ProductRequestDTO productRequestDTO) {
+
+        ProductDescriptionDTO updatedProduct = productService.updateProduct(id, productRequestDTO);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
     //상품 삭제
