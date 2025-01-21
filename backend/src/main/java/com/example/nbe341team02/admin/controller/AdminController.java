@@ -1,5 +1,6 @@
 package com.example.nbe341team02.admin.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -42,10 +43,17 @@ public class AdminController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<TokenResponse> processLogin(@RequestBody @Valid LoginRequest loginRequest) {
-        Admin admin = adminService.login(loginRequest.getAdmin_username(), loginRequest.getAdmin_password()); // 사용자 인증
-        String token = jwtTokenProvider.createToken(admin.getAdminUsername(), admin.getAdminRole()); // 토큰 생성
-        return ResponseEntity.ok(new TokenResponse(token)); // 토큰 반환
+    public ResponseEntity<?> processLogin(@RequestBody @Valid LoginRequest loginRequest) {
+        Admin admin = adminService.login(loginRequest.getAdmin_username(), loginRequest.getAdmin_password());
+        
+        // 관리자 권한 체크
+        if (!"ROLE_ADMIN".equals(admin.getAdminRole())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body("관리자 권한이 없습니다.");
+        }
+        
+        String token = jwtTokenProvider.createToken(admin.getAdminUsername(), admin.getAdminRole());
+        return ResponseEntity.ok(new TokenResponse(token));
     }
 
     @PostMapping("/logout")

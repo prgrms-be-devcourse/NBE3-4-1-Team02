@@ -1,21 +1,25 @@
 package com.example.nbe341team02.admin.service;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.nbe341team02.admin.entity.Admin;
 import com.example.nbe341team02.admin.repository.AdminRepository;
 
-//import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class AdminService implements UserDetailsService {
 
     private final AdminRepository adminRepository;
@@ -36,19 +40,18 @@ public class AdminService implements UserDetailsService {
     }
 
     public Admin login(String username, String password) {
-        log.info("로그인 시도 - username: {}", username);
         Admin admin = adminRepository.findByAdminUsername(username)
-                .orElseThrow(() -> {
-                    log.error("사용자를 찾을 수 없습니다.: {}", username);
-                    return new IllegalArgumentException("가입되지 않은 사용자입니다.");
-                });
-
+            .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+            
         if (!passwordEncoder.matches(password, admin.getAdminPassword())) {
-            log.error("사용자의 비밀번호가 잘못되었습니다.: {}", username);
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
         
-        log.info("사용자 로그인 성공: {}", username);
+        // 관리자 권한 체크 추가
+        if (!"ROLE_ADMIN".equals(admin.getAdminRole())) {
+            throw new AccessDeniedException("관리자 권한이 없습니다.");
+        }
+        
         return admin;
     }
 

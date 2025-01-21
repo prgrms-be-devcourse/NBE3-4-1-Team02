@@ -37,10 +37,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         log.debug("수신된 토큰: {}", token);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication auth = jwtTokenProvider.getAuthentication(token);
-            log.debug("인증 성공 : {}", auth.getName());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Authentication auth = jwtTokenProvider.getAuthentication(token);
+                
+                // 디버깅을 위한 로그 추가
+                log.debug("Request URI: {}", request.getRequestURI());
+                log.debug("User Authorities: {}", auth.getAuthorities());
+                
+                // admin/** 경로에 대한 ROLE_ADMIN 권한 검증
+                if (request.getRequestURI().startsWith("/admin/") && 
+                    !request.getRequestURI().equals("/admin/login")) {
+                    boolean hasAdminRole = auth.getAuthorities().stream()
+                        .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                    
+                    log.debug("Has Admin Role: {}", hasAdminRole);
+                    
+                    if (!hasAdminRole) {
+                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                        response.getWriter().write("접근 권한이 없습니다.");
+                        return;
+                    }
+                }
+                
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        } catch (Exception e) {
+            log.error("JWT 처리 중 오류 발생: ", e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
 
         filterChain.doFilter(request, response);
