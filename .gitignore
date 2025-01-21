@@ -22,6 +22,10 @@ daemon/
 native/
 wrapper/
 .tmp/
+buildOutputCleanup/
+nb-cache/
+vcs-1/
 
 ### Project Specific ###
 **/application-dev-*.yml
+src/main/resources/static/*.png
