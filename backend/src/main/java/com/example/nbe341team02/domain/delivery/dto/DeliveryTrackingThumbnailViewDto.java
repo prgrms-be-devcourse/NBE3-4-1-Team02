@@ -1,6 +1,7 @@
 package com.example.nbe341team02.domain.delivery.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.Tuple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class DeliveryTrackingThumbnailViewDto {
     private final String address;
     private final String postalCode;
     private final String thumbnailProductName;
+    private final String thumbnailProductImageURL;
     private final Long totalCountOfProductType;
     private final String deliveryCompanyName;
     private final String trackingURLTemplate;

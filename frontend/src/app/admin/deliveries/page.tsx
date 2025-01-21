@@ -11,6 +11,7 @@ type DeliveryTrackingThumbnailViewDto = {
     deliveryCompanyName: string | null;
     deliveryTrackingNumber: string | null;
     thumbnailProductName: string;
+    thumbnailProductImageURL: string;
     totalCountOfProductType: number;
     address: string;
     postalCode: string;
@@ -87,6 +88,10 @@ export default function DeliveriesPage() {
         }).format(date);
     };
 
+    const formImageUrl = (imageUrl: string) => {
+        return `http://localhost:8080${imageUrl.replace('/static', '/api/v1')}`;
+    }
+
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="max-w-4xl mx-auto p-8">
@@ -122,25 +127,36 @@ export default function DeliveriesPage() {
                             key={delivery.orderId}
                             className="flex items-center justify-between p-4 border rounded-md"
                         >
-                            <div>
-                                <h3 className="font-bold text-gray-700">
+                            <div className="flex-1">
+                                <h3 className="font-bold text-gray-700 flex items-center">
+                                    <img
+                                        src={formImageUrl(delivery.thumbnailProductImageURL)}
+                                        alt={delivery.thumbnailProductName}
+                                        className="w-16 h-16 rounded-md object-cover mr-4"
+                                    />
                                     {delivery.thumbnailProductName}
                                     {delivery.totalCountOfProductType > 1 && (
                                         <span
                                             className="text-sm text-gray-500"> 외 {delivery.totalCountOfProductType - 1}개</span>
                                     )}
                                 </h3>
+                            </div>
+
+                            <div className="flex-1">
                                 <p className="text-sm text-gray-500">Email: {delivery.email}</p>
                                 <p className="text-sm text-gray-500">
                                     주문 시간: {formatOrderTime(delivery.orderTime)}
                                 </p>
                             </div>
-                            <Link
-                                href={`/admin/deliveries/${delivery.orderId}`}
-                                className="text-blue-500 hover:underline"
-                            >
-                                상세 보기
-                            </Link>
+
+                            <div className="flex items-center">
+                                <Link
+                                    href={`/admin/deliveries/${delivery.orderId}`}
+                                    className="text-blue-500 hover:underline"
+                                >
+                                    상세 보기
+                                </Link>
+                            </div>
                         </div>
                     ))}
                 </div>
