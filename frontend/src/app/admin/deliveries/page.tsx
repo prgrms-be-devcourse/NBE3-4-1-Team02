@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
-// Delivery 타입을 DeliveryTrackingThumbnailViewDto로 변경
 type DeliveryTrackingThumbnailViewDto = {
     orderId: number;
     email: string;
@@ -28,8 +27,10 @@ export default function DeliveriesPage() {
     // 데이터를 fetch하는 함수
     const fetchDeliveries = async () => {
         try {
+            const validPage = Number(page) && page > 0 ? Number(page) : 1;
+
             const params = new URLSearchParams();
-            if (page) params.append("page", page.toString());
+            params.append("page", validPage.toString());
             if (email) params.append("email", email);
 
             const response = await fetch(
@@ -48,25 +49,45 @@ export default function DeliveriesPage() {
         }
     };
 
-    useEffect(() => {
-        // 첫 로드 시 데이터 fetch
-        fetchDeliveries();
-    }, [page]);  // 페이지가 바뀔 때만 데이터를 fetch
-
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
+
+        router.push(`/admin/deliveries?email=${email}`);
         setPage(1);  // 검색 시 페이지 초기화
         fetchDeliveries();  // 검색 버튼을 눌렀을 때 데이터 fetch
     };
 
+    useEffect(() => {
+        const emailParam = searchParams.get("email") || "";
+        setEmail(emailParam); // email만 상태에 설정
+        fetchDeliveries(); // 이메일이 변경될 때마다 데이터 요청
+    }, [searchParams]);
+
     const handlePageChange = (newPage: number) => {
-        setPage(newPage);
+        const validPage = isNaN(newPage) || newPage <= 0 ? 1 : newPage;
+        setPage(validPage);
+
+        // page는 URL에 포함하지 않음
+        if (email) {
+            router.push(`/admin/deliveries?email=${email}`); // email만 URL에 추가
+        } else {
+            router.push(`/admin/deliveries`); // email이 없으면 URL에 페이지 파라미터를 제외
+        }
     };
+
 
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="max-w-4xl mx-auto p-8">
-                <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">배송 관리</h1>
+                <h1
+                    className="text-3xl font-bold text-center text-gray-800 mb-8 cursor-pointer"
+                    onClick={() => {
+                        setPage(1); // 페이지 상태 초기화
+                        router.push("/admin/deliveries"); // page 파라미터 없이 이동
+                    }}
+                >
+                    배송 관리
+                </h1>
 
                 <form onSubmit={handleSearch} className="mb-6 flex items-center space-x-4">
                     <input
