@@ -53,6 +53,7 @@ public class DeliveryScheduler implements CommandLineRunner {
         if (scheduledTask != null) {
             scheduledTask.cancel(false);
         }
+        log.info("set called with {}", registerDto);
         deliveryService.registerNewDeliveryTimePolicy(registerDto);
         start();
     }
