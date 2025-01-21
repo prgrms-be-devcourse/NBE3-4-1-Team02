@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -64,6 +63,10 @@ export default function DeliveriesPage() {
         setEmail(emailParam); // email만 상태에 설정
         fetchDeliveries(); // 이메일이 변경될 때마다 데이터 요청
     }, [searchParams]);
+
+    useEffect(() => {
+        fetchDeliveries(); // 페이지가 변경될 때마다 데이터 요청
+    }, [page]);
 
     const handlePageChange = (newPage: number) => {
         const validPage = isNaN(newPage) || newPage <= 0 ? 1 : newPage;
@@ -167,7 +170,7 @@ export default function DeliveriesPage() {
                         {page > 1 && (
                             <button
                                 onClick={() => handlePageChange(page - 1)}
-                                className="px-4 py-2 bg-gray-300 rounded-md"
+                                className="px-4 py-2 bg-blue-500 rounded-md hover:bg-blue-600 transition-shadow"
                             >
                                 이전
                             </button>
@@ -182,7 +185,7 @@ export default function DeliveriesPage() {
                         {page < totalPages && (
                             <button
                                 onClick={() => handlePageChange(page + 1)}
-                                className="px-4 py-2 bg-gray-300 rounded-md"
+                                className="px-4 py-2 bg-blue-500 rounded-md hover:bg-blue-600 transition-shadow"
                             >
                                 다음
                             </button>
