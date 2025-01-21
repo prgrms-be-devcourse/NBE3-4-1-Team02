@@ -1,6 +1,7 @@
 package com.example.nbe341team02.domain.product.service;
 
 import com.example.nbe341team02.domain.product.dto.ProductDescriptionDTO;
+import com.example.nbe341team02.domain.product.dto.ProductRequestDTO;
 import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import com.example.nbe341team02.global.exception.CustomException;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -101,16 +103,22 @@ public class ProductService {
     //--김규진--
     //상품 수정 기능
     @jakarta.transaction.Transactional
-    public ProductDescriptionDTO updateProduct(Long id, ProductDescriptionDTO productDescriptionDTO) {
+    public ProductDescriptionDTO updateProduct(Long id, @ModelAttribute ProductRequestDTO productRequestDTO) {
         //예외 - 상품이 없음
         Product product =  productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        product.setName(productDescriptionDTO.getName());
-        product.setPrice(productDescriptionDTO.getPrice());
-        product.setStock(productDescriptionDTO.getStock());
-        product.setStatus(productDescriptionDTO.isStatus());
-        product.setDescription(productDescriptionDTO.getDescription());
+        // 이미지 파일이 있을 경우 저장, 없으면 기존 이미지 유지
+        String imageUrl = (productRequestDTO.getFile() != null && !productRequestDTO.getFile().isEmpty())
+                ? saveImage(productRequestDTO.getFile())  // 이미지 저장 메서드 호출
+                : product.getImageUrl();  // 기존 이미지 유지
+
+        product.setName(productRequestDTO.getName());
+        product.setPrice(productRequestDTO.getPrice());
+        product.setStock(productRequestDTO.getStock());
+        product.setStatus(productRequestDTO.isStatus());
+        product.setDescription(productRequestDTO.getDescription());
+        product.setImageUrl(imageUrl);
 
         Product updatedProduct = productRepository.save(product);
 
