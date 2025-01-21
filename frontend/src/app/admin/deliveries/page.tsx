@@ -64,6 +64,10 @@ export default function DeliveriesPage() {
         fetchDeliveries(); // 이메일이 변경될 때마다 데이터 요청
     }, [searchParams]);
 
+    useEffect(() => {
+        fetchDeliveries(); // 페이지가 변경될 때마다 데이터 요청
+    }, [page]);
+
     const handlePageChange = (newPage: number) => {
         const validPage = isNaN(newPage) || newPage <= 0 ? 1 : newPage;
         setPage(validPage);
