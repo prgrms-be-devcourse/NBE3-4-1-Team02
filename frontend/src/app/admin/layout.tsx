@@ -1,13 +1,22 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export default function AdminLayout({
                                            children,
                                        }: {
     children: React.ReactNode
 }) {
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!localStorage.getItem('adminToken')) {
+            router.push('/admin/login');
+        }
+    }, [router]);
+
     // '정책 관리' 클릭 시 서브 메뉴 표시 여부를 위한 상태
     const [isPoliciesMenuOpen, setIsPoliciesMenuOpen] = useState(false);
 
@@ -76,7 +85,7 @@ export default function AdminLayout({
             }
             <div className="flex-1 p-8 bg-gray-100">
                 {children} {/* 여기에 각 페이지의 콘텐츠가 렌더링됩니다 */}
-    </div>
-</div>
-)
+            </div>
+        </div>
+    );
 }

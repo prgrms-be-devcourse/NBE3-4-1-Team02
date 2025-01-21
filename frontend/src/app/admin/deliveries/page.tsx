@@ -28,17 +28,17 @@ export default function DeliveriesPage() {
     // 데이터를 fetch하는 함수
     const fetchDeliveries = async () => {
         try {
-            // 로그인이 되어있지 않으면 로그인 페이지로 리다이렉트
-            if (!localStorage.getItem('token')) {
-                router.push('/admin/login');
-                return;
-            }
+            // // 로그인이 되어있지 않으면 로그인 페이지로 리다이렉트
+            // if (!localStorage.getItem('token')) {
+            //     router.push('/admin/login');
+            //     return;
+            // }
 
-            const token = localStorage.getItem('token');
+            // const token = localStorage.getItem('token');
             const response = await fetch(
                 `http://localhost:8080/api/v1/admin/deliveries`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
                     'Content-Type': 'application/json'
                 }
             });
