@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-@Order(3)
 public class DeliveryCompanyInitData implements CommandLineRunner {
     private final DeliveryCompanyRepository deliveryCompanyRepository;
 
