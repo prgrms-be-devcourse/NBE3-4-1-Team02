@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    // 이미지 저장 메소드
+    // 이미지 저장 메소드 - 상품 추가 시에
     public String saveImage(MultipartFile file) {
         try {
             // 상품 개수 조회 (현재 저장된 상품 수 + 1)
@@ -52,6 +53,23 @@ public class ProductService {
         String fileName = file.getOriginalFilename(); //파일의 원래 이름을 가져옴
         return fileName != null && fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : ""; //확장ㅈㅏ 가져옴
     }
+
+    // 이미지 저장 (상품 ID를 파일명으로 설정)- 상품 수정 시에
+    private String saveImageWithIdAsName(MultipartFile file, Long id) {
+        // 상품 ID를 사용하여 파일 이름을 생성
+        String fileName = "product" + id + ".png"; // 만약 id 2번 사움을 수정한다면 그 수정된 이미지의 이름이 product2로 저장되게
+        Path path = Paths.get("src/main/resources/static", fileName);
+
+
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);  // 기존 파일 덮어쓰기
+        } catch (IOException e) {
+            throw new RuntimeException("이미지 파일 저장에 실패했습니다.");
+        }
+
+        return "/static/" + fileName;
+    }
+
 
     // 상품 추가 기능 (이미지 저장 기능 추가)
     public ProductDescriptionDTO addProduct(ProductDescriptionDTO productDescriptionDTO, MultipartFile file) {
@@ -104,21 +122,23 @@ public class ProductService {
     //상품 수정 기능
     @jakarta.transaction.Transactional
     public ProductDescriptionDTO updateProduct(Long id, @ModelAttribute ProductRequestDTO productRequestDTO) {
-        //예외 - 상품이 없음
-        Product product =  productRepository.findById(id)
+        // 상품 찾기
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        // 이미지 파일이 있을 경우 저장, 없으면 기존 이미지 유지
+        // 이미지 파일이 있을 경우 새로운 이미지 파일 이름을 상품 ID로 설정
         String imageUrl = (productRequestDTO.getFile() != null && !productRequestDTO.getFile().isEmpty())
-                ? saveImage(productRequestDTO.getFile())  // 이미지 저장 메서드 호출
-                : product.getImageUrl();  // 기존 이미지 유지
+                ? saveImageWithIdAsName(productRequestDTO.getFile(), id)  // 상품 ID로 이미지 파일 저장
+                : product.getImageUrl();  // 기존 이미지 URL 사용
 
+        // 상품 정보 업데이트
         product.setName(productRequestDTO.getName());
         product.setPrice(productRequestDTO.getPrice());
         product.setStock(productRequestDTO.getStock());
         product.setStatus(productRequestDTO.isStatus());
         product.setDescription(productRequestDTO.getDescription());
         product.setImageUrl(imageUrl);
+
 
         Product updatedProduct = productRepository.save(product);
 
@@ -206,6 +226,7 @@ public class ProductService {
                 .description(productDescriptionDTO.getDescription())
                 .build();
     }
+
 
 
 }
