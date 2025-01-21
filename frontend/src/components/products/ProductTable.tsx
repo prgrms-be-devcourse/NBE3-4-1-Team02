@@ -16,7 +16,7 @@ export const ProductTable = ({ products, onEdit, onDelete, onStatusToggle }: Pro
             {products.map((product) => (
                 <div key={product.id} className="border rounded-lg p-4 shadow">
                     <img
-                        src={`${API_BASE_URL}${product.imageUrl}`}
+                        src={product.imageUrl.replace('/static/', 'http://localhost:8080/api/v1/')}
                         alt={product.name}
                         className="w-full h-48 object-cover mb-4 rounded"
                     />
