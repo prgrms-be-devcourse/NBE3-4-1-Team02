@@ -11,6 +11,11 @@ interface ProductTableProps {
 }
 
 export const ProductTable = ({ products, onEdit, onDelete, onStatusToggle }: ProductTableProps) => {
+    // products가 없거나 배열이 아닐 때 처리
+    if (!products || !Array.isArray(products)) {
+        return <div>상품이 없습니다.</div>;
+    }
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {products.map((product) => (

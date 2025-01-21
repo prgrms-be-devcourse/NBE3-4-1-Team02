@@ -28,25 +28,45 @@ export default function DeliveriesPage() {
     // 데이터를 fetch하는 함수
     const fetchDeliveries = async () => {
         try {
-            const validPage = Number(page) && page > 0 ? Number(page) : 1;
+            // 로그인이 되어있지 않으면 로그인 페이지로 리다이렉트
+            if (!localStorage.getItem('token')) {
+                router.push('/admin/login');
+                return;
+            }
 
-            const params = new URLSearchParams();
-            params.append("page", validPage.toString());
-            if (email) params.append("email", email);
-
+            const token = localStorage.getItem('token');
             const response = await fetch(
-                `http://localhost:8080/api/v1/admin/deliveries?${params.toString()}`
-            );
+                `http://localhost:8080/api/v1/admin/deliveries`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
 
+                        
+            // const validPage = Number(page) && page > 0 ? Number(page) : 1;
+
+            // const params = new URLSearchParams();
+            // params.append("page", validPage.toString());
+            // if (email) params.append("email", email);
+
+            // const response = await fetch(
+            //     `http://localhost:8080/api/v1/admin/deliveries?${params.toString()}`
+            // );
             if (!response.ok) {
+                if (response.status === 401) {
+                    router.push('/admin/login');
+                    return;
+                }
                 throw new Error("Failed to fetch deliveries");
             }
 
             const data = await response.json();
-            setDeliveries(data.content);  // Assuming Spring Pageable returns content array
-            setTotalPages(data.totalPages);  // Assuming totalPages is returned
+            setDeliveries(data.content);
+            setTotalPages(data.totalPages);
         } catch (error) {
-            console.error(error);
+            console.error('Fetch error:', error);
+            throw error;
         }
     };
 
