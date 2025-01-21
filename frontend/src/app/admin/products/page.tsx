@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { ProductTable } from '@/components/products/ProductTable';
@@ -25,7 +25,23 @@ export default function ProductManagementPage() {
     // 상품 목록 조회
     const fetchProducts = async () => {
         try {
-            const response = await fetch(API_ENDPOINTS.PRODUCTS);
+            if (!localStorage.getItem('adminToken')) {
+                router.push('/admin/login');
+                return;
+            }
+
+            const token = localStorage.getItem('adminToken');
+            const response = await fetch(
+                API_ENDPOINTS.PRODUCTS, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            if (response.status == 403){
+                router.push('/admin/login');
+                return;
+            }
             const data = await response.json();
             setProducts(data);
         } catch (error) {
@@ -37,6 +53,18 @@ export default function ProductManagementPage() {
         fetchProducts();
     }, []);
 
+    useEffect(() => {
+        if (formMode === 'update' && selectedProduct) {
+            setFormData({
+                name: selectedProduct.name || '',
+                price: selectedProduct.price || 0,
+                stock: selectedProduct.stock || 0,
+                status: selectedProduct.status || false,
+                description: selectedProduct.description || '',
+                image: null, // 이미지는 수정 모드에서 따로 설정하지 않음
+            });
+        }
+    }, [formMode, selectedProduct]);
     // 입력 핸들러
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -70,12 +98,22 @@ export default function ProductManagementPage() {
         }
 
         try {
-            const response = await fetch(API_ENDPOINTS.PRODUCTS, {
-                method: 'POST',
-                body: formDataToSend,
-            });
+            alert(formData.image);
 
-            if (!response.ok) throw new Error('Failed to create product');
+            const token = localStorage.getItem('adminToken');
+            const response = await fetch(
+                API_ENDPOINTS.PRODUCTS, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    method: 'POST',
+                    body: formDataToSend
+                });
+
+            if (!response.ok){
+                alert(JSON.stringify(response));
+                throw new Error('Failed to create product');
+            }
 
             await fetchProducts();
             setIsModalOpen(false);
@@ -92,9 +130,11 @@ export default function ProductManagementPage() {
         if (!selectedProduct) return;
 
         try {
+            const token = localStorage.getItem('adminToken');
             const response = await fetch(API_ENDPOINTS.PRODUCT_DETAIL(selectedProduct.id), {
                 method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -122,9 +162,13 @@ export default function ProductManagementPage() {
     // 상품 삭제
     const handleDelete = async (id: number) => {
         if (window.confirm('정말로 이 상품을 삭제하시겠습니까?')) {
+            const token = localStorage.getItem('adminToken');
             try {
                 const response = await fetch(API_ENDPOINTS.PRODUCT_DETAIL(id), {
                     method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
 
                 if (response.ok) {
@@ -139,14 +183,16 @@ export default function ProductManagementPage() {
     // 상태 변경
     const handleStatusToggle = async (id: number, currentStatus: boolean) => {
         try {
+            const token = localStorage.getItem('adminToken');
+            const newStatus = !currentStatus;
             const response = await fetch(API_ENDPOINTS.PRODUCT_STATUS(id), {
-                method: 'PATCH',
+                method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status: !currentStatus }),
+                body: JSON.stringify(newStatus),
             });
-
             if (response.ok) {
                 await fetchProducts();
             }
@@ -186,7 +232,7 @@ export default function ProductManagementPage() {
     return (
         <div className="container mx-auto p-4">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Product Management</h1>
+                <h1 className="text-2xl font-bold bg-blue-500 px-4 py-2 rounded">Product Management</h1>
                 <button
                     onClick={() => {
                         setFormMode('create');
@@ -210,51 +256,51 @@ export default function ProductManagementPage() {
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h2 className="text-xl font-bold mb-4">
+                        <h2 className="text-center text-3xl font-bold text-gray-800 mb-6">
                             {formMode === 'create' ? '상품 등록' : '상품 수정'}
                         </h2>
                         <form onSubmit={formMode === 'create' ? handleCreate : handleUpdate}>
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">상품명</label>
+                                    <label className="text-sm text-center font-semibold text-gray-800">상품명</label>
                                     <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleInputChange}
-                                        className="w-full border rounded p-2"
+                                        className="w-full border rounded p-2 text-sm text-gray-800"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">가격</label>
+                                    <label className="text-sm text-center font-semibold text-gray-800">가격</label>
                                     <input
                                         type="number"
                                         name="price"
                                         value={formData.price}
                                         onChange={handleInputChange}
-                                        className="w-full border rounded p-2"
+                                        className="w-full border rounded p-2 text-sm text-gray-800"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">재고</label>
+                                    <label className="text-sm text-center font-semibold text-gray-800">재고</label>
                                     <input
                                         type="number"
                                         name="stock"
                                         value={formData.stock}
                                         onChange={handleInputChange}
-                                        className="w-full border rounded p-2"
+                                        className="w-full border rounded p-2 text-sm text-gray-800"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">설명</label>
+                                    <label className="text-sm text-center font-semibold text-gray-800">설명</label>
                                     <textarea
                                         name="description"
                                         value={formData.description}
                                         onChange={handleInputChange}
-                                        className="w-full border rounded p-2"
+                                        className="w-full border rounded p-2 text-sm text-gray-800"
                                         rows={3}
                                     />
                                 </div>

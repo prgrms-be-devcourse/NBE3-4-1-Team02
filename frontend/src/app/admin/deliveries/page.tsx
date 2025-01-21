@@ -43,6 +43,10 @@ export default function DeliveriesPage() {
                 }
             });
 
+            if (response.status == 403){
+                router.push('/admin/login');
+                return;
+            }
                         
             const validPage = Number(page) && page > 0 ? Number(page) : 1;
 

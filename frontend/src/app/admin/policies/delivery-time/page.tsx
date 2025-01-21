@@ -40,6 +40,10 @@ const DeliveryTimePolicyPage = () => {
                         "Content-Type": "application/json",
                     }
                 });
+            if (response.status == 403){
+                router.push('/admin/login');
+                return;
+            }
             if (!response.ok) {
                 throw new Error("데이터를 가져오는데 실패했습니다.");
             }

@@ -55,10 +55,13 @@ public class DeliveryService {
     }
 
     private void saveDelivery(Set<Order> ordersToBeDelivered, Set<DeliveryCompany> activeDeliveryCompanies){
-        deliveryRepository.saveAndFlush(Delivery.builder()
+        Delivery delivery = Delivery.builder()
                 .deliveryCompany(activeDeliveryCompanies.stream().findAny().orElseThrow())
                 .orders(ordersToBeDelivered)
-                .build());
+                .build();
+
+        ordersToBeDelivered.forEach(order -> order.setDelivery(delivery));
+        deliveryRepository.saveAndFlush(delivery);
     }
 
     public void startDelivery(){
