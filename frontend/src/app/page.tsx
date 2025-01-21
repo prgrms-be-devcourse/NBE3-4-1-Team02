@@ -11,6 +11,7 @@ declare global {
 
 // 타입 정의
 type Product = {
+  imageUrl: string;
   id: number;
   name: string;
   price: number;
@@ -156,11 +157,19 @@ export default function CreateOrder() {
                         className="flex items-center justify-between p-4 bg-white border rounded-md shadow-sm"
                     >
                       <div>
+                        <img
+                            src={product.imageUrl.replace('/static/', 'http://localhost:8080/api/v1/')}
+                            alt={product.name}
+                            className="w-60 h-40 object-cover rounded-md mr-4"
+                        />
+                      </div>
+                      <div>
                         <h3 className="font-bold text-gray-700">{product.name}</h3>
                         <span className={`text-sm ${product.status ? 'text-green-600' : 'text-red-600'}`}>
                           {product.status ? '판매중' : '품절'}
                         </span>
                       </div>
+
                       <p className="text-gray-700">{product.price}원</p>
                       {product.status ? (
                           <button onClick={() => addToCart(product)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
