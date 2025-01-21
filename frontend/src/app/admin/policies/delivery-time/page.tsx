@@ -109,33 +109,6 @@ const DeliveryTimePolicyPage = () => {
                     )}
                 </div>
             </div>
-
-            {/*<div className="flex justify-between items-center py-4">*/}
-            {/*    /!* 이전 버튼 *!/*/}
-            {/*    {currentPage > 0 && (*/}
-            {/*        <button*/}
-            {/*            onClick={() => handlePageChange(deliveryTimePolicies.pageable.pageNumber - 1)}*/}
-            {/*            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"*/}
-            {/*        >*/}
-            {/*            이전*/}
-            {/*        </button>*/}
-            {/*    )}*/}
-
-            {/*    /!* 페이지 정보 *!/*/}
-            {/*    <span className="text-sm text-gray-700">*/}
-            {/*            {currentPage} / {totalPages}*/}
-            {/*    </span>*/}
-
-            {/*    /!* 다음 버튼 *!/*/}
-            {/*    {currentPage < totalPages - 1 && (*/}
-            {/*        <button*/}
-            {/*            onClick={() => handlePageChange(currentPage + 1)}*/}
-            {/*            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"*/}
-            {/*        >*/}
-            {/*            다음*/}
-            {/*        </button>*/}
-            {/*    )}*/}
-            {/*</div>*/}
         </div>
     );
 };
