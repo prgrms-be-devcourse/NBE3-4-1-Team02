@@ -28,31 +28,28 @@ export default function DeliveriesPage() {
     // 데이터를 fetch하는 함수
     const fetchDeliveries = async () => {
         try {
-            // // 로그인이 되어있지 않으면 로그인 페이지로 리다이렉트
-            // if (!localStorage.getItem('token')) {
-            //     router.push('/admin/login');
-            //     return;
-            // }
+            // 로그인이 되어있지 않으면 로그인 페이지로 리다이렉트
+            if (!localStorage.getItem('adminToken')) {
+                router.push('/admin/login');
+                return;
+            }
 
-            // const token = localStorage.getItem('token');
+            const token = localStorage.getItem('adminToken');
             const response = await fetch(
                 `http://localhost:8080/api/v1/admin/deliveries`, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
 
                         
-            // const validPage = Number(page) && page > 0 ? Number(page) : 1;
+            const validPage = Number(page) && page > 0 ? Number(page) : 1;
 
-            // const params = new URLSearchParams();
-            // params.append("page", validPage.toString());
-            // if (email) params.append("email", email);
+            const params = new URLSearchParams();
+            params.append("page", validPage.toString());
+            if (email) params.append("email", email);
 
-            // const response = await fetch(
-            //     `http://localhost:8080/api/v1/admin/deliveries?${params.toString()}`
-            // );
             if (!response.ok) {
                 if (response.status === 401) {
                     router.push('/admin/login');

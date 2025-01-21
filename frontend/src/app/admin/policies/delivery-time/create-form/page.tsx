@@ -29,9 +29,17 @@ export default function DeliveryTimePolicyPage() {
         };
 
         try {
+
+            if (!localStorage.getItem('adminToken')) {
+                router.push('/admin/login');
+                return;
+            }
+            const token = localStorage.getItem('adminToken');
+
             const response = await fetch("http://localhost:8080/api/v1/admin/policies/delivery-time", {
                 method: "POST",
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(payload),

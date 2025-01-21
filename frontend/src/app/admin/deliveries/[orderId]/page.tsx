@@ -44,8 +44,20 @@ export default function DeliveryDetailsPage() {
         const fetchDeliveryDetails = async () => {
             if (!orderId) return;
 
+            if (!localStorage.getItem('adminToken')) {
+                router.push('/admin/login');
+                return;
+            }
+
+            const token = localStorage.getItem('adminToken');
+
             try {
-                const response = await fetch(`http://localhost:8080/api/v1/admin/deliveries/${orderId}`);
+                const response = await fetch(`http://localhost:8080/api/v1/admin/deliveries/${orderId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
                 if (!response.ok) {
                     if (response.status === 404){
