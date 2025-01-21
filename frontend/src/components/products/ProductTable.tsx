@@ -20,10 +20,18 @@ export const ProductTable = ({ products, onEdit, onDelete, onStatusToggle }: Pro
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {products.map((product) => (
                 <div key={product.id} className="border rounded-lg p-4 shadow">
+                    {/* {console.log('Product image URL:', product.imageUrl)} */}
                     <img
-                        src={product.imageUrl.replace('/static/', 'http://localhost:8080/api/v1/')}
+                        src={product.imageUrl 
+                            ? `http://localhost:8080/api/v1/static${product.imageUrl}`
+                            : 'https://via.placeholder.com/300'
+                        }
                         alt={product.name}
                         className="w-full h-48 object-cover mb-4 rounded"
+                        onError={(e) => {
+                            console.error('Image load error for URL:', product.imageUrl);
+                            e.currentTarget.src = 'https://via.placeholder.com/300';
+                        }}
                     />
                     <h3 className="text-lg font-semibold">{product.name}</h3>
                     <p className="text-gray-600">Price: {product.price}₩</p>

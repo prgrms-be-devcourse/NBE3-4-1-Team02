@@ -25,8 +25,23 @@ export default function ProductManagementPage() {
     // 상품 목록 조회
     const fetchProducts = async () => {
         try {
-            const response = await fetch(API_ENDPOINTS.PRODUCTS);
+            const response = await fetch(API_ENDPOINTS.PRODUCTS, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    router.push('/admin/login');
+                    return;
+                }
+                throw new Error('Failed to fetch products');
+            }
+
             const data = await response.json();
+            console.log('Fetched products:', data); // 데이터 확인용
             setProducts(data);
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -73,9 +88,16 @@ export default function ProductManagementPage() {
             const response = await fetch(API_ENDPOINTS.PRODUCTS, {
                 method: 'POST',
                 body: formDataToSend,
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+                }
             });
 
-            if (!response.ok) throw new Error('Failed to create product');
+            if (!response.ok) {
+                const errorData = await response.text();
+                console.error('Server response:', errorData);
+                throw new Error(`Failed to create product: ${response.status} ${errorData}`);
+            }
 
             await fetchProducts();
             setIsModalOpen(false);
