@@ -40,7 +40,7 @@ export default function CreateOrder() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/products");
+        const response = await fetch("http://localhost:8080/api/v1/products");
         if (!response.ok) {
           throw new Error("상품 데이터를 가져오는 데 실패했습니다.");
         }
@@ -155,14 +155,22 @@ export default function CreateOrder() {
                         key={product.id}
                         className="flex items-center justify-between p-4 bg-white border rounded-md shadow-sm"
                     >
-                      <h3 className="font-bold text-gray-700">{product.name}</h3>
+                      <div>
+                        <h3 className="font-bold text-gray-700">{product.name}</h3>
+                        <span className={`text-sm ${product.status ? 'text-green-600' : 'text-red-600'}`}>
+                          {product.status ? '판매중' : '품절'}
+                        </span>
+                      </div>
                       <p className="text-gray-700">{product.price}원</p>
-                      <button
-                          onClick={() => addToCart(product)}
-                          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                      >
-                        추가
-                      </button>
+                      {product.status ? (
+                          <button onClick={() => addToCart(product)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                            추가
+                          </button>
+                      ) : (
+                          <button disabled className="px-4 py-2 bg-gray-400 text-white rounded-md cursor-not-allowed">
+                            품절
+                          </button>
+                      )}
                     </div>
                 ))}
               </div>
