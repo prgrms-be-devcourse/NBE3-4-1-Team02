@@ -1,20 +1,12 @@
 package com.example.nbe341team02.order.service;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.nbe341team02.domain.orderProduct.repository.OrderProductRepository;
 import com.example.nbe341team02.domain.orders.dto.request.OrderCreateRequest;
@@ -26,6 +18,13 @@ import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.service.ProductService;
 import com.example.nbe341team02.global.exception.CustomException;
 import com.example.nbe341team02.global.exception.ErrorCode;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
@@ -94,7 +93,7 @@ public class OrderServiceTest {
     @DisplayName("정상 테스트: 주문 성공")
     public void testCreateOrder() {
         // Given
-        Product product = new Product(1L, "Product 1", 1000, 3, true, "설명", "image-url");
+        Product product = new Product(1L, "Product 1", 1000, 3, true,"설명");
         OrderCreateRequest request = new OrderCreateRequest(
           "test@example.com",
           "Test Address",

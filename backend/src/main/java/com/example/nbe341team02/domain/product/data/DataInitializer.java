@@ -5,9 +5,12 @@ import org.springframework.stereotype.Component;
 
 import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
+import jakarta.annotation.PostConstruct;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 @Component
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer {
 
     private final ProductRepository productRepository;
 
@@ -15,8 +18,8 @@ public class DataInitializer implements CommandLineRunner {
         this.productRepository = productRepository;
     }
 
-    @Override
-    public void run(String... args) throws Exception {
+    @PostConstruct
+    public void init() {
         if (productRepository.count() == 0) {
             Product product1 = new Product();
             product1.setName("1번 상품");

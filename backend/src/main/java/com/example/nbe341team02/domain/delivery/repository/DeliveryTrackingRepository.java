@@ -39,7 +39,7 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
     private BooleanBuilder emailFilter(String email){
         BooleanBuilder builder = new BooleanBuilder();
         if (email != null) {
-            builder.and(o.email.eq(email));
+            builder.and(o.email.containsIgnoreCase(email));
         }
         return builder;
     }
@@ -59,13 +59,14 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
         return from(o)
                 .select(Projections.constructor(DeliveryTrackingThumbnailViewDto.class,
                         o.id,
+                        o.createdAt,
                         o.email,
                         o.address,
                         o.postalCode,
                         from(op)
                                 .innerJoin(p)
                                 .on(op.product.eq(p))
-                                .select(op.product.name.as("productName"))
+                                .select(op.product.name)
                                 .where(op.id.eq(
                                         JPAExpressions
                                                 .select(op.id.max())
@@ -73,6 +74,17 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
                                                 .where(op.order.eq(o))
                                                 .distinct()
                                 )), //limit(1) 이 왠지 모르게 적용 안돼서 이렇게 했습니다.
+                        from(op)
+                                .innerJoin(p)
+                                .on(op.product.eq(p))
+                                .select(op.product.imageUrl)
+                                .where(op.id.eq(
+                                        JPAExpressions
+                                                .select(op.id.max())
+                                                .from(op)
+                                                .where(op.order.eq(o))
+                                                .distinct()
+                                )),
                         op.count(),
                         dc.companyName,
                         dc.trackingURLTemplate,
@@ -95,6 +107,7 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
         DeliveryTrackingDetailViewDto detailViewDto = from(o)
                 .select(Projections.constructor(DeliveryTrackingDetailViewDto.class,
                         o.id,
+                        o.createdAt,
                         o.email,
                         o.address,
                         o.postalCode,

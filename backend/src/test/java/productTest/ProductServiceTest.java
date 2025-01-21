@@ -36,15 +36,9 @@ class ProductServiceTest {
     void 상품수정_성공() {
         // given
         Long productId = 1L;
-        Product existingProduct = Product.builder()
-                .id(productId)
-                .name("Basic Product")
-                .price(1000)
-                .stockQuantity(10)
-                .isActive(true)
-                .description("설명")
-                .imageUrl("image-url")
-                .build();
+        Product existingProduct = new Product(
+                productId, "Basic Product", 1000, 10, true, "설정"
+        );
         ProductDescriptionDTO updateDTO = new ProductDescriptionDTO(
                 productId, "Updated Product", 2000, 20, true, "Updated description"
         );
