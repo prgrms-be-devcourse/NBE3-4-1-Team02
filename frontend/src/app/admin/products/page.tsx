@@ -5,6 +5,7 @@ import { ProductTable } from '@/components/products/ProductTable';
 import { Product, ProductFormData } from '@/types/product';
 import { API_ENDPOINTS } from '@/constants/api';
 import { PlusCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function ProductManagementPage() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -19,6 +20,7 @@ export default function ProductManagementPage() {
         description: '',
         image: null
     });
+    const router = useRouter();
 
     // 상품 목록 조회
     const fetchProducts = async () => {
