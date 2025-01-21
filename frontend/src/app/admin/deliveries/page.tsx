@@ -166,7 +166,7 @@ export default function DeliveriesPage() {
                         {page > 1 && (
                             <button
                                 onClick={() => handlePageChange(page - 1)}
-                                className="px-4 py-2 bg-gray-300 rounded-md"
+                                className="px-4 py-2 bg-blue-500 rounded-md hover:bg-blue-600 transition-shadow"
                             >
                                 이전
                             </button>
@@ -181,7 +181,7 @@ export default function DeliveriesPage() {
                         {page < totalPages && (
                             <button
                                 onClick={() => handlePageChange(page + 1)}
-                                className="px-4 py-2 bg-gray-300 rounded-md"
+                                className="px-4 py-2 bg-blue-500 rounded-md hover:bg-blue-600 transition-shadow"
                             >
                                 다음
                             </button>
