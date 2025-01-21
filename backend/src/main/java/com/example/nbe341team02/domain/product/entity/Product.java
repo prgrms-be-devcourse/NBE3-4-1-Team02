@@ -40,11 +40,10 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean status;
 
+    @Column(nullable = true)
+    private String description;
 
-    public void reduceStock(int quantity) {
-        if (this.stock < quantity) {
-            throw new CustomException(ErrorCode.INSUFFICIENT_STOCK);
-        }
-        this.stock -= quantity;
-    }
+    @Column(nullable = true)
+    private String imageUrl;
+
 }

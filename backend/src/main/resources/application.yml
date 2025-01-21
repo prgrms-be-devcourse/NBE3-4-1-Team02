@@ -7,11 +7,14 @@ spring:
         web-allow-others: true
   application:
     name: NBE3-4-1-Team02
+#  datasource:
+#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySql
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySql
+    url: jdbc:h2:mem:product_db;DB_CLOSE_ON_EXIT=FALSE;MODE=MySql  # DB 유지, 새로운이름
     driverClassName: org.h2.Driver
     username: sa
     password:
+    initialize: true
   jpa:
     show-sql: true
     hibernate:
