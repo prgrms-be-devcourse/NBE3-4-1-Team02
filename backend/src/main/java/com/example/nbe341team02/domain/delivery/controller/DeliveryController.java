@@ -3,6 +3,7 @@ package com.example.nbe341team02.domain.delivery.controller;
 import com.example.nbe341team02.domain.delivery.dto.DeliveryTimePolicyRegisterDto;
 import com.example.nbe341team02.domain.delivery.dto.DeliveryTrackingDetailViewDto;
 import com.example.nbe341team02.domain.delivery.dto.DeliveryTrackingThumbnailViewDto;
+import com.example.nbe341team02.domain.delivery.entity.DeliveryTimePolicy;
 import com.example.nbe341team02.domain.delivery.scheduler.DeliveryScheduler;
 import com.example.nbe341team02.domain.delivery.service.DeliveryService;
 import com.example.nbe341team02.global.page.PageRequestDto;
@@ -19,10 +20,17 @@ public class DeliveryController {
     private final DeliveryScheduler deliveryScheduler;
     private final DeliveryService deliveryService;
 
+    @GetMapping("/admin/policies/delivery-time")
+    public ResponseEntity<Page<DeliveryTimePolicy>> getAllDeliveryTimePolicies(
+            @Valid PageRequestDto pageRequestDto
+    ) {
+        return new ResponseEntity<>(deliveryService.getDeliveryTimePolicyPage(pageRequestDto), HttpStatus.OK);
+    }
+
     @PostMapping("/admin/policies/delivery-time")
     public ResponseEntity<Void> createNewDeliveryTimePolicy(
             @Valid @RequestBody DeliveryTimePolicyRegisterDto registerDto
-            ){
+    ){
         deliveryScheduler.setDeliveryTime(registerDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -31,13 +39,14 @@ public class DeliveryController {
     public ResponseEntity<Page<DeliveryTrackingThumbnailViewDto>> getAllDeliveryTrackingPage(
             @Valid @ModelAttribute PageRequestDto requestDto,
             @RequestParam(required = false) String email
-            ){
+    ){
         return new ResponseEntity<>(deliveryService.getDeliveryTrackingPage(requestDto, email), HttpStatus.OK);
     }
 
     @GetMapping("/admin/deliveries/{orderId}")
     public ResponseEntity<DeliveryTrackingDetailViewDto> getDeliveryTrackingDetail(
-            @PathVariable Long orderId) {
+            @PathVariable Long orderId
+    ) {
         if (orderId == null || orderId <= 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
