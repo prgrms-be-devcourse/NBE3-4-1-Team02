@@ -6,6 +6,7 @@ import Link from "next/link";
 
 type DeliveryTrackingThumbnailViewDto = {
     orderId: number;
+    orderTime: string;
     email: string;
     deliveryCompanyName: string | null;
     deliveryTrackingNumber: string | null;
@@ -75,6 +76,16 @@ export default function DeliveriesPage() {
         }
     };
 
+    const formatOrderTime = (orderTime: string) => {
+        const date = new Date(orderTime);
+        return new Intl.DateTimeFormat('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+        }).format(date);
+    };
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -120,6 +131,9 @@ export default function DeliveriesPage() {
                                     )}
                                 </h3>
                                 <p className="text-sm text-gray-500">Email: {delivery.email}</p>
+                                <p className="text-sm text-gray-500">
+                                    주문 시간: {formatOrderTime(delivery.orderTime)}
+                                </p>
                             </div>
                             <Link
                                 href={`/admin/deliveries/${delivery.orderId}`}

@@ -1,14 +1,19 @@
 package com.example.nbe341team02.domain.delivery.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
 @Getter
 public class DeliveryTrackingThumbnailViewDto {
     private final Long orderId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private final LocalDateTime orderTime;
     private final String email;
     private final String address;
     private final String postalCode;

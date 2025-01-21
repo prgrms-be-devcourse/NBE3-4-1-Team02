@@ -23,6 +23,7 @@ type OrderProduct = {
 
 type DeliveryTrackingDetailViewDto = {
     orderId: number;
+    orderTime: string;
     email: string;
     address: string;
     postalCode: string;
@@ -63,6 +64,17 @@ export default function DeliveryDetailsPage() {
         fetchDeliveryDetails();
     }, [orderId]);
 
+    const formatOrderTime = (orderTime: string) => {
+        const date = new Date(orderTime);
+        return new Intl.DateTimeFormat('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+        }).format(date);
+    };
+
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="max-w-4xl mx-auto p-8">
@@ -74,6 +86,10 @@ export default function DeliveryDetailsPage() {
                             <div className="flex justify-between">
                                 <span className="font-semibold text-gray-600">Email:</span>
                                 <span className="text-gray-800">{deliveryData.email}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Email:</span>
+                                <span className="text-gray-800">{formatOrderTime(deliveryData.orderTime)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="font-semibold text-gray-600">주문 주소:</span>
@@ -113,13 +129,16 @@ export default function DeliveryDetailsPage() {
                                                 {/* 주문 상세 정보 */}
                                                 <div className="text-right">
                                                     <p className="text-gray-600">
-                                                        수량: <span className="font-semibold">{orderProduct.quantity}</span>
+                                                        수량: <span
+                                                        className="font-semibold">{orderProduct.quantity}</span>
                                                     </p>
                                                     <p className="text-gray-600">
-                                                        개당 : <span className="font-semibold">{orderProduct.price.toLocaleString()}원</span>
+                                                        개당 : <span
+                                                        className="font-semibold">{orderProduct.price.toLocaleString()}원</span>
                                                     </p>
                                                     <p className="text-gray-800 font-semibold">
-                                                        총 : {(orderProduct.price * orderProduct.quantity).toLocaleString()}원
+                                                        총
+                                                        : {(orderProduct.price * orderProduct.quantity).toLocaleString()}원
                                                     </p>
                                                 </div>
                                             </div>

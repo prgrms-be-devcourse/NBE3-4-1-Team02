@@ -59,6 +59,7 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
         return from(o)
                 .select(Projections.constructor(DeliveryTrackingThumbnailViewDto.class,
                         o.id,
+                        o.createdAt,
                         o.email,
                         o.address,
                         o.postalCode,
@@ -95,6 +96,7 @@ public class DeliveryTrackingRepository extends QuerydslRepositorySupport {
         DeliveryTrackingDetailViewDto detailViewDto = from(o)
                 .select(Projections.constructor(DeliveryTrackingDetailViewDto.class,
                         o.id,
+                        o.createdAt,
                         o.email,
                         o.address,
                         o.postalCode,
