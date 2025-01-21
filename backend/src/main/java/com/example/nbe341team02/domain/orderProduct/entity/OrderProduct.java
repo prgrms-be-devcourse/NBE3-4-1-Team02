@@ -2,6 +2,8 @@ package com.example.nbe341team02.domain.orderProduct.entity;
 
 import com.example.nbe341team02.domain.orders.entity.Order;
 import com.example.nbe341team02.domain.product.entity.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,9 +29,10 @@ public class OrderProduct {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
+    @JsonIgnore // 배송 조회 Dto 에 이미 주문 관련 정보 (이메일 등)가 있어서 직렬화에서 배제했습니다.
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // 직렬화할 때 프록시 객체 상태면 역직렬화 실패해서 EAGER 로 변경했습니다.
     @JoinColumn(nullable = false)
     private Product product;
 
