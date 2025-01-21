@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtTokenProvider {
 
-    private final Key key; 
+    private final Key key;
     private final long tokenValidityInMilliseconds;
     private final UserDetailsService userDetailsService;
     private final Set<String> blacklist = new HashSet<>();
@@ -56,26 +56,26 @@ public class JwtTokenProvider {
         Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
 
         return Jwts.builder()
-                .setClaims(claims) // 페이로드 설정
-                .setIssuedAt(now) // 토큰 발급 시간 설정
-                .setExpiration(validity) // 토큰 만료 시간 설정
-                .signWith(key, SignatureAlgorithm.HS256) // 대칭키 생성 (SHA-256)
-                .compact(); // String 방식으로 반환 (String compact())
+                       .setClaims(claims) // 페이로드 설정
+                       .setIssuedAt(now) // 토큰 발급 시간 설정
+                       .setExpiration(validity) // 토큰 만료 시간 설정
+                       .signWith(key, SignatureAlgorithm.HS256) // 대칭키 생성 (SHA-256)
+                       .compact(); // String 방식으로 반환 (String compact())
     }
 
     // 토큰에서 인증 정보 추출
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+                                .setSigningKey(key)
+                                .build()
+                                .parseClaimsJws(token)
+                                .getBody();
 
-        Collection<? extends GrantedAuthority> authorities = 
-            Collections.singletonList(new SimpleGrantedAuthority((String) claims.get("role")));
-        
+        Collection<? extends GrantedAuthority> authorities =
+                Collections.singletonList(new SimpleGrantedAuthority((String) claims.get("role")));
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
-        
+
         log.debug("Token claims - username: {}, role: {}", claims.getSubject(), claims.get("role"));
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
@@ -89,12 +89,13 @@ public class JwtTokenProvider {
         return null;
     }
 
+    // 블랙리스트 토큰 체크 메서드 추가
+    public boolean isTokenBlacklisted(String token) {
+        return blacklist.contains(token);
+    }
     // 토큰 유효성 검증
     public boolean validateToken(String token) {
         try {
-            if (blacklist.contains(token)) {
-                return false;
-            }
             // JWT 토큰 검증
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token); // JWT 토큰 파싱 , 검증 수행 후 페이로드 추출
             return true;
