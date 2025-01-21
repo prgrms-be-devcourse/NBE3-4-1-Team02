@@ -5,12 +5,14 @@ import com.example.nbe341team02.domain.orders.dto.request.OrderCreateRequest;
 import com.example.nbe341team02.domain.orders.dto.request.OrderProductRequest;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OrderInitData implements CommandLineRunner {

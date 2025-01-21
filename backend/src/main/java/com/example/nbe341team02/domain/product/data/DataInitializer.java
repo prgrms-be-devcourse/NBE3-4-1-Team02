@@ -1,5 +1,8 @@
 package com.example.nbe341team02.domain.product.data;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 import com.example.nbe341team02.domain.product.entity.Product;
 import com.example.nbe341team02.domain.product.repository.ProductRepository;
 import jakarta.annotation.PostConstruct;

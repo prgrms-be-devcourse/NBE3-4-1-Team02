@@ -7,14 +7,11 @@ spring:
         web-allow-others: true
   application:
     name: NBE3-4-1-Team02
-#  datasource:
-#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySql
   datasource:
-    url: jdbc:h2:mem:product_db;DB_CLOSE_ON_EXIT=FALSE;MODE=MySql  # DB 유지, 새로운이름
+    url: jdbc:h2:file:C:/Users/sia54/local;DB_CLOSE_DELAY=-1;MODE=MySql
     driverClassName: org.h2.Driver
     username: sa
     password:
-    initialize: true
   jpa:
     show-sql: true
     hibernate:
@@ -22,15 +19,25 @@ spring:
     database: h2
     properties:
       hibernate:
-        auto_quote_keyword: true
         format_sql: true
-        use_sql_comments: true
-        highlight_sql: true
-    defer-datasource-initialization: true
+        show_sql: true
+  profiles:
+    active: dev-geonHui
+
 server:
   servlet:
     context-path: /api/v1
+    
+jwt:
+  secret: "Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0Z2F0"
+  token-validity-in-milliseconds: 1800000
+
+logging:
+  level:
+    com.example.nbe341team02: DEBUG
+    org.springframework.security: DEBUG
+
 default:
   delivery:
     hour: 14
-    minute : 0
+    minute: 0

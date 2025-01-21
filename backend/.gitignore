@@ -1,1 +1,31 @@
+### macOS ###
+.DS_Store
+**/.DS_Store
+
+### IDE ###
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+### Node ###
+node_modules/
+.env
+dist/
+
+### Gradle ###
+.gradle/
+**/build/
+caches/
+daemon/
+native/
+wrapper/
+.tmp/
+buildOutputCleanup/
+nb-cache/
+vcs-1/
+
+### Project Specific ###
+**/application-dev-*.yml
 src/main/resources/static/*.png

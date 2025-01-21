@@ -1,39 +1,31 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+### macOS ###
+.DS_Store
+**/.DS_Store
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### IntelliJ IDEA ###
-backend/.idea
-*.iws
+### IDE ###
+.idea/
+.vscode/
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+*.iws
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+### Node ###
+node_modules/
+.env
+dist/
 
-### VS Code ###
-.vscode/
+### Gradle ###
+.gradle/
+**/build/
+caches/
+daemon/
+native/
+wrapper/
+.tmp/
+buildOutputCleanup/
+nb-cache/
+vcs-1/
 
-.idea/
+### Project Specific ###
+**/application-dev-*.yml
+src/main/resources/static/*.png
