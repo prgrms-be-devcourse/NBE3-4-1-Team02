@@ -75,6 +75,10 @@ export default function DeliveryDetailsPage() {
         }).format(date);
     };
 
+    const formImageUrl = (imageUrl: string) => {
+        return `http://localhost:8080${imageUrl.replace('/static', '/api/v1')}`;
+    }
+
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="max-w-4xl mx-auto p-8">
@@ -116,7 +120,7 @@ export default function DeliveryDetailsPage() {
                                                 {/* 상품 이미지 */}
                                                 <div className="flex items-center space-x-4">
                                                     <img
-                                                        src={orderProduct.product.imageUrl}
+                                                        src={formImageUrl(orderProduct.product.imageUrl)}
                                                         alt={orderProduct.product.name}
                                                         className="w-16 h-16 rounded-md object-cover"
                                                     />
