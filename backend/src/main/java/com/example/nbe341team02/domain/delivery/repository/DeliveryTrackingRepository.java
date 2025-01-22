@@ -21,7 +21,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-
 @Repository
 @Transactional
 public class DeliveryTrackingRepository extends QuerydslRepositorySupport {

@@ -98,8 +98,6 @@ export default function ProductManagementPage() {
         }
 
         try {
-            alert(formData.image);
-
             const token = localStorage.getItem('adminToken');
             const response = await fetch(
                 API_ENDPOINTS.PRODUCTS, {

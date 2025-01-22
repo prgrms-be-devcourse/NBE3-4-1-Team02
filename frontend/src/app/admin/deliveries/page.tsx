@@ -35,8 +35,16 @@ export default function DeliveriesPage() {
             }
 
             const token = localStorage.getItem('adminToken');
+            const params = new URLSearchParams();
+            const validPage = Number(page) && page > 0 ? Number(page) : 1;
+            params.append("page", validPage.toString());
+
+            if (email) {
+                params.append("email", email);  // email 파라미터 추가
+            }
+
             const response = await fetch(
-                `http://localhost:8080/api/v1/admin/deliveries`, {
+                `http://localhost:8080/api/v1/admin/deliveries?${params.toString()}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -48,11 +56,6 @@ export default function DeliveriesPage() {
                 return;
             }
                         
-            const validPage = Number(page) && page > 0 ? Number(page) : 1;
-
-            const params = new URLSearchParams();
-            params.append("page", validPage.toString());
-            if (email) params.append("email", email);
 
             if (!response.ok) {
                 if (response.status === 401) {

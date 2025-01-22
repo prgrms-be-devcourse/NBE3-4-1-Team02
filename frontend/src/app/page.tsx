@@ -145,11 +145,11 @@ export default function CreateOrder() {
   return (
       <div className="min-h-screen bg-gray-200">
         <div className="max-w-7xl mx-auto p-8">
-          <h1 className="text-3xl font-bold text-center mb-8">Grids & Circle</h1>
+          <h1 className="text-3xl font-bold text-gray-800 text-center mb-8">Grids & Circle</h1>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left: 상품 목록 */}
             <div className="lg:col-span-2">
-              <h2 className="text-lg font-semibold mb-4">상품 목록</h2>
+              <h2 className="text-lg font-semibold mb-4 text-gray-800">상품 목록</h2>
               <div className="grid grid-cols-1 gap-4">
                 {products.map((product) => (
                     <div
@@ -187,7 +187,7 @@ export default function CreateOrder() {
 
             {/* Right: Summary and 주문 정보 */}
             <div>
-              <h2 className="text-lg font-semibold mb-4">Summary</h2>
+              <h2 className="text-lg font-semibold mb-4 text-gray-800">Summary</h2>
               {cart.length > 0 ? (
                   <div className="space-y-4 mb-4">
                     {cart.map((item) => (
@@ -213,22 +213,22 @@ export default function CreateOrder() {
               {/* 주문 정보 */}
               <form onSubmit={handleOrderSubmit} className="space-y-4">
                 <div>
-                  <label className="block font-semibold">이메일</label>
+                  <label className="block font-semibold text-gray-800">이메일</label>
                   <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-2 border rounded-md"
+                      className="w-full p-2 border rounded-md text-gray-800"
                       required
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold">주소</label>
+                  <label className="block font-semibold text-gray-800">주소</label>
                   <div className="flex">
                     <input
                         type="text"
                         value={address}
-                        className="flex-1 p-2 border rounded-md"
+                        className="flex-1 p-2 border rounded-md text-gray-800"
                         readOnly
                     />
                     <button
@@ -241,11 +241,11 @@ export default function CreateOrder() {
                   </div>
                 </div>
                 <div>
-                  <label className="block font-semibold">우편번호</label>
+                  <label className="block font-semibold text-gray-800">우편번호</label>
                   <input
                       type="text"
                       value={postalCode}
-                      className="w-full p-2 border rounded-md"
+                      className="w-full p-2 border rounded-md text-gray-800"
                       readOnly
                   />
                 </div>
